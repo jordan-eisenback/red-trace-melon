@@ -1,0 +1,763 @@
+{
+  "requirements": 36,
+  "frameworks": 1,
+  "issuesCount": 108,
+  "issues": [
+    {
+      "id": "missing-outcome-RBAC-CAP-101",
+      "requirementId": "RBAC-CAP-101",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-101: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-101",
+      "requirementId": "RBAC-CAP-101",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-101: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-101",
+      "requirementId": "RBAC-CAP-101",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-101: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-102",
+      "requirementId": "RBAC-CAP-102",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-102: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-102",
+      "requirementId": "RBAC-CAP-102",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-102: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-102",
+      "requirementId": "RBAC-CAP-102",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-102: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-ENT-005",
+      "requirementId": "RBAC-ENT-005",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-005: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-ENT-005",
+      "requirementId": "RBAC-ENT-005",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-005: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-ENT-005",
+      "requirementId": "RBAC-ENT-005",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-ENT-005: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-103",
+      "requirementId": "RBAC-CAP-103",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-103: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-103",
+      "requirementId": "RBAC-CAP-103",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-103: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-103",
+      "requirementId": "RBAC-CAP-103",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-103: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-104",
+      "requirementId": "RBAC-CAP-104",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-104: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-104",
+      "requirementId": "RBAC-CAP-104",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-104: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-104",
+      "requirementId": "RBAC-CAP-104",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-104: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-105",
+      "requirementId": "RBAC-CAP-105",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-105: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-105",
+      "requirementId": "RBAC-CAP-105",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-105: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-105",
+      "requirementId": "RBAC-CAP-105",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-105: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-ENT-001",
+      "requirementId": "RBAC-ENT-001",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-001: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-ENT-001",
+      "requirementId": "RBAC-ENT-001",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-001: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-ENT-001",
+      "requirementId": "RBAC-ENT-001",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-ENT-001: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-106",
+      "requirementId": "RBAC-CAP-106",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-106: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-106",
+      "requirementId": "RBAC-CAP-106",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-106: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-106",
+      "requirementId": "RBAC-CAP-106",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-106: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-ENT-002",
+      "requirementId": "RBAC-ENT-002",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-002: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-ENT-002",
+      "requirementId": "RBAC-ENT-002",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-002: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-ENT-002",
+      "requirementId": "RBAC-ENT-002",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-ENT-002: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-IGA-004",
+      "requirementId": "RBAC-IGA-004",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-004: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-IGA-004",
+      "requirementId": "RBAC-IGA-004",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-004: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-IGA-004",
+      "requirementId": "RBAC-IGA-004",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-IGA-004: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-107",
+      "requirementId": "RBAC-CAP-107",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-107: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-107",
+      "requirementId": "RBAC-CAP-107",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-107: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-107",
+      "requirementId": "RBAC-CAP-107",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-107: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-109",
+      "requirementId": "RBAC-CAP-109",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-109: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-109",
+      "requirementId": "RBAC-CAP-109",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-109: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-109",
+      "requirementId": "RBAC-CAP-109",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-109: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-ENT-003",
+      "requirementId": "RBAC-ENT-003",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-003: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-ENT-003",
+      "requirementId": "RBAC-ENT-003",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-003: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-ENT-003",
+      "requirementId": "RBAC-ENT-003",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-ENT-003: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-IGA-005",
+      "requirementId": "RBAC-IGA-005",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-005: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-IGA-005",
+      "requirementId": "RBAC-IGA-005",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-005: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-IGA-005",
+      "requirementId": "RBAC-IGA-005",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-IGA-005: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-108",
+      "requirementId": "RBAC-CAP-108",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-108: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-108",
+      "requirementId": "RBAC-CAP-108",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-108: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-108",
+      "requirementId": "RBAC-CAP-108",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-108: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-IGA-007",
+      "requirementId": "RBAC-IGA-007",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-007: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-IGA-007",
+      "requirementId": "RBAC-IGA-007",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-007: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-IGA-007",
+      "requirementId": "RBAC-IGA-007",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-IGA-007: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-110",
+      "requirementId": "RBAC-CAP-110",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-110: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-110",
+      "requirementId": "RBAC-CAP-110",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-110: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-110",
+      "requirementId": "RBAC-CAP-110",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-110: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-ENT-004",
+      "requirementId": "RBAC-ENT-004",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-004: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-ENT-004",
+      "requirementId": "RBAC-ENT-004",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-004: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-ENT-004",
+      "requirementId": "RBAC-ENT-004",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-ENT-004: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-113",
+      "requirementId": "RBAC-CAP-113",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-113: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-113",
+      "requirementId": "RBAC-CAP-113",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-113: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-113",
+      "requirementId": "RBAC-CAP-113",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-113: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-111",
+      "requirementId": "RBAC-CAP-111",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-111: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-111",
+      "requirementId": "RBAC-CAP-111",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-111: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-111",
+      "requirementId": "RBAC-CAP-111",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-111: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-CAP-112",
+      "requirementId": "RBAC-CAP-112",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-112: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-CAP-112",
+      "requirementId": "RBAC-CAP-112",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-CAP-112: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-CAP-112",
+      "requirementId": "RBAC-CAP-112",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-CAP-112: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-ENT-006",
+      "requirementId": "RBAC-ENT-006",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-006: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-ENT-006",
+      "requirementId": "RBAC-ENT-006",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-ENT-006: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-ENT-006",
+      "requirementId": "RBAC-ENT-006",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-ENT-006: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-INT-005",
+      "requirementId": "RBAC-INT-005",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-INT-005: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-INT-005",
+      "requirementId": "RBAC-INT-005",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-INT-005: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-INT-005",
+      "requirementId": "RBAC-INT-005",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-INT-005: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-INT-008",
+      "requirementId": "RBAC-INT-008",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-INT-008: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-INT-008",
+      "requirementId": "RBAC-INT-008",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-INT-008: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-INT-008",
+      "requirementId": "RBAC-INT-008",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-INT-008: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-INT-010",
+      "requirementId": "RBAC-INT-010",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-INT-010: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-INT-010",
+      "requirementId": "RBAC-INT-010",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-INT-010: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-INT-010",
+      "requirementId": "RBAC-INT-010",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-INT-010: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-INT-012",
+      "requirementId": "RBAC-INT-012",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-INT-012: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-INT-012",
+      "requirementId": "RBAC-INT-012",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-INT-012: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-INT-012",
+      "requirementId": "RBAC-INT-012",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-INT-012: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-IGA-001",
+      "requirementId": "RBAC-IGA-001",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-001: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-IGA-001",
+      "requirementId": "RBAC-IGA-001",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-001: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-IGA-001",
+      "requirementId": "RBAC-IGA-001",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-IGA-001: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-INT-001",
+      "requirementId": "RBAC-INT-001",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-INT-001: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-INT-001",
+      "requirementId": "RBAC-INT-001",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-INT-001: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-INT-001",
+      "requirementId": "RBAC-INT-001",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-INT-001: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-INT-002",
+      "requirementId": "RBAC-INT-002",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-INT-002: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-INT-002",
+      "requirementId": "RBAC-INT-002",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-INT-002: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-INT-002",
+      "requirementId": "RBAC-INT-002",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-INT-002: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-INT-003",
+      "requirementId": "RBAC-INT-003",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-INT-003: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-INT-003",
+      "requirementId": "RBAC-INT-003",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-INT-003: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-INT-003",
+      "requirementId": "RBAC-INT-003",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-INT-003: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-INT-004",
+      "requirementId": "RBAC-INT-004",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-INT-004: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-INT-004",
+      "requirementId": "RBAC-INT-004",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-INT-004: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-INT-004",
+      "requirementId": "RBAC-INT-004",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-INT-004: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-OPT-DISC-01",
+      "requirementId": "OPT-DISC-01",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "OPT-DISC-01: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-OPT-DISC-01",
+      "requirementId": "OPT-DISC-01",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "OPT-DISC-01: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-OPT-DISC-01",
+      "requirementId": "OPT-DISC-01",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "OPT-DISC-01: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-OPT-DISC-02",
+      "requirementId": "OPT-DISC-02",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "OPT-DISC-02: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-OPT-DISC-02",
+      "requirementId": "OPT-DISC-02",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "OPT-DISC-02: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-OPT-DISC-02",
+      "requirementId": "OPT-DISC-02",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "OPT-DISC-02: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-OPT-DISC-03",
+      "requirementId": "OPT-DISC-03",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "OPT-DISC-03: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-OPT-DISC-03",
+      "requirementId": "OPT-DISC-03",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "OPT-DISC-03: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-OPT-DISC-03",
+      "requirementId": "OPT-DISC-03",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "OPT-DISC-03: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-OPT-DISC-04",
+      "requirementId": "OPT-DISC-04",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "OPT-DISC-04: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-OPT-DISC-04",
+      "requirementId": "OPT-DISC-04",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "OPT-DISC-04: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-OPT-DISC-04",
+      "requirementId": "OPT-DISC-04",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "OPT-DISC-04: Contains placeholder or vague content"
+    },
+    {
+      "id": "missing-outcome-RBAC-IGA-006",
+      "requirementId": "RBAC-IGA-006",
+      "severity": "warning",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-006: Missing expected outcome"
+    },
+    {
+      "id": "missing-notes-RBAC-IGA-006",
+      "requirementId": "RBAC-IGA-006",
+      "severity": "info",
+      "category": "Missing Data",
+      "message": "RBAC-IGA-006: Missing implementation notes"
+    },
+    {
+      "id": "vague-content-RBAC-IGA-006",
+      "requirementId": "RBAC-IGA-006",
+      "severity": "warning",
+      "category": "Quality Issues",
+      "message": "RBAC-IGA-006: Contains placeholder or vague content"
+    }
+  ]
+}
