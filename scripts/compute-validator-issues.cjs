@@ -54,10 +54,6 @@ function computeIssues(requirements, frameworks) {
     if (!req.outcome || req.outcome.trim() === '' || req.outcome === 'TBD') {
       issues.push({ id: `missing-outcome-${req.id}`, requirementId: req.id, severity: 'warning', category: 'Missing Data', message: `${req.id}: Missing expected outcome` });
     }
-    // missing notes
-    if (!req.notes || req.notes.trim() === '' || req.notes === 'N/A') {
-      issues.push({ id: `missing-notes-${req.id}`, requirementId: req.id, severity: 'info', category: 'Missing Data', message: `${req.id}: Missing implementation notes` });
-    }
     // vague content
     const vagueWords = ['TBD', 'TODO', 'placeholder', 'to be determined', 'update this'];
     const lc = (req.req || '').toLowerCase();
