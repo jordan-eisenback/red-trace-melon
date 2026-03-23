@@ -1,3 +1,0 @@
-Parsed 128 requirements
-Applied 0 auto-fixes
-Wrote 128 requirements to C:\projects\red-trace-melon\src\app\data\initial-requirements.ts

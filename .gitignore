@@ -1,1 +1,19 @@
 node_modules/
+
+# Build output
+/dist/
+
+# Script-generated artifacts
+/scripts/*.json
+/scripts/*.csv
+/scripts/*.txt
+
+# Script backups (keep current backups in repo if already present, but ignore new ones)
+/scripts/backups/
+
+# Vite local
+.vite/
+
+# OS files
+.DS_Store
+Thumbs.db
