@@ -749,7 +749,8 @@ export const initialRequirements: Requirement[] = [
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-803",
     "_raw": null,
-    "notes": "Implementation notes: The system SHALL support hybrid identity environments spanning on-prem and SaaS. Outcome: Hybrid execution supported. Provide concrete mapping, config, or references."
+    "notes": "Duplicate of RBAC-IGA-001. Implementation notes: The system SHALL support hybrid identity environments spanning on-prem and SaaS. Outcome: Hybrid execution supported. Provide concrete mapping, config, or references.",
+    "status": "duplicate"
   },
   {
     "id": "RBAC-IGA-021",
@@ -929,7 +930,8 @@ export const initialRequirements: Requirement[] = [
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-501",
     "_raw": null,
-    "notes": "Implementation notes: The system SHALL support role-level certifications. Outcome: RBAC-native reviews. Provide concrete mapping, config, or references."
+    "notes": "Duplicate of RBAC-IGA-017. Implementation notes: The system SHALL support role-level certifications. Outcome: RBAC-native reviews. Provide concrete mapping, config, or references.",
+    "status": "duplicate"
   },
   {
     "id": "RBAC-IGA-039",
@@ -939,7 +941,8 @@ export const initialRequirements: Requirement[] = [
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-501",
     "_raw": null,
-    "notes": "Implementation notes: The system SHALL support escalation and overdue tracking. Outcome: Scalable certifications. Provide concrete mapping, config, or references."
+    "notes": "Duplicate of RBAC-IGA-019. Implementation notes: The system SHALL support escalation and overdue tracking. Outcome: Scalable certifications. Provide concrete mapping, config, or references.",
+    "status": "duplicate"
   },
   {
     "id": "RBAC-IGA-040",
@@ -1069,7 +1072,8 @@ export const initialRequirements: Requirement[] = [
     "owner": "IAM",
     "parent": "RBAC-CAP-701",
     "_raw": null,
-    "notes": "Implementation notes: The system SHALL detect out-of-band directory changes. Outcome: Drift detection. Provide concrete mapping, config, or references."
+    "notes": "Duplicate of RBAC-IGA-041. Implementation notes: The system SHALL detect out-of-band directory changes. Outcome: Drift detection. Provide concrete mapping, config, or references.",
+    "status": "duplicate"
   },
   {
     "id": "RBAC-INT-011",
