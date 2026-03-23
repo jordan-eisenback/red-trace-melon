@@ -249,7 +249,7 @@ export const initialEpics = [
   },
   {
     "id": "EPIC-10",
-    "title": "Optional AI-powered discovery tool for role analysis and recommendations",
+    "title": "AI-Assisted Role Discovery",
     "description": "Optional AI-powered discovery tool for role analysis and recommendations",
     "requirements": [
       "OPT-DISC-01",
@@ -285,7 +285,7 @@ export const initialUserStories = [
   {
     "id": "US-1.1",
     "epicId": "EPIC-1",
-    "title": "The system SHALL enforce least privilege access by ensuring users receive only the access required for their job function and by explicitly identifying and governing privileged or sensitive access",
+    "title": "The system SHALL enforce least privilege access by ensuring users receive only t...",
     "description": "The system SHALL enforce least privilege access by ensuring users receive only the access required for their job function and by explicitly identifying and governing privileged or sensitive access",
     "acceptanceCriteria": [],
     "requirements": [
@@ -300,7 +300,7 @@ export const initialUserStories = [
   {
     "id": "US-6.1",
     "epicId": "EPIC-6",
-    "title": "Govern the full access lifecycle, including request, approval, activation, review, revocation, and exception handling, in a repeatable and auditable manner",
+    "title": "Govern the full access lifecycle, including request, approval, activation, revie...",
     "description": "Govern the full access lifecycle, including request, approval, activation, review, revocation, and exception handling, in a repeatable and auditable manner",
     "acceptanceCriteria": [],
     "requirements": [
@@ -315,7 +315,7 @@ export const initialUserStories = [
   {
     "id": "US-6.2",
     "epicId": "EPIC-6",
-    "title": "Produce complete, attributable, and auditable evidence of access decisions sufficient to support SOX and other regulatory audits without manual reconstruction",
+    "title": "Produce complete, attributable, and auditable evidence of access decisions suffi...",
     "description": "Produce complete, attributable, and auditable evidence of access decisions sufficient to support SOX and other regulatory audits without manual reconstruction",
     "acceptanceCriteria": [],
     "requirements": [
@@ -330,7 +330,7 @@ export const initialUserStories = [
   {
     "id": "US-10.1",
     "epicId": "EPIC-10",
-    "title": "The system SHALL support scalable onboarding of applications, identities, and roles without bespoke redesign or manual controls",
+    "title": "The system SHALL support scalable onboarding of applications, identities, and ro...",
     "description": "The system SHALL support scalable onboarding of applications, identities, and roles without bespoke redesign or manual controls",
     "acceptanceCriteria": [],
     "requirements": [
@@ -345,7 +345,7 @@ export const initialUserStories = [
   {
     "id": "US-7.1",
     "epicId": "EPIC-7",
-    "title": "Define access intent, policy, and governance while delegating execution, automation, and enforcement to an enterprise IGA platform",
+    "title": "Define access intent, policy, and governance while delegating execution, automat...",
     "description": "Define access intent, policy, and governance while delegating execution, automation, and enforcement to an enterprise IGA platform",
     "acceptanceCriteria": [],
     "requirements": [
@@ -360,7 +360,7 @@ export const initialUserStories = [
   {
     "id": "US-1.2",
     "epicId": "EPIC-1",
-    "title": "The system SHALL provide a standardized discovery model to capture application RBAC readiness inputs",
+    "title": "The system SHALL provide a standardized discovery model to capture application R...",
     "description": "The system SHALL provide a standardized discovery model to capture application RBAC readiness inputs",
     "acceptanceCriteria": [],
     "requirements": [
@@ -375,7 +375,7 @@ export const initialUserStories = [
   {
     "id": "US-1.3",
     "epicId": "EPIC-1",
-    "title": "The system SHALL require completion of minimum discovery criteria before entitlement mapping",
+    "title": "The system SHALL require completion of minimum discovery criteria before entitle...",
     "description": "The system SHALL require completion of minimum discovery criteria before entitlement mapping",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1095,7 +1095,7 @@ export const initialUserStories = [
   {
     "id": "US-7.5",
     "epicId": "EPIC-7",
-    "title": "The system SHALL support hybrid identity environments spanning on-premises and SaaS",
+    "title": "The system SHALL support hybrid identity environments spanning on-premises and S...",
     "description": "The system SHALL support hybrid identity environments spanning on-premises and SaaS",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1110,7 +1110,7 @@ export const initialUserStories = [
   {
     "id": "US-7.6",
     "epicId": "EPIC-7",
-    "title": "The system SHALL support coexistence of on-premises and SaaS components with equivalent capability",
+    "title": "The system SHALL support coexistence of on-premises and SaaS components with equ...",
     "description": "The system SHALL support coexistence of on-premises and SaaS components with equivalent capability",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1125,7 +1125,7 @@ export const initialUserStories = [
   {
     "id": "US-7.7",
     "epicId": "EPIC-7",
-    "title": "The system SHALL support phased migration and parallel operation with legacy IAM systems",
+    "title": "The system SHALL support phased migration and parallel operation with legacy IAM...",
     "description": "The system SHALL support phased migration and parallel operation with legacy IAM systems",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1155,7 +1155,7 @@ export const initialUserStories = [
   {
     "id": "US-7.9",
     "epicId": "EPIC-7",
-    "title": "The system SHALL include non-connected applications in access reviews and certifications",
+    "title": "The system SHALL include non-connected applications in access reviews and certif...",
     "description": "The system SHALL include non-connected applications in access reviews and certifications",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1170,7 +1170,7 @@ export const initialUserStories = [
   {
     "id": "US-7.10",
     "epicId": "EPIC-7",
-    "title": "The system SHALL support standard enterprise integration patterns (APIs, directories, DBs, files, SCIM)",
+    "title": "The system SHALL support standard enterprise integration patterns (APIs, directo...",
     "description": "The system SHALL support standard enterprise integration patterns (APIs, directories, DBs, files, SCIM)",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1185,7 +1185,7 @@ export const initialUserStories = [
   {
     "id": "US-7.11",
     "epicId": "EPIC-7",
-    "title": "The system SHALL provide prebuilt connectors for common enterprise and SaaS systems",
+    "title": "The system SHALL provide prebuilt connectors for common enterprise and SaaS syst...",
     "description": "The system SHALL provide prebuilt connectors for common enterprise and SaaS systems",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1200,7 +1200,7 @@ export const initialUserStories = [
   {
     "id": "US-7.12",
     "epicId": "EPIC-7",
-    "title": "The system SHALL provide extensibility mechanisms where direct connectors do not exist",
+    "title": "The system SHALL provide extensibility mechanisms where direct connectors do not...",
     "description": "The system SHALL provide extensibility mechanisms where direct connectors do not exist",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1215,7 +1215,7 @@ export const initialUserStories = [
   {
     "id": "US-7.13",
     "epicId": "EPIC-7",
-    "title": "The system SHALL provide comprehensive audit logging for identity, access, and governance actions",
+    "title": "The system SHALL provide comprehensive audit logging for identity, access, and g...",
     "description": "The system SHALL provide comprehensive audit logging for identity, access, and governance actions",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1230,7 +1230,7 @@ export const initialUserStories = [
   {
     "id": "US-7.14",
     "epicId": "EPIC-7",
-    "title": "The system SHALL capture approver identity, timestamps, and before/after access state",
+    "title": "The system SHALL capture approver identity, timestamps, and before/after access ...",
     "description": "The system SHALL capture approver identity, timestamps, and before/after access state",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1260,7 +1260,7 @@ export const initialUserStories = [
   {
     "id": "US-8.1",
     "epicId": "EPIC-8",
-    "title": "The system SHALL detect and report governed directory and group membership changes",
+    "title": "The system SHALL detect and report governed directory and group membership chang...",
     "description": "The system SHALL detect and report governed directory and group membership changes",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1305,7 +1305,7 @@ export const initialUserStories = [
   {
     "id": "US-7.18",
     "epicId": "EPIC-7",
-    "title": "The system SHALL support periodic access certifications by role and/or entitlement",
+    "title": "The system SHALL support periodic access certifications by role and/or entitleme...",
     "description": "The system SHALL support periodic access certifications by role and/or entitlement",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1320,7 +1320,7 @@ export const initialUserStories = [
   {
     "id": "US-7.19",
     "epicId": "EPIC-7",
-    "title": "The system SHALL retain certification decisions with reviewer, outcome, and timestamp",
+    "title": "The system SHALL retain certification decisions with reviewer, outcome, and time...",
     "description": "The system SHALL retain certification decisions with reviewer, outcome, and timestamp",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1365,7 +1365,7 @@ export const initialUserStories = [
   {
     "id": "US-7.22",
     "epicId": "EPIC-7",
-    "title": "The system SHALL support certification delegation, escalation, and overdue tracking",
+    "title": "The system SHALL support certification delegation, escalation, and overdue track...",
     "description": "The system SHALL support certification delegation, escalation, and overdue tracking",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1740,7 +1740,7 @@ export const initialUserStories = [
   {
     "id": "US-2.21",
     "epicId": "EPIC-2",
-    "title": "The system SHALL ingest identity attributes from Workday to drive role eligibility",
+    "title": "The system SHALL ingest identity attributes from Workday to drive role eligibili...",
     "description": "The system SHALL ingest identity attributes from Workday to drive role eligibility",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1770,7 +1770,7 @@ export const initialUserStories = [
   {
     "id": "US-7.43",
     "epicId": "EPIC-7",
-    "title": "The system SHALL retain audit evidence of Workday attribute changes affecting access",
+    "title": "The system SHALL retain audit evidence of Workday attribute changes affecting ac...",
     "description": "The system SHALL retain audit evidence of Workday attribute changes affecting access",
     "acceptanceCriteria": [],
     "requirements": [
@@ -1920,7 +1920,7 @@ export const initialUserStories = [
   {
     "id": "US-7.46",
     "epicId": "EPIC-7",
-    "title": "The system SHALL block fulfillment of ServiceNow requests until approval is recorded",
+    "title": "The system SHALL block fulfillment of ServiceNow requests until approval is reco...",
     "description": "The system SHALL block fulfillment of ServiceNow requests until approval is recorded",
     "acceptanceCriteria": [],
     "requirements": [
