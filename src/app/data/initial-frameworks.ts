@@ -35,7 +35,8 @@ export const initialFrameworks: Framework[] = [
         "description": "Ensure directory group memberships are provisioned/updated from RBAC/IGA decisions.",
         "requirements": [
           "RBAC-INT-008",
-          "RBAC-INT-017"
+          "RBAC-INT-017",
+          "RBAC-CAP-803"
         ],
         "category": "Directory",
         "priority": "High",
@@ -62,7 +63,9 @@ export const initialFrameworks: Framework[] = [
         "controlId": "DIR-6.1",
         "title": "Directory event logging",
         "description": "Log directory events impacting access (create/update/delete) with attribution and before/after state.",
-        "requirements": [],
+        "requirements": [
+          "RBAC-CAP-404"
+        ],
         "category": "Directory",
         "priority": "Medium",
         "notes": "maps from legacy DIR-6.1"
@@ -194,6 +197,16 @@ export const initialFrameworks: Framework[] = [
           "RBAC-IGA-026",
           "RBAC-IGA-027",
           "RBAC-NFR-008",
+          "RBAC-CAP-208",
+          "RBAC-CAP-209",
+          "RBAC-CAP-304",
+          "RBAC-CAP-402",
+          "RBAC-CAP-502",
+          "RBAC-CAP-503",
+          "RBAC-CAP-504",
+          "RBAC-CAP-505",
+          "RBAC-CAP-603",
+          "RBAC-CAP-605",
           "RBAC-CAP-107",
           "RBAC-CAP-602",
           "RBAC-IGA-029",
