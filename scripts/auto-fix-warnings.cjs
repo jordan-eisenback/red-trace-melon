@@ -115,6 +115,15 @@ function autoFix(requirements) {
       }
     }
 
+    // 6. Missing implementation notes
+    if (!r.notes || String(r.notes).trim() === '' || /^n\/a$/i.test(String(r.notes))) {
+      // Create a concise implementation note from the requirement and outcome
+      const summary = String(r.req || '').replace(/\s+/g, ' ').trim().substring(0, 120);
+      const outcome = r.outcome ? ` Outcome: ${String(r.outcome).trim()}.` : '';
+      r.notes = `Implementation notes: ${summary}.${outcome} Provide concrete mapping, config, or references.`;
+      fixes++; console.log(`Added implementation notes for ${r.id}`);
+    }
+
     // 5. Category -> Capability conversion
     if (r.type === 'Capability Category') {
       const hasChildren = requirements.some((c) => c.parent === r.id);
