@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEpics } from "../contexts/EpicContext";
+import { toast } from "sonner";
 import { Plus, Edit, Trash2, Search, Filter } from "lucide-react";
 import { Epic, UserStory } from "../types/epic";
 import EpicModal from "../components/EpicModal";
@@ -8,7 +9,7 @@ import UserStoryModal from "../components/UserStoryModal";
 type ViewMode = "epics" | "stories";
 
 export default function EpicsAndStories() {
-  const { epics, userStories, deleteEpic, deleteUserStory, getStoriesByEpic } = useEpics();
+  const { epics, userStories, deleteEpic, deleteUserStory, getStoriesByEpic, updateUserStory } = useEpics();
   const [viewMode, setViewMode] = useState<ViewMode>("epics");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -73,6 +74,104 @@ export default function EpicsAndStories() {
     setIsStoryModalOpen(true);
   };
 
+  // expand/collapse state for epics
+  const [expandedEpics, setExpandedEpics] = useState<Record<string, boolean>>({});
+  const [dragOverEpicId, setDragOverEpicId] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [expandedStories, setExpandedStories] = useState<Record<string, boolean>>({});
+
+  const toggleStoryExpanded = (id: string) => {
+    setExpandedStories((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+  // Inline edit state for story titles
+  const [editingStoryId, setEditingStoryId] = useState<string | null>(null);
+  const [editingTitleValue, setEditingTitleValue] = useState<string>("");
+
+  const startEditingTitle = (storyId: string, currentTitle: string) => {
+    setEditingStoryId(storyId);
+    setEditingTitleValue(currentTitle);
+  };
+
+  const cancelEditingTitle = () => {
+    setEditingStoryId(null);
+    setEditingTitleValue("");
+  };
+
+  const saveEditingTitle = (storyId: string) => {
+    const story = userStories.find((s) => s.id === storyId);
+    if (!story) return;
+    updateUserStory(storyId, { ...story, title: editingTitleValue });
+    setEditingStoryId(null);
+    setEditingTitleValue("");
+    toast.success('Title updated');
+  };
+
+  const toggleEpicExpanded = (id: string) => {
+    setExpandedEpics((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  // Drag and drop handlers
+  const onDragStart = (e: React.DragEvent, storyId: string) => {
+    try {
+      e.dataTransfer.setData("text/plain", storyId);
+      e.dataTransfer.effectAllowed = "move";
+    } catch (err) {
+      // some browsers may restrict setData in certain contexts; swallow
+    }
+  };
+
+  const onEpicDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const onEpicDragEnter = (e: React.DragEvent, epicId: string) => {
+    e.preventDefault();
+    setDragOverEpicId(epicId);
+  };
+
+  const onEpicDragLeave = (e: React.DragEvent, epicId: string) => {
+    e.preventDefault();
+    setDragOverEpicId((cur) => (cur === epicId ? null : cur));
+  };
+
+  const onEpicDrop = (e: React.DragEvent, targetEpicId: string) => {
+    e.preventDefault();
+    const storyId = e.dataTransfer.getData("text/plain");
+    if (!storyId) return;
+    const story = userStories.find((s) => s.id === storyId);
+    if (!story) return;
+    if (story.epicId === targetEpicId) return; // no-op
+    updateUserStory(storyId, { ...story, epicId: targetEpicId });
+    setDragOverEpicId(null);
+    toast.success(`${story.id} moved to ${targetEpicId}`);
+  };
+
+  const onDragEnd = () => {
+    setDragOverEpicId(null);
+  };
+
+  const handleSave = async () => {
+    try {
+      setIsSaving(true);
+      const res = await fetch('/api/save-epics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ epics, userStories }),
+      });
+      const json = await res.json();
+      if (res.ok && json.ok) {
+        toast.success('Saved epics & stories to disk');
+      } else {
+        toast.error('Save failed: ' + (json?.error || res.statusText));
+      }
+    } catch (err: any) {
+      toast.error('Save failed: ' + String(err));
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "High":
@@ -112,13 +211,25 @@ export default function EpicsAndStories() {
               Manage epics, stories, and acceptance criteria
             </p>
           </div>
-          <button
-            onClick={viewMode === "epics" ? handleAddEpic : handleAddStory}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add {viewMode === "epics" ? "Epic" : "Story"}
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              className={`px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm ${
+                isSaving ? 'opacity-60 cursor-wait' : ''
+              }`}
+            >
+              {isSaving ? 'Saving…' : 'Save'}
+            </button>
+
+            <button
+              onClick={viewMode === "epics" ? handleAddEpic : handleAddStory}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Add {viewMode === "epics" ? "Epic" : "Story"}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -196,14 +307,33 @@ export default function EpicsAndStories() {
           <div className="space-y-4">
             {filteredEpics.map((epic) => {
               const storyCount = getStoriesByEpic(epic.id).length;
+              const isExpanded = !!expandedEpics[epic.id];
+              const stories = getStoriesByEpic(epic.id);
               return (
                 <div
                   key={epic.id}
-                  className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                  className={
+                    `bg-white rounded-lg border p-6 transition-shadow ${
+                      dragOverEpicId === epic.id
+                        ? 'border-blue-300 ring-2 ring-blue-200 bg-blue-50'
+                        : 'border-gray-200 hover:shadow-md'
+                    }`
+                  }
+                  onDragOver={onEpicDragOver}
+                  onDrop={(e) => onEpicDrop(e, epic.id)}
+                  onDragEnter={(e) => onEpicDragEnter(e, epic.id)}
+                  onDragLeave={(e) => onEpicDragLeave(e, epic.id)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
+                        <button
+                          onClick={() => toggleEpicExpanded(epic.id)}
+                          className="text-sm text-gray-400 hover:text-gray-600 mr-2"
+                          aria-expanded={isExpanded}
+                        >
+                          {isExpanded ? "▾" : "▸"}
+                        </button>
                         <span className="font-mono text-sm text-gray-500">{epic.id}</span>
                         <span
                           className={`px-2 py-0.5 text-xs font-medium rounded ${getPriorityColor(
@@ -248,6 +378,100 @@ export default function EpicsAndStories() {
                       </button>
                     </div>
                   </div>
+
+                  {/* Expanded list of stories */}
+                  {isExpanded && (
+                    <div className="mt-4 space-y-3">
+                      {stories.length === 0 && (
+                        <div className="text-sm text-gray-500">No stories in this epic</div>
+                      )}
+                      {stories.map((story) => {
+                        const isStoryExpanded = !!expandedStories[story.id];
+                        return (
+                          <div key={story.id} className="space-y-2">
+                            <div
+                              draggable
+                              onDragStart={(e) => onDragStart(e, story.id)}
+                              onDragEnd={onDragEnd}
+                              role="button"
+                              aria-grabbed={false}
+                              title={`Drag ${story.id} to another epic`}
+                              className="p-3 border border-gray-100 rounded-lg flex items-center justify-between hover:bg-gray-50 cursor-grab"
+                            >
+                              <div className="flex items-center gap-3">
+                                <button
+                                  onClick={() => toggleStoryExpanded(story.id)}
+                                  className="text-sm text-gray-400 hover:text-gray-600"
+                                  aria-expanded={isStoryExpanded}
+                                >
+                                  {isStoryExpanded ? '▾' : '▸'}
+                                </button>
+                                <div>
+                                  <div className="text-sm text-gray-500">{story.id}</div>
+                                  {editingStoryId === story.id ? (
+                                    <div className="flex items-center gap-2">
+                                      <input
+                                        value={editingTitleValue}
+                                        onChange={(e) => setEditingTitleValue(e.target.value)}
+                                        className="px-2 py-1 border rounded-lg text-sm w-80"
+                                      />
+                                      <button
+                                        onClick={() => saveEditingTitle(story.id)}
+                                        className="px-2 py-1 bg-blue-600 text-white rounded"
+                                      >
+                                        Save
+                                      </button>
+                                      <button
+                                        onClick={cancelEditingTitle}
+                                        className="px-2 py-1 bg-gray-100 rounded"
+                                      >
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      className="font-medium text-gray-900"
+                                      onDoubleClick={() => startEditingTitle(story.id, story.title)}
+                                      title="Double-click to edit"
+                                    >
+                                      {story.title}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="text-sm text-gray-500">{story.status}</div>
+                            </div>
+
+                            {isStoryExpanded && (
+                              <div className="pl-4">
+                                {story.acceptanceCriteria && story.acceptanceCriteria.length > 0 && (
+                                  <div className="text-sm text-gray-700 mb-2">
+                                    <div className="font-medium text-gray-800">Acceptance Criteria</div>
+                                    <ul className="list-disc list-inside text-sm text-gray-600">
+                                      {story.acceptanceCriteria.map((ac, idx) => (
+                                        <li key={idx}>{ac}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                                {story.requirements && story.requirements.length > 0 && (
+                                  <div className="text-sm text-gray-700 mb-2">
+                                    <div className="font-medium text-gray-800">Requirements</div>
+                                    <div className="text-xs text-gray-600">
+                                      {story.requirements.join(', ')}
+                                    </div>
+                                  </div>
+                                )}
+                                {story.notes && (
+                                  <div className="text-sm italic text-gray-600">Note: {story.notes}</div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -290,7 +514,32 @@ export default function EpicsAndStories() {
                           {story.status}
                         </span>
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{story.title}</h3>
+                      {editingStoryId === story.id ? (
+                        <div className="flex items-center gap-2 mb-2">
+                          <input
+                            value={editingTitleValue}
+                            onChange={(e) => setEditingTitleValue(e.target.value)}
+                            className="px-2 py-1 border rounded-lg text-sm w-80"
+                          />
+                          <button
+                            onClick={() => saveEditingTitle(story.id)}
+                            className="px-2 py-1 bg-blue-600 text-white rounded"
+                          >
+                            Save
+                          </button>
+                          <button onClick={cancelEditingTitle} className="px-2 py-1 bg-gray-100 rounded">
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <h3
+                          className="text-lg font-semibold text-gray-900 mb-2"
+                          onDoubleClick={() => startEditingTitle(story.id, story.title)}
+                          title="Double-click to edit"
+                        >
+                          {story.title}
+                        </h3>
+                      )}
                       <p className="text-sm text-gray-600 mb-3">{story.description}</p>
                       {epic && (
                         <div className="mb-3">

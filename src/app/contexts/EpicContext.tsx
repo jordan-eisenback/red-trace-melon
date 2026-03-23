@@ -18,7 +18,13 @@ const EpicContext = createContext<EpicContextType | undefined>(undefined);
 
 export const EpicProvider = ({ children }: { children: ReactNode }) => {
   const [epics, setEpics] = useState<Epic[]>(initialEpics);
-  const [userStories, setUserStories] = useState<UserStory[]>(initialUserStories);
+  // Sanitize imported titles by removing any leading "Imported: " prefix
+  const [userStories, setUserStories] = useState<UserStory[]>(
+    (initialUserStories.map((s) => ({
+      ...s,
+      title: s.title ? s.title.replace(/^Imported:\s*/i, "") : s.title,
+    })) as unknown) as UserStory[]
+  );
 
   const addEpic = (epic: Epic) => {
     setEpics((prev) => [...prev, epic]);

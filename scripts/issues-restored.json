@@ -1,182 +1,14 @@
 {
   "requirements": 128,
   "frameworks": 1,
-  "issuesCount": 160,
+  "issuesCount": 32,
   "issues": [
-    {
-      "id": "missing-notes-RBAC-ENT-001",
-      "requirementId": "RBAC-ENT-001",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-ENT-001: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-ENT-002",
-      "requirementId": "RBAC-ENT-002",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-ENT-002: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-ENT-003",
-      "requirementId": "RBAC-ENT-003",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-ENT-003: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-ENT-004",
-      "requirementId": "RBAC-ENT-004",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-ENT-004: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-ENT-005",
-      "requirementId": "RBAC-ENT-005",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-ENT-005: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-ENT-006",
-      "requirementId": "RBAC-ENT-006",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-ENT-006: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-101",
-      "requirementId": "RBAC-CAP-101",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-101: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-102",
-      "requirementId": "RBAC-CAP-102",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-102: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-103",
-      "requirementId": "RBAC-CAP-103",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-103: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-104",
-      "requirementId": "RBAC-CAP-104",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-104: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-105",
-      "requirementId": "RBAC-CAP-105",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-105: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-106",
-      "requirementId": "RBAC-CAP-106",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-106: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-107",
-      "requirementId": "RBAC-CAP-107",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-107: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-108",
-      "requirementId": "RBAC-CAP-108",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-108: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-109",
-      "requirementId": "RBAC-CAP-109",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-109: Missing implementation notes"
-    },
     {
       "id": "no-mapping-RBAC-CAP-109",
       "requirementId": "RBAC-CAP-109",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-109: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-110",
-      "requirementId": "RBAC-CAP-110",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-110: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-201",
-      "requirementId": "RBAC-CAP-201",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-201: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-202",
-      "requirementId": "RBAC-CAP-202",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-202: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-203",
-      "requirementId": "RBAC-CAP-203",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-203: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-204",
-      "requirementId": "RBAC-CAP-204",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-204: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-205",
-      "requirementId": "RBAC-CAP-205",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-205: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-206",
-      "requirementId": "RBAC-CAP-206",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-206: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-207",
-      "requirementId": "RBAC-CAP-207",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-207: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-208",
-      "requirementId": "RBAC-CAP-208",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-208: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-208",
@@ -186,46 +18,11 @@
       "message": "RBAC-CAP-208: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-CAP-209",
-      "requirementId": "RBAC-CAP-209",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-209: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-CAP-209",
       "requirementId": "RBAC-CAP-209",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-209: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-301",
-      "requirementId": "RBAC-CAP-301",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-301: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-302",
-      "requirementId": "RBAC-CAP-302",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-302: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-303",
-      "requirementId": "RBAC-CAP-303",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-303: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-304",
-      "requirementId": "RBAC-CAP-304",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-304: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-304",
@@ -235,39 +32,11 @@
       "message": "RBAC-CAP-304: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-CAP-305",
-      "requirementId": "RBAC-CAP-305",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-305: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-401",
-      "requirementId": "RBAC-CAP-401",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-401: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-402",
-      "requirementId": "RBAC-CAP-402",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-402: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-CAP-402",
       "requirementId": "RBAC-CAP-402",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-402: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-403",
-      "requirementId": "RBAC-CAP-403",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-403: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-403",
@@ -277,39 +46,11 @@
       "message": "RBAC-CAP-403: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-CAP-404",
-      "requirementId": "RBAC-CAP-404",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-404: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-CAP-404",
       "requirementId": "RBAC-CAP-404",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-404: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-405",
-      "requirementId": "RBAC-CAP-405",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-405: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-406",
-      "requirementId": "RBAC-CAP-406",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-406: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-407",
-      "requirementId": "RBAC-CAP-407",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-407: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-407",
@@ -319,25 +60,11 @@
       "message": "RBAC-CAP-407: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-CAP-501",
-      "requirementId": "RBAC-CAP-501",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-501: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-CAP-501",
       "requirementId": "RBAC-CAP-501",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-501: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-502",
-      "requirementId": "RBAC-CAP-502",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-502: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-502",
@@ -347,25 +74,11 @@
       "message": "RBAC-CAP-502: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-CAP-503",
-      "requirementId": "RBAC-CAP-503",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-503: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-CAP-503",
       "requirementId": "RBAC-CAP-503",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-503: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-504",
-      "requirementId": "RBAC-CAP-504",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-504: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-504",
@@ -375,39 +88,11 @@
       "message": "RBAC-CAP-504: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-CAP-505",
-      "requirementId": "RBAC-CAP-505",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-505: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-CAP-505",
       "requirementId": "RBAC-CAP-505",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-505: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-601",
-      "requirementId": "RBAC-CAP-601",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-601: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-602",
-      "requirementId": "RBAC-CAP-602",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-602: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-603",
-      "requirementId": "RBAC-CAP-603",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-603: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-603",
@@ -417,46 +102,11 @@
       "message": "RBAC-CAP-603: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-CAP-604",
-      "requirementId": "RBAC-CAP-604",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-604: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-605",
-      "requirementId": "RBAC-CAP-605",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-605: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-CAP-605",
       "requirementId": "RBAC-CAP-605",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-605: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-701",
-      "requirementId": "RBAC-CAP-701",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-701: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-702",
-      "requirementId": "RBAC-CAP-702",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-702: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-703",
-      "requirementId": "RBAC-CAP-703",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-703: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-703",
@@ -466,46 +116,11 @@
       "message": "RBAC-CAP-703: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-CAP-704",
-      "requirementId": "RBAC-CAP-704",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-704: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-801",
-      "requirementId": "RBAC-CAP-801",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-801: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-802",
-      "requirementId": "RBAC-CAP-802",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-802: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-803",
-      "requirementId": "RBAC-CAP-803",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-803: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-CAP-803",
       "requirementId": "RBAC-CAP-803",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-CAP-803: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-CAP-804",
-      "requirementId": "RBAC-CAP-804",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-CAP-804: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-CAP-804",
@@ -515,74 +130,11 @@
       "message": "RBAC-CAP-804: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-IGA-001",
-      "requirementId": "RBAC-IGA-001",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-001: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-002",
-      "requirementId": "RBAC-IGA-002",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-002: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-003",
-      "requirementId": "RBAC-IGA-003",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-003: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-004",
-      "requirementId": "RBAC-IGA-004",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-004: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-005",
-      "requirementId": "RBAC-IGA-005",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-005: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-IGA-005",
       "requirementId": "RBAC-IGA-005",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-IGA-005: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-006",
-      "requirementId": "RBAC-IGA-006",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-006: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-007",
-      "requirementId": "RBAC-IGA-007",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-007: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-008",
-      "requirementId": "RBAC-IGA-008",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-008: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-009",
-      "requirementId": "RBAC-IGA-009",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-009: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-IGA-009",
@@ -592,46 +144,11 @@
       "message": "RBAC-IGA-009: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-IGA-010",
-      "requirementId": "RBAC-IGA-010",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-010: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-011",
-      "requirementId": "RBAC-IGA-011",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-011: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-IGA-011",
       "requirementId": "RBAC-IGA-011",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-IGA-011: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-012",
-      "requirementId": "RBAC-IGA-012",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-012: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-013",
-      "requirementId": "RBAC-IGA-013",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-013: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-014",
-      "requirementId": "RBAC-IGA-014",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-014: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-IGA-014",
@@ -641,25 +158,11 @@
       "message": "RBAC-IGA-014: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-IGA-015",
-      "requirementId": "RBAC-IGA-015",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-015: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-IGA-015",
       "requirementId": "RBAC-IGA-015",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-IGA-015: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-016",
-      "requirementId": "RBAC-IGA-016",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-016: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-IGA-016",
@@ -669,25 +172,11 @@
       "message": "RBAC-IGA-016: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-IGA-017",
-      "requirementId": "RBAC-IGA-017",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-017: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-IGA-017",
       "requirementId": "RBAC-IGA-017",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-IGA-017: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-018",
-      "requirementId": "RBAC-IGA-018",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-018: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-IGA-018",
@@ -697,116 +186,11 @@
       "message": "RBAC-IGA-018: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-IGA-019",
-      "requirementId": "RBAC-IGA-019",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-019: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-IGA-019",
       "requirementId": "RBAC-IGA-019",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-IGA-019: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-020",
-      "requirementId": "RBAC-IGA-020",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-020: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-021",
-      "requirementId": "RBAC-IGA-021",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-021: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-022",
-      "requirementId": "RBAC-IGA-022",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-022: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-023",
-      "requirementId": "RBAC-IGA-023",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-023: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-024",
-      "requirementId": "RBAC-IGA-024",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-024: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-025",
-      "requirementId": "RBAC-IGA-025",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-025: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-026",
-      "requirementId": "RBAC-IGA-026",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-026: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-027",
-      "requirementId": "RBAC-IGA-027",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-027: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-028",
-      "requirementId": "RBAC-IGA-028",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-028: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-029",
-      "requirementId": "RBAC-IGA-029",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-029: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-030",
-      "requirementId": "RBAC-IGA-030",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-030: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-031",
-      "requirementId": "RBAC-IGA-031",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-031: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-032",
-      "requirementId": "RBAC-IGA-032",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-032: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-033",
-      "requirementId": "RBAC-IGA-033",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-033: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-IGA-033",
@@ -816,39 +200,11 @@
       "message": "RBAC-IGA-033: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-IGA-034",
-      "requirementId": "RBAC-IGA-034",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-034: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-035",
-      "requirementId": "RBAC-IGA-035",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-035: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-036",
-      "requirementId": "RBAC-IGA-036",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-036: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-IGA-036",
       "requirementId": "RBAC-IGA-036",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-IGA-036: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-037",
-      "requirementId": "RBAC-IGA-037",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-037: Missing implementation notes"
     },
     {
       "id": "no-mapping-RBAC-IGA-037",
@@ -858,13 +214,6 @@
       "message": "RBAC-IGA-037: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-IGA-038",
-      "requirementId": "RBAC-IGA-038",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-038: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-IGA-038",
       "requirementId": "RBAC-IGA-038",
       "severity": "warning",
@@ -872,256 +221,11 @@
       "message": "RBAC-IGA-038: Compliance-related requirement not mapped to framework controls"
     },
     {
-      "id": "missing-notes-RBAC-IGA-039",
-      "requirementId": "RBAC-IGA-039",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-039: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-040",
-      "requirementId": "RBAC-IGA-040",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-040: Missing implementation notes"
-    },
-    {
       "id": "no-mapping-RBAC-IGA-040",
       "requirementId": "RBAC-IGA-040",
       "severity": "warning",
       "category": "Traceability",
       "message": "RBAC-IGA-040: Compliance-related requirement not mapped to framework controls"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-041",
-      "requirementId": "RBAC-IGA-041",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-041: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-IGA-042",
-      "requirementId": "RBAC-IGA-042",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-IGA-042: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-001",
-      "requirementId": "RBAC-INT-001",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-001: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-002",
-      "requirementId": "RBAC-INT-002",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-002: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-003",
-      "requirementId": "RBAC-INT-003",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-003: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-004",
-      "requirementId": "RBAC-INT-004",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-004: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-005",
-      "requirementId": "RBAC-INT-005",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-005: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-006",
-      "requirementId": "RBAC-INT-006",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-006: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-007",
-      "requirementId": "RBAC-INT-007",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-007: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-008",
-      "requirementId": "RBAC-INT-008",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-008: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-009",
-      "requirementId": "RBAC-INT-009",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-009: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-010",
-      "requirementId": "RBAC-INT-010",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-010: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-011",
-      "requirementId": "RBAC-INT-011",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-011: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-012",
-      "requirementId": "RBAC-INT-012",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-012: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-013",
-      "requirementId": "RBAC-INT-013",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-013: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-014",
-      "requirementId": "RBAC-INT-014",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-014: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-015",
-      "requirementId": "RBAC-INT-015",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-015: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-016",
-      "requirementId": "RBAC-INT-016",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-016: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-017",
-      "requirementId": "RBAC-INT-017",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-017: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-018",
-      "requirementId": "RBAC-INT-018",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-018: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-INT-019",
-      "requirementId": "RBAC-INT-019",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-INT-019: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-001",
-      "requirementId": "RBAC-NFR-001",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-001: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-002",
-      "requirementId": "RBAC-NFR-002",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-002: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-003",
-      "requirementId": "RBAC-NFR-003",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-003: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-004",
-      "requirementId": "RBAC-NFR-004",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-004: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-005",
-      "requirementId": "RBAC-NFR-005",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-005: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-006",
-      "requirementId": "RBAC-NFR-006",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-006: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-007",
-      "requirementId": "RBAC-NFR-007",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-007: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-008",
-      "requirementId": "RBAC-NFR-008",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-008: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-009",
-      "requirementId": "RBAC-NFR-009",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-009: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-010",
-      "requirementId": "RBAC-NFR-010",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-010: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-011",
-      "requirementId": "RBAC-NFR-011",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-011: Missing implementation notes"
-    },
-    {
-      "id": "missing-notes-RBAC-NFR-012",
-      "requirementId": "RBAC-NFR-012",
-      "severity": "info",
-      "category": "Missing Data",
-      "message": "RBAC-NFR-012: Missing implementation notes"
     }
   ]
 }
