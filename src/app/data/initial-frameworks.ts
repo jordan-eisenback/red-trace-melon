@@ -48,7 +48,9 @@ export const initialFrameworks: Framework[] = [
         "title": "Out-of-band change detection",
         "description": "Detect and report out-of-band changes to directory groups and memberships.",
         "requirements": [
-          "RBAC-INT-010"
+          "RBAC-INT-010",
+          "RBAC-IGA-002",
+          "RBAC-IGA-021"
         ],
         "category": "Directory",
         "priority": "High",
@@ -200,6 +202,7 @@ export const initialFrameworks: Framework[] = [
           "RBAC-IGA-034",
           "RBAC-IGA-035",
           "RBAC-IGA-041",
+          "RBAC-IGA-028",
           "RBAC-INT-002",
           "RBAC-INT-003",
           "RBAC-INT-007",
