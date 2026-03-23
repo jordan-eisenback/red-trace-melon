@@ -203,6 +203,7 @@ export const initialFrameworks: Framework[] = [
           "RBAC-IGA-035",
           "RBAC-IGA-041",
           "RBAC-IGA-028",
+          "RBAC-CAP-207",
           "RBAC-INT-002",
           "RBAC-INT-003",
           "RBAC-INT-007",
