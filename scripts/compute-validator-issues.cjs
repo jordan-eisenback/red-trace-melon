@@ -21,7 +21,8 @@ function parseRequirements(text) {
 function parseFrameworkMappedReqs(text) {
   // find all quoted requirement ids inside requirements: ["RBAC-...", ...]
   const reqs = new Set();
-  const reqArrayRegex = /requirements\s*:\s*\[([^\]]*)\]/g;
+  // allow quoted property names ("requirements" : [ ... ]) and match across newlines
+  const reqArrayRegex = /["']?requirements["']?\s*:\s*\[([\s\S]*?)\]/g;
   let match;
   while ((match = reqArrayRegex.exec(text))) {
     const inner = match[1];
@@ -34,7 +35,7 @@ function parseFrameworkMappedReqs(text) {
   return reqs;
 }
 
-function computeIssues(requirements, frameworks) {
+function computeIssues(requirements, frameworks, textMapped) {
   const issues = [];
   const reqMap = new Map(requirements.map((r) => [r.id, r]));
 
@@ -44,6 +45,9 @@ function computeIssues(requirements, frameworks) {
       (c.requirements || []).forEach((rid) => mappedReqIds.add(rid));
     });
   });
+
+  // ensure we also include any IDs discovered by text-based extraction as a fallback
+  (textMapped || new Set()).forEach((id) => mappedReqIds.add(id));
 
   requirements.forEach((req) => {
     // missing owner
@@ -129,7 +133,7 @@ function main() {
     }
   }
 
-  const issues = computeIssues(requirements, frameworks);
+  const issues = computeIssues(requirements, frameworks, mappedReqs);
   console.log(JSON.stringify({ requirements: requirements.length, frameworks: frameworks.length, issuesCount: issues.length, issues }, null, 2));
 }
 
