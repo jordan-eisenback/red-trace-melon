@@ -4,6 +4,8 @@ Purpose
 - Provide machine-readable guidance for making safe, local-only edits to this workspace.
 - Allow implementing features, fixes, and docs by creating/modifying files under c:\projects\red-trace-melon.
 
+Follow COPILOT_PROCESSES.md for detailed processes and best practices. This document summarizes key points.
+
 Authorization (explicit)
 - You are authorized to create, edit, and delete files within this workspace (c:\projects\red-trace-melon) to implement user-approved changes.
 - Authorization rules:

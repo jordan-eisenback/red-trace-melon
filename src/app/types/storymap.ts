@@ -1,3 +1,6 @@
+import type { Epic, UserStory } from './epic';
+
+// A step inside an activity (equivalent to a story card)
 export interface StoryMapStep {
   id: string;
   title: string;
@@ -24,3 +27,8 @@ export interface StoryMapOutcome {
 }
 
 export type StoryMap = StoryMapOutcome[];
+
+export type GeneratorConfig = {
+  // future mapping rules, keywords, tag maps, etc.
+  defaultUnmappedTitle?: string;
+};

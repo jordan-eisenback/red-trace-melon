@@ -1,0 +1,47 @@
+id: code-reviewer-v1
+name: "Codebase Reviewer"
+description: "Repository-wide reviewer that inspects code, tests, and scripts and reports architecture, risks, and actionable findings."
+role: reviewer
+capabilities:
+  - audit_code
+  - find_risks
+  - recommend_fixes
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read repository files for context"
+    config: {}
+prompt:
+  system: |
+    You are an offline codebase reviewer. Do not call external services. Produce only valid JSON conforming to the output_schema.
+  user: |
+    Input goal: {{goal}}
+    Task: Review the repository content provided in the goal and produce a JSON report with a short summary and a list of findings.
+    Each finding should include: type (architecture, test, security, style, docs, infra), file (path or null), severity (low|medium|high), and message.
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+output_schema:
+  type: object
+  required: ["summary","findings"]
+  properties:
+    summary: { type: "string" }
+    findings:
+      type: array
+      items:
+        type: object
+        required: ["type","severity","message"]
+        properties:
+          type: { type: "string" }
+          file: { type: ["string","null"] }
+          severity: { type: "string", enum: ["low","medium","high"] }
+          message: { type: "string" }
+safety:
+  allow_external: false
+  telemetry: false

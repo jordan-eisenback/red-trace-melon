@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Story Map Preview</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="map-title">Story Map Preview</h1>
+    <div class="controls">
+      <button id="export-json">Export JSON</button>
+      <button id="export-csv">Export CSV</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="storymap-canvas" id="storymap-canvas" role="list">
+      <!-- columns rendered here -->
+    </div>
+  </main>
+
+  <aside id="card-detail" class="card-detail hidden" aria-hidden="true">
+    <button id="close-detail" class="close">✕</button>
+    <div id="detail-content"></div>
+  </aside>
+
+  <script src="./data.js"></script>
+  <script>
+    // render a horizontal story map from window.STORY_MAP
+    const canvas = document.getElementById('storymap-canvas');
+    const titleEl = document.getElementById('map-title');
+    const detail = document.getElementById('card-detail');
+    const detailContent = document.getElementById('detail-content');
+    const closeDetail = document.getElementById('close-detail');
+
+    function render() {
+      const map = window.STORY_MAP || { title: 'Empty', activities: [] };
+      titleEl.textContent = map.title || 'Story Map Preview';
+      canvas.innerHTML = '';
+      map.activities.sort((a,b)=> (a.order||0)-(b.order||0)).forEach(activity => {
+        const col = document.createElement('section');
+        col.className = 'activity-col';
+        col.setAttribute('role','listitem');
+        const header = document.createElement('header');
+        header.className = 'activity-header';
+        header.innerHTML = `<h2>${escapeHtml(activity.title)}</h2><div class="meta">${activity.cards.length} cards</div>`;
+        col.appendChild(header);
+
+        const list = document.createElement('div');
+        list.className = 'card-list';
+        activity.cards.sort((a,b)=> (a.order||0)-(b.order||0)).forEach(card=>{
+          const c = document.createElement('article');
+          c.className = 'story-card';
+          c.tabIndex = 0;
+          c.innerHTML = `<div class="card-title">${escapeHtml(card.title)}</div><div class="card-meta">${card.estimate || ''} ${card.status ? '• '+escapeHtml(card.status):''}</div>`;
+          c.addEventListener('click', ()=> openDetail(card, activity));
+          list.appendChild(c);
+        });
+        col.appendChild(list);
+        canvas.appendChild(col);
+      });
+    }
+
+    function openDetail(card, activity){
+      detailContent.innerHTML = `<h3>${escapeHtml(card.title)}</h3>
+        <p><strong>Activity:</strong> ${escapeHtml(activity.title)}</p>
+        <p><strong>Status:</strong> ${escapeHtml(card.status||'')}</p>
+        <p><strong>Estimate:</strong> ${escapeHtml(card.estimate||'')}</p>
+        <h4>Acceptance criteria</h4>
+        <pre class="criteria">${escapeHtml((card.acceptanceCriteria||[]).join('\n- '))}</pre>`;
+      detail.classList.remove('hidden');
+      detail.setAttribute('aria-hidden','false');
+    }
+
+    closeDetail.addEventListener('click', ()=>{
+      detail.classList.add('hidden');
+      detail.setAttribute('aria-hidden','true');
+    });
+
+    document.getElementById('export-json').addEventListener('click', ()=>{
+      const data = JSON.stringify(window.STORY_MAP, null, 2);
+      downloadFile('storymap.json', data, 'application/json');
+    });
+
+    document.getElementById('export-csv').addEventListener('click', ()=>{
+      const rows = ['activity,cardId,cardTitle,order,status,estimate'];
+      (window.STORY_MAP.activities||[]).forEach(a=>{
+        (a.cards||[]).forEach(c=> rows.push(`${csvSafe(a.title)},${csvSafe(c.id)},${csvSafe(c.title)},${c.order||''},${csvSafe(c.status||'')},${csvSafe(c.estimate||'')}`));
+      });
+      downloadFile('storymap.csv', rows.join('\n'), 'text/csv');
+    });
+
+    function downloadFile(filename, content, type){
+      const blob = new Blob([content], {type});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeHtml(str){
+      return String(str||'').replace(/[&<>"']/g, s=>({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[s]));
+    }
+
+    function csvSafe(s){
+      const t = String(s||'');
+      if (t.includes(',')||t.includes('\n')||t.includes('"')) return '"'+t.replace(/"/g,'""')+'"';
+      return t;
+    }
+
+    render();
+  </script>
+</body>
+</html>
