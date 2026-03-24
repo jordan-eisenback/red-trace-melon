@@ -280,7 +280,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.1",
@@ -295,7 +295,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-6.1",
@@ -310,7 +310,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-6.2",
@@ -325,7 +325,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-10.1",
@@ -340,7 +340,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.1",
@@ -355,7 +355,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.2",
@@ -370,7 +370,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.3",
@@ -385,7 +385,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.4",
@@ -400,7 +400,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.2",
@@ -415,7 +415,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.5",
@@ -430,7 +430,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.6",
@@ -445,7 +445,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.7",
@@ -460,7 +460,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.8",
@@ -475,7 +475,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-6.3",
@@ -490,7 +490,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.9",
@@ -505,7 +505,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.3",
@@ -520,7 +520,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.4",
@@ -535,7 +535,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.5",
@@ -550,7 +550,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.6",
@@ -565,7 +565,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.7",
@@ -580,7 +580,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.8",
@@ -595,7 +595,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.9",
@@ -610,7 +610,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.10",
@@ -625,7 +625,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.11",
@@ -640,7 +640,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.12",
@@ -655,7 +655,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.13",
@@ -670,7 +670,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.10",
@@ -685,7 +685,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.14",
@@ -700,7 +700,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.11",
@@ -715,7 +715,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.15",
@@ -730,7 +730,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.12",
@@ -745,7 +745,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.13",
@@ -760,7 +760,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.14",
@@ -775,7 +775,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.16",
@@ -790,7 +790,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.15",
@@ -805,7 +805,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-6.4",
@@ -820,7 +820,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-5.1",
@@ -835,7 +835,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-5.2",
@@ -850,7 +850,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-5.3",
@@ -865,7 +865,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-5.4",
@@ -880,7 +880,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-5.5",
@@ -895,7 +895,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.16",
@@ -910,7 +910,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.17",
@@ -925,7 +925,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.18",
@@ -940,7 +940,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.19",
@@ -955,7 +955,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.17",
@@ -970,7 +970,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.20",
@@ -985,7 +985,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.21",
@@ -1000,7 +1000,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-6.5",
@@ -1015,7 +1015,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-1.22",
@@ -1030,7 +1030,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.2",
@@ -1045,7 +1045,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.18",
@@ -1060,7 +1060,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.3",
@@ -1075,7 +1075,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.4",
@@ -1090,7 +1090,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.5",
@@ -1105,7 +1105,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.6",
@@ -1120,7 +1120,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.7",
@@ -1135,7 +1135,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.8",
@@ -1150,7 +1150,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.9",
@@ -1165,7 +1165,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.10",
@@ -1180,7 +1180,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.11",
@@ -1195,7 +1195,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.12",
@@ -1210,7 +1210,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.13",
@@ -1225,7 +1225,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.14",
@@ -1240,7 +1240,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.15",
@@ -1255,7 +1255,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-8.1",
@@ -1270,7 +1270,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.16",
@@ -1285,7 +1285,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.17",
@@ -1300,7 +1300,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.18",
@@ -1315,7 +1315,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.19",
@@ -1330,7 +1330,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.20",
@@ -1345,7 +1345,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.21",
@@ -1360,7 +1360,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.22",
@@ -1375,7 +1375,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.23",
@@ -1390,7 +1390,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.24",
@@ -1405,7 +1405,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.25",
@@ -1420,7 +1420,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.26",
@@ -1435,7 +1435,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-8.2",
@@ -1450,7 +1450,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.19",
@@ -1465,7 +1465,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.27",
@@ -1480,7 +1480,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.20",
@@ -1495,7 +1495,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.28",
@@ -1510,7 +1510,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.29",
@@ -1525,7 +1525,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.30",
@@ -1540,7 +1540,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.31",
@@ -1555,7 +1555,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.32",
@@ -1570,7 +1570,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.33",
@@ -1585,7 +1585,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.34",
@@ -1600,7 +1600,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.35",
@@ -1615,7 +1615,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.36",
@@ -1630,7 +1630,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.37",
@@ -1645,7 +1645,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.38",
@@ -1660,7 +1660,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.39",
@@ -1675,7 +1675,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.40",
@@ -1690,7 +1690,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.41",
@@ -1705,7 +1705,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.42",
@@ -1720,7 +1720,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-9.1",
@@ -1735,7 +1735,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.21",
@@ -1750,7 +1750,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-9.2",
@@ -1765,7 +1765,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.43",
@@ -1780,7 +1780,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-8.3",
@@ -1795,7 +1795,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.22",
@@ -1810,7 +1810,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-8.4",
@@ -1825,7 +1825,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-8.5",
@@ -1840,7 +1840,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-2.23",
@@ -1855,7 +1855,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-8.6",
@@ -1870,7 +1870,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-8.7",
@@ -1885,7 +1885,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.44",
@@ -1900,7 +1900,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.45",
@@ -1915,7 +1915,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.46",
@@ -1930,7 +1930,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.47",
@@ -1945,7 +1945,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.48",
@@ -1960,7 +1960,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.49",
@@ -1975,7 +1975,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.50",
@@ -1990,7 +1990,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.51",
@@ -2005,7 +2005,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.52",
@@ -2020,7 +2020,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.53",
@@ -2035,7 +2035,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.54",
@@ -2050,7 +2050,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.55",
@@ -2065,7 +2065,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.56",
@@ -2080,7 +2080,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.57",
@@ -2095,7 +2095,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.58",
@@ -2110,7 +2110,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.59",
@@ -2125,7 +2125,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.60",
@@ -2140,7 +2140,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.61",
@@ -2155,7 +2155,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.62",
@@ -2170,7 +2170,7 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   },
   {
     "id": "US-7.63",
@@ -2185,6 +2185,6 @@ export const initialUserStories = [
     "status": "Backlog",
     "storyPoints": 3,
     "assignee": "",
-    "notes": "Imported from CSV"
+    "notes": ""
   }
 ];

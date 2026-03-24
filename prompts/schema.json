@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Prompt Definition",
+  "type": "object",
+  "required": ["id", "name", "prompt", "output_format"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-_]+$" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "input_schema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string", "enum": ["text","json-array","file","number","boolean"] },
+          "description": { "type": "string" },
+          "required": { "type": "boolean" }
+        }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "required": ["system","user"],
+      "properties": {
+        "system": { "type": "string" },
+        "user": { "type": "string" }
+      }
+    },
+    "output_format": { "type": "string", "enum": ["json","text","markdown"] },
+    "output_schema": { "type": ["object","null"] },
+    "safety": {
+      "type": "object",
+      "properties": {
+        "allow_external": { "type": "boolean" },
+        "telemetry": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

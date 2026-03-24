@@ -1,0 +1,8 @@
+{
+  "goal": "Enable secure role-based access for application administrators and operators",
+  "stories": [
+    { "id": "US-101", "title": "Admin can create and assign roles", "epicId": "EPIC-1", "requirements": ["RBAC-CAP-201"] },
+    { "id": "US-102", "title": "Operator can request temporary elevated access", "epicId": "EPIC-2", "requirements": ["RBAC-IGA-301"] },
+    { "id": "US-103", "title": "System enforces least privilege on user creation", "epicId": "EPIC-1", "requirements": ["RBAC-CAP-207"] }
+  ]
+}

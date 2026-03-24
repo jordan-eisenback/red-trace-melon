@@ -16,9 +16,19 @@ export interface UserStory {
   description: string;
   acceptanceCriteria: string[];
   requirements: string[]; // Array of requirement IDs this story satisfies
+  // Detailed activities / steps for the story. Each detail can optionally link to a requirement.
+  details?: StoryDetail[];
   priority: "High" | "Medium" | "Low";
   status: "Backlog" | "In Progress" | "Testing" | "Done";
   storyPoints?: number;
   assignee?: string;
   notes?: string;
+}
+
+export interface StoryDetail {
+  id: string;
+  title: string;
+  description?: string;
+  requirementId?: string; // optional link to a Requirement.id
+  order?: number;
 }

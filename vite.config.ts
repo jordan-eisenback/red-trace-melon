@@ -23,19 +23,34 @@ export default defineConfig({
               const payload = JSON.parse(body || '{}');
               const epics = payload.epics || [];
               const userStories = payload.userStories || [];
+              const storyMap = payload.storyMap || [];
+              const storyJam = payload.storyJam || { nodes: [], edges: [] };
 
               const outPath = path.resolve(__dirname, 'src', 'app', 'data', 'initial-epics.ts');
-              const content = `export const initialEpics = ${JSON.stringify(epics, null, 2)};
+              let content = `export const initialEpics = ${JSON.stringify(epics, null, 2)};
 
 export const initialUserStories = ${JSON.stringify(userStories, null, 2)};
 `;
+
+              if (storyMap && Array.isArray(storyMap)) {
+                content += `\nexport const initialStoryMap = ${JSON.stringify(storyMap, null, 2)};\n`;
+                // Also write a dedicated file for the story map to keep things modular
+                const smPath = path.resolve(__dirname, 'src', 'app', 'data', 'initial-storymap.ts');
+                fs.writeFileSync(smPath, `import { StoryMap } from \"../types/storymap\";\n\nexport const initialStoryMap: StoryMap = ${JSON.stringify(storyMap, null, 2)};\n`, 'utf8');
+              }
+
+              // Persist the freeform StoryJam board if provided
+              if (storyJam && typeof storyJam === 'object') {
+                const sjPath = path.resolve(__dirname, 'src', 'app', 'data', 'initial-storyjam.ts');
+                fs.writeFileSync(sjPath, `import { StoryJam } from \"../types/storyjam\";\n\nexport const initialStoryJam: StoryJam = ${JSON.stringify(storyJam, null, 2)};\n`, 'utf8');
+              }
 
               // Backup as JSON for safety
               const backupDir = path.resolve(__dirname, 'scripts', 'backups');
               fs.mkdirSync(backupDir, { recursive: true });
               const ts = new Date().toISOString().replace(/[:.]/g, '-');
               const backupPath = path.join(backupDir, `initial-epics-backup-${ts}.json`);
-              fs.writeFileSync(backupPath, JSON.stringify({ epics, userStories }, null, 2), 'utf8');
+              fs.writeFileSync(backupPath, JSON.stringify({ epics, userStories, storyMap, storyJam }, null, 2), 'utf8');
 
               fs.writeFileSync(outPath, content, 'utf8');
 

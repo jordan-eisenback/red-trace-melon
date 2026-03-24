@@ -67,6 +67,15 @@ export function RequirementsList() {
     }
   };
 
+  const onRequirementDragStart = (e: React.DragEvent, reqId: string) => {
+    try {
+      e.dataTransfer.setData('text/requirement-id', reqId);
+      e.dataTransfer.effectAllowed = 'copy';
+    } catch (err) {
+      // ignore
+    }
+  };
+
   const confirmDelete = () => {
     if (deleteConfirm) {
       deleteRequirement(deleteConfirm.id);
@@ -184,7 +193,13 @@ export function RequirementsList() {
             </thead>
             <tbody className="divide-y divide-slate-200">
               {filteredRequirements.map((req) => (
-                <tr key={req.id} className="hover:bg-slate-50 transition-colors">
+                <tr
+                  key={req.id}
+                  className="hover:bg-slate-50 transition-colors"
+                  draggable
+                  onDragStart={(e) => onRequirementDragStart(e, req.id)}
+                  title="Drag this requirement to a user story to create a linked activity/step"
+                >
                   <td className="px-4 py-3">
                     <code className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
                       {req.id}

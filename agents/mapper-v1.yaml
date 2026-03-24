@@ -1,0 +1,70 @@
+id: mapper-v1
+name: "Mapper (gstack-style)"
+description: "Creates hierarchical story maps: outcomes -> activities -> steps and links steps to existing stories/requirements."
+role: mapper
+capabilities:
+  - map_from_stories
+  - link_stories_to_steps
+  - validate_schema
+tools:
+  - name: runner
+    type: runner
+    description: "Use local prompt runner to perform mapping"
+    config: {}
+  - name: local_files
+    type: local_file
+    description: "Read stories and epics for linkage"
+    config: {}
+prompt:
+  system: |
+    You are an offline story mapping agent. No external links. Output MUST be strict JSON matching output_schema. When linking steps to stories, use story IDs only.
+  user: |
+    Goal: {{goal}}
+    Stories: {{stories}}
+    Produce outcomes -> activities -> steps. Each step may include linkedStoryIds and requirementIds. Output only valid JSON conforming to schema.
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+output_schema:
+  type: object
+  required: ["outcomes"]
+  properties:
+    outcomes:
+      type: array
+      items:
+        type: object
+        required: ["id","title","activities"]
+        properties:
+          id: { type: "string" }
+          title: { type: "string" }
+          activities:
+            type: array
+            items:
+              type: object
+              required: ["id","title","steps"]
+              properties:
+                id: { type: "string" }
+                title: { type: "string" }
+                steps:
+                  type: array
+                  items:
+                    type: object
+                    required: ["id","title","linkedStoryIds"]
+                    properties:
+                      id: { type: "string" }
+                      title: { type: "string" }
+                      linkedStoryIds:
+                        type: array
+                        items: { type: "string" }
+                      requirementIds:
+                        type: array
+                        items: { type: "string" }
+safety:
+  allow_external: false
+  telemetry: false

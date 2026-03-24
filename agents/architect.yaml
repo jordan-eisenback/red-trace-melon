@@ -1,0 +1,66 @@
+id: architect-v1
+name: "Architect / Planner"
+description: "High-level planner that turns goals into outcomes, epics, and initial activities."
+role: architect
+capabilities:
+  - analyze_goal
+  - generate_outcomes
+  - propose_activities
+  - export_storymap_json
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read-only access to repository data for context (stories, epics)."
+    config: {}
+  - name: runner
+    type: runner
+    description: "Invoke local prompt runner for substeps"
+    config: {}
+prompt:
+  system: |
+    You are a local-only architect agent. Do not include external links or telemetry. Produce only concise JSON when asked. Follow the project output schema exactly.
+  user: |
+    Input goal: {{goal}}
+    Context stories: {{stories}}
+    Task: Propose 1..5 outcomes. For each outcome propose ordered activities. Provide output as JSON matching output_schema.
+default_model: "local-http"
+temperature: 0.1
+memory:
+  enabled: true
+  store: "storage/agents/memory/architect.json"
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+output_schema:
+  type: object
+  required: ["outcomes"]
+  properties:
+    outcomes:
+      type: array
+      items:
+        type: object
+        required: ["id","title","activities"]
+        properties:
+          id: { type: "string" }
+          title: { type: "string" }
+          activities:
+            type: array
+            items:
+              type: object
+              required: ["id","title","steps"]
+              properties:
+                id: { type: "string" }
+                title: { type: "string" }
+                steps:
+                  type: array
+                  items:
+                    type: object
+                    required: ["id","title"]
+                    properties:
+                      id: { type: "string" }
+                      title: { type: "string" }
+safety:
+  allow_external: false
+  telemetry: false

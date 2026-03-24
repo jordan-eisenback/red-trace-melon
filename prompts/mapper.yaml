@@ -1,0 +1,60 @@
+id: mapper-v1
+name: "Story Mapper (local)"
+description: >
+  Create a hierarchical story map for a supplied goal and list of stories.
+  Output MUST be strict JSON matching the output_schema. No external links or telemetry.
+input_schema:
+  - name: goal
+    type: text
+    required: true
+    description: "High-level user outcome or goal."
+  - name: stories
+    type: json-array
+    required: true
+    description: "Array of { id, title, epicId?, requirements?: [ids] }"
+prompt:
+  system: |
+    You are an offline story-mapping assistant. Do not include links, site names, or any external references.
+    Do not send telemetry. Output MUST be valid JSON only and must match the output_schema exactly.
+  user: |
+    Create a story map for the following goal: {{goal}}
+    Stories (JSON): {{stories}}
+    Return ONLY valid JSON following the schema provided in output_schema.
+output_format: json
+output_schema:
+  type: object
+  required: ["outcomes"]
+  properties:
+    outcomes:
+      type: array
+      items:
+        type: object
+        required: ["id","title","activities"]
+        properties:
+          id: { type: "string" }
+          title: { type: "string" }
+          activities:
+            type: array
+            items:
+              type: object
+              required: ["id","title","steps"]
+              properties:
+                id: { type: "string" }
+                title: { type: "string" }
+                steps:
+                  type: array
+                  items:
+                    type: object
+                    required: ["id","title","linkedStoryIds"]
+                    properties:
+                      id: { type: "string" }
+                      title: { type: "string" }
+                      linkedStoryIds:
+                        type: array
+                        items: { type: "string" }
+                      requirementIds:
+                        type: array
+                        items: { type: "string" }
+safety:
+  allow_external: false
+  telemetry: false

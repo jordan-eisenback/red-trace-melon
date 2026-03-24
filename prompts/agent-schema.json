@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Agent Definition (gstack-compatible)",
+  "type": "object",
+  "required": ["id", "name", "role", "capabilities", "prompt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-_]+$" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "role": { "type": "string", "description": "High-level agent role (architect, coder, reviewer, committer, qa, mapper, orchestrator)" },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of high-level capabilities the agent provides (e.g. plan, map, code, review, commit)"
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name","type"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string", "enum": ["local_file","runner","git","http_adapter","noop"] },
+          "description": { "type": "string" },
+          "config": { "type": ["object","null"] }
+        }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "required": ["system","user"],
+      "properties": {
+        "system": { "type": "string" },
+        "user": { "type": "string" }
+      }
+    },
+    "default_model": { "type": "string", "description": "Preferred local model / adapter id" },
+    "temperature": { "type": "number", "minimum": 0, "maximum": 1 },
+    "memory": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "store": { "type": "string" }
+      }
+    },
+    "run_policy": {
+      "type": "object",
+      "properties": {
+        "allow_file_write": { "type": "boolean" },
+        "allow_git_commit": { "type": "boolean" },
+        "require_confirmation": { "type": "boolean" }
+      }
+    },
+    "output_format": { "type": "string", "enum": ["json","text","markdown"], "default": "json" },
+    "output_schema": { "type": ["object","null"] },
+    "safety": {
+      "type": "object",
+      "properties": {
+        "allow_external": { "type": "boolean" },
+        "telemetry": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

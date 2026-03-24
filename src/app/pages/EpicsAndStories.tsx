@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEpics } from "../contexts/EpicContext";
+import { useRequirements } from "../context/RequirementsContext";
 import { toast } from "sonner";
 import { Plus, Edit, Trash2, Search, Filter } from "lucide-react";
 import { Epic, UserStory } from "../types/epic";
@@ -9,7 +10,8 @@ import UserStoryModal from "../components/UserStoryModal";
 type ViewMode = "epics" | "stories";
 
 export default function EpicsAndStories() {
-  const { epics, userStories, deleteEpic, deleteUserStory, getStoriesByEpic, updateUserStory } = useEpics();
+  const { epics, userStories, deleteEpic, deleteUserStory, getStoriesByEpic, updateUserStory, addDetailToStory, removeDetailFromStory, storyMap } = useEpics();
+  const { getRequirement } = useRequirements();
   const [viewMode, setViewMode] = useState<ViewMode>("epics");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -27,7 +29,7 @@ export default function EpicsAndStories() {
       epic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       epic.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       epic.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "all" || epic.status === statusFilter;
+  const matchesStatus = true; // status filtering not used for organizing work
     const matchesPriority = priorityFilter === "all" || epic.priority === priorityFilter;
     return matchesSearch && matchesStatus && matchesPriority;
   });
@@ -37,7 +39,7 @@ export default function EpicsAndStories() {
       story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       story.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       story.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "all" || story.status === statusFilter;
+  const matchesStatus = true; // status filtering not used for organizing work
     const matchesPriority = priorityFilter === "all" || story.priority === priorityFilter;
     return matchesSearch && matchesStatus && matchesPriority;
   });
@@ -151,13 +153,31 @@ export default function EpicsAndStories() {
     setDragOverEpicId(null);
   };
 
+  // Accept a requirement drop onto a story to create a StoryDetail linked to that requirement
+  const onStoryDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const onStoryDrop = (e: React.DragEvent, storyId: string) => {
+    e.preventDefault();
+    const reqId = e.dataTransfer.getData('text/requirement-id');
+    if (!reqId) return;
+    const req = getRequirement(reqId);
+    const detailId = `d-${Date.now()}`;
+    const title = req ? (req.req.length > 120 ? req.req.slice(0, 120) + '…' : req.req) : reqId;
+    const detail = { id: detailId, title, description: '', requirementId: reqId };
+    addDetailToStory(storyId, detail);
+    toast.success(`Linked requirement ${reqId} to ${storyId}`);
+  };
+
   const handleSave = async () => {
     try {
       setIsSaving(true);
       const res = await fetch('/api/save-epics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ epics, userStories }),
+        body: JSON.stringify({ epics, userStories, storyMap }),
       });
       const json = await res.json();
       if (res.ok && json.ok) {
@@ -342,13 +362,6 @@ export default function EpicsAndStories() {
                         >
                           {epic.priority}
                         </span>
-                        <span
-                          className={`px-2 py-0.5 text-xs font-medium rounded ${getStatusColor(
-                            epic.status
-                          )}`}
-                        >
-                          {epic.status}
-                        </span>
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{epic.title}</h3>
                       <p className="text-sm text-gray-600 mb-3">{epic.description}</p>
@@ -379,13 +392,16 @@ export default function EpicsAndStories() {
                     </div>
                   </div>
 
-                  {/* Expanded list of stories */}
-                  {isExpanded && (
-                    <div className="mt-4 space-y-3">
-                      {stories.length === 0 && (
-                        <div className="text-sm text-gray-500">No stories in this epic</div>
-                      )}
-                      {stories.map((story) => {
+                  {/* Expanded list of stories (animated) */}
+                  <div
+                    className={`mt-4 space-y-3 overflow-hidden transition-all duration-200 ease-in-out ${
+                      isExpanded ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    {stories.length === 0 && (
+                      <div className="text-sm text-gray-500">No stories in this epic</div>
+                    )}
+                    {stories.map((story) => {
                         const isStoryExpanded = !!expandedStories[story.id];
                         return (
                           <div key={story.id} className="space-y-2">
@@ -430,8 +446,8 @@ export default function EpicsAndStories() {
                                     </div>
                                   ) : (
                                     <div
-                                      className="font-medium text-gray-900"
-                                      onDoubleClick={() => startEditingTitle(story.id, story.title)}
+                                      className="font-medium text-gray-900 break-words whitespace-normal max-w-[48rem]"
+                                            onDoubleClick={() => startEditingTitle(story.id, story.title)}
                                       title="Double-click to edit"
                                     >
                                       {story.title}
@@ -439,11 +455,16 @@ export default function EpicsAndStories() {
                                   )}
                                 </div>
                               </div>
-                              <div className="text-sm text-gray-500">{story.status}</div>
+                              {/* status hidden for organizing view */}
                             </div>
 
-                            {isStoryExpanded && (
-                              <div className="pl-4">
+                            <div
+                              onDragOver={onStoryDragOver}
+                              onDrop={(e) => onStoryDrop(e, story.id)}
+                              className={`pl-4 overflow-hidden transition-all duration-200 ease-in-out ${
+                                isStoryExpanded ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
+                              }`}
+                            >
                                 {story.acceptanceCriteria && story.acceptanceCriteria.length > 0 && (
                                   <div className="text-sm text-gray-700 mb-2">
                                     <div className="font-medium text-gray-800">Acceptance Criteria</div>
@@ -465,13 +486,37 @@ export default function EpicsAndStories() {
                                 {story.notes && (
                                   <div className="text-sm italic text-gray-600">Note: {story.notes}</div>
                                 )}
+                                {/* Story details (activities/steps) */}
+                                {story.details && story.details.length > 0 && (
+                                  <div className="mt-2">
+                                    <div className="text-sm font-medium text-gray-800 mb-1">Details / Activities</div>
+                                    <ul className="space-y-2">
+                                      {story.details.map((d) => (
+                                        <li key={d.id} className="flex items-start justify-between bg-gray-50 p-2 rounded">
+                                          <div className="text-sm text-gray-700">
+                                            <div className="font-medium">{d.title}</div>
+                                            {d.requirementId && (
+                                              <div className="text-xs text-gray-500">Linked: {d.requirementId}</div>
+                                            )}
+                                          </div>
+                                          <div className="flex items-center gap-2">
+                                            <button
+                                              onClick={() => removeDetailFromStory(story.id, d.id)}
+                                              className="text-sm text-red-600 hover:underline"
+                                            >
+                                              Remove
+                                            </button>
+                                          </div>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
                               </div>
-                            )}
                           </div>
                         );
                       })}
                     </div>
-                  )}
                 </div>
               );
             })}
@@ -488,6 +533,8 @@ export default function EpicsAndStories() {
               return (
                 <div
                   key={story.id}
+                  onDragOver={onStoryDragOver}
+                  onDrop={(e) => onStoryDrop(e, story.id)}
                   className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between">
@@ -506,13 +553,7 @@ export default function EpicsAndStories() {
                         >
                           {story.priority}
                         </span>
-                        <span
-                          className={`px-2 py-0.5 text-xs font-medium rounded ${getStatusColor(
-                            story.status
-                          )}`}
-                        >
-                          {story.status}
-                        </span>
+                        {/* status hidden for organizing view */}
                       </div>
                       {editingStoryId === story.id ? (
                         <div className="flex items-center gap-2 mb-2">
@@ -533,7 +574,7 @@ export default function EpicsAndStories() {
                         </div>
                       ) : (
                         <h3
-                          className="text-lg font-semibold text-gray-900 mb-2"
+                          className="text-lg font-semibold text-gray-900 mb-2 break-words whitespace-normal"
                           onDoubleClick={() => startEditingTitle(story.id, story.title)}
                           title="Double-click to edit"
                         >
