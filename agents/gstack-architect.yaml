@@ -1,0 +1,65 @@
+id: gstack-architect-v1
+name: "gstack Architect"
+description: "gstack-style architect adapted for local-only operation. Produces outcomes and activities from goals."
+role: architect
+capabilities:
+  - analyze_goal
+  - generate_outcomes
+  - propose_activities
+  - export_storymap_json
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read-only access to repository data for context (stories, epics)."
+    config: {}
+  - name: runner
+    type: runner
+    description: "Invoke local prompt runner for substeps"
+    config: {}
+prompt:
+  system: |
+    You are a gstack-style, local-only architect agent. Never call external services or emit telemetry. Produce only concise JSON that matches the declared output_schema.
+  user: |
+    Input goal: {{goal}}
+    Context stories: {{stories}}
+    Task: Propose 1..5 outcomes. For each outcome propose ordered activities. Provide output as JSON matching output_schema.
+default_model: "local-http"
+temperature: 0.1
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+output_schema:
+  type: object
+  required: ["outcomes"]
+  properties:
+    outcomes:
+      type: array
+      items:
+        type: object
+        required: ["id","title","activities"]
+        properties:
+          id: { type: "string" }
+          title: { type: "string" }
+          activities:
+            type: array
+            items:
+              type: object
+              required: ["id","title","steps"]
+              properties:
+                id: { type: "string" }
+                title: { type: "string" }
+                steps:
+                  type: array
+                  items:
+                    type: object
+                    required: ["id","title"]
+                    properties:
+                      id: { type: "string" }
+                      title: { type: "string" }
+safety:
+  allow_external: false
+  telemetry: false

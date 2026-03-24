@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const yaml = require("js-yaml");
+const Ajv = (() => {
+  try { return require("ajv"); } catch (e) { return null; }
+})();
 
 function readPromptDef(promptId) {
   const pathsToCheck = [
@@ -32,15 +35,12 @@ function defaultRunPolicy() {
 
 function enforceRunPolicy(promptDef = {}, adapterOpts = {}) {
   const policy = Object.assign(defaultRunPolicy(), promptDef.run_policy || {});
-  // require confirmation
   if (policy.require_confirmation && !adapterOpts.confirmed) {
     throw new Error("Agent run_policy requires confirmation. Rerun with adapter option { confirmed: true } to proceed.");
   }
-  // block requested file writes
   if (adapterOpts.requestedFileWrite && !policy.allow_file_write) {
     throw new Error("Agent run_policy forbids file writes. Set run_policy.allow_file_write:true in the agent or do not request file writes.");
   }
-  // block requested git commit
   if (adapterOpts.requestedGitCommit && !policy.allow_git_commit) {
     throw new Error("Agent run_policy forbids git commits. Set run_policy.allow_git_commit:true in the agent or avoid requesting commits.");
   }
@@ -71,6 +71,26 @@ async function runPrompt(promptId, input = {}, adapterName = "http-local-adapter
       const errFile = path.join(outPath, `${Date.now()}-${promptId}-invalid.json`);
       fs.writeFileSync(errFile, JSON.stringify({ promptId, input, output: runResult }, null, 2));
       throw new Error(`Prompt output was not valid JSON. Saved to ${errFile}`);
+    }
+
+    // If output_schema present, validate with AJV (if available)
+    if (promptDef.output_schema) {
+      if (!Ajv) {
+        const outPath = ensureStorage();
+        const warnFile = path.join(outPath, `${Date.now()}-${promptId}-ajv-missing.txt`);
+        fs.writeFileSync(warnFile, "AJV is not installed; schema validation skipped. Run: npm install ajv\n");
+        console.warn("AJV not installed; skipping schema validation. Install with: npm install ajv");
+      } else {
+        const ajv = new Ajv({ allErrors: true, strict: false });
+        const validate = ajv.compile(promptDef.output_schema);
+        const valid = validate(parsed);
+        if (!valid) {
+          const outPath = ensureStorage();
+          const errFile = path.join(outPath, `${Date.now()}-${promptId}-schema-invalid.json`);
+          fs.writeFileSync(errFile, JSON.stringify({ promptId, input, output: runResult, errors: validate.errors }, null, 2));
+          throw new Error(`Prompt output failed schema validation. Saved details to ${errFile}`);
+        }
+      }
     }
   }
 

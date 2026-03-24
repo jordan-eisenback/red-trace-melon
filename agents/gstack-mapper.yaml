@@ -1,6 +1,6 @@
-id: mapper-v1
-name: "Mapper (gstack-style)"
-description: "Creates hierarchical story maps: outcomes -> activities -> steps and links steps to existing stories/requirements."
+id: gstack-mapper-v1
+name: "gstack Mapper"
+description: "gstack-style mapper that creates hierarchical story maps and links steps to stories/requirements."
 role: mapper
 capabilities:
   - map_from_stories
@@ -17,7 +17,7 @@ tools:
     config: {}
 prompt:
   system: |
-    You are an offline story mapping agent. No external links. Output MUST be strict JSON matching output_schema. When linking steps to stories, use story IDs only.
+    You are an offline gstack-style story mapping agent. No external links or telemetry. Output MUST be strict JSON matching output_schema. When linking steps to stories, use story IDs only.
   user: |
     Goal: {{goal}}
     Stories: {{stories}}
@@ -31,7 +31,7 @@ run_policy:
   allow_git_commit: false
   require_confirmation: true
 output_format: json
-output_schema: # reuse same schema as mapper prompt (concise)
+output_schema:
   type: object
   required: ["outcomes"]
   properties:

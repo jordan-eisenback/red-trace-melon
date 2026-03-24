@@ -1,0 +1,40 @@
+// Simple stub adapter for testing agents locally
+// Returns a minimal JSON story map based on the `user` text (extracts the goal)
+module.exports = {
+  run: async function ({ system = "", user = "" } = {}, opts = {}) {
+    // Try to extract the goal from the user template
+    let goal = "";
+    const m = user.match(/Goal:\s*(.*)/i) || user.match(/Input goal:\s*(.*)/i) || user.match(/Input goal:\s*(.*)$/im);
+    if (m && m[1]) goal = m[1].trim();
+    if (!goal) {
+      // fallback: first line
+      const lines = user.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      goal = lines.length ? lines[0].slice(0, 120) : "Improve system";
+    }
+
+    // Build a tiny story map
+    const outcomeId = `OUT-${Date.now()}`;
+    const activityId = `ACT-${Date.now()}`;
+    const stepId = `STEP-${Date.now()}`;
+
+    const result = {
+      outcomes: [
+        {
+          id: outcomeId,
+          title: goal,
+          activities: [
+            {
+              id: activityId,
+              title: `Initial activity for ${goal}`,
+              steps: [
+                { id: stepId, title: `Create initial stories for ${goal}` }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    return { text: JSON.stringify(result), meta: { stub: true } };
+  }
+};
