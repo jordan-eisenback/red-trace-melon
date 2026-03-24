@@ -1,0 +1,5 @@
+{
+  "goal": "Improve onboarding completion rate to 75% within 3 months",
+  "context_docs": "onboarding_flow.md, analytics snapshot, recent user interviews",
+  "stories": []
+}

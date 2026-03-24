@@ -1,0 +1,5 @@
+{
+  "goal": "Design a resilient implementation for the new onboarding flow",
+  "code_and_specs": "api.md, architecture.md",
+  "stories": []
+}

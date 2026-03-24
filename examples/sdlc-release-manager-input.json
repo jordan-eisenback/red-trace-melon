@@ -1,0 +1,5 @@
+{
+  "goal": "Plan a phased rollout of onboarding improvements",
+  "release_inputs": "deployment_playbook.md, monitoring_guidelines.md",
+  "stories": []
+}

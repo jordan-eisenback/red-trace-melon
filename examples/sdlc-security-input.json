@@ -1,0 +1,5 @@
+{
+  "goal": "Assess security risks for the onboarding feature",
+  "architecture_and_design": "onboarding_arch.md",
+  "stories": []
+}

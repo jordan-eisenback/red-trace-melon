@@ -1,0 +1,5 @@
+{
+  "goal": "Ensure onboarding changes meet reliability and performance goals",
+  "release_and_metrics": "current error budget, perf targets, SLOs",
+  "stories": []
+}
