@@ -1,0 +1,61 @@
+id: product-planner-v1
+name: "Product Planner"
+description: "Roadmap and initiative planner: turns strategy and research into prioritized initiatives, milestones, and rough timelines." 
+role: planner
+capabilities:
+  - generate_initiatives
+  - prioritize_backlog
+  - produce_milestones
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read strategy, research, and backlog files."
+    config: {}
+  - name: runner
+    type: runner
+    description: "Use local prompt runner for decomposition tasks"
+    config: {}
+prompt:
+  system: |
+    You are an offline product planner. Stay local and do not emit telemetry. Output MUST be JSON matching the schema.
+  user: |
+    Inputs: strategy={{strategy}}, research={{research}}, backlog={{backlog}}
+    Tasks:
+      - Produce 3-8 initiatives with priority and rationale.
+      - For each initiative, propose milestones with approximate times (quarters or weeks).
+    Return only JSON matching output_schema.
+default_model: "local-http"
+temperature: 0.1
+memory:
+  enabled: true
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+output_schema:
+  type: object
+  required: ["initiatives"]
+  properties:
+    initiatives:
+      type: array
+      items:
+        type: object
+        required: ["id","title","priority","milestones"]
+        properties:
+          id: { type: "string" }
+          title: { type: "string" }
+          priority: { type: "string" }
+          rationale: { type: "string" }
+          milestones:
+            type: array
+            items:
+              type: object
+              required: ["id","title","target"]
+              properties:
+                id: { type: "string" }
+                title: { type: "string" }
+                target: { type: "string" }
+safety:
+  allow_external: false
+  telemetry: false

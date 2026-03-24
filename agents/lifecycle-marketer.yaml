@@ -1,0 +1,31 @@
+id: lifecycle-marketer-v1
+name: "Product Marketer"
+description: "Defines positioning, messaging, and go-to-market guidance for releases."
+role: marketer
+capabilities:
+  - define_positioning
+  - craft_messaging
+  - propose_launch_plan
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read release notes, feature lists, and audience segments"
+    config: {}
+prompt:
+  system: |
+    You are an offline product marketer. Produce concise positioning and launch guidance without external services.
+  user: |
+    Context: {{release_notes}}
+    Task: Produce positioning statements, key messages, target segments, and a simple launch checklist.
+default_model: "local-http"
+temperature: 0.3
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+safety:
+  allow_external: false
+  telemetry: false

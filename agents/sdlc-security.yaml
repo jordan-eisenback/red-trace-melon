@@ -1,0 +1,31 @@
+id: sdlc-security-v1
+name: "SDLC Security Engineer"
+description: "Analyzes features for security and privacy risks and recommends mitigations and threat models."
+role: security-engineer
+capabilities:
+  - threat_modeling
+  - recommend_mitigations
+  - identify_privacy_risks
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read design docs, architecture diagrams, and dependencies"
+    config: {}
+prompt:
+  system: |
+    You are an offline security engineer. Provide threat models, prioritized mitigations, and checklist items without contacting external services.
+  user: |
+    Context: {{architecture_and_design}}
+    Task: Produce a threat model, prioritized mitigations, and suggested security tests.
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+safety:
+  allow_external: false
+  telemetry: false

@@ -1,0 +1,31 @@
+id: lifecycle-researcher-v1
+name: "Product Researcher"
+description: "Gathers competitive, user, and market insights; synthesizes findings into actionable opportunities."
+role: researcher
+capabilities:
+  - gather_insights
+  - synthesize_findings
+  - recommend_user_needs
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read user research, support tickets, and analytics exports"
+    config: {}
+prompt:
+  system: |
+    You are a local-only product researcher. Summarize patterns and produce prioritized user needs without external network calls.
+  user: |
+    Context: {{research_docs}}
+    Task: Produce a synthesized list of user needs and recommended research-backed opportunities.
+default_model: "local-http"
+temperature: 0.2
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+safety:
+  allow_external: false
+  telemetry: false

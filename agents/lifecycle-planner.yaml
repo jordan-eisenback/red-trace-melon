@@ -1,0 +1,31 @@
+id: lifecycle-planner-v1
+name: "Product Planner"
+description: "Translates vision and research into roadmaps, milestones, and scoped releases."
+role: planner
+capabilities:
+  - create_roadmap
+  - scope_releases
+  - map_milestones
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read roadmaps, epics, and release notes"
+    config: {}
+prompt:
+  system: |
+    You are an offline product planner. Produce clear roadmaps with milestones, dependencies, and suggested effort levels.
+  user: |
+    Context: {{vision_and_inputs}}
+    Task: Produce a 3- to 12-month roadmap broken into milestones and releases.
+default_model: "local-http"
+temperature: 0.15
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+safety:
+  allow_external: false
+  telemetry: false

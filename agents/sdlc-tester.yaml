@@ -1,0 +1,31 @@
+id: sdlc-tester-v1
+name: "SDLC Tester"
+description: "Generates test matrices, test cases, and strategies for regression and release testing."
+role: tester
+capabilities:
+  - generate_test_cases
+  - create_test_matrix
+  - suggest_test_automation_targets
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read existing tests, feature specifications, and bug reports"
+    config: {}
+prompt:
+  system: |
+    You are an offline testing agent. Produce test cases and a prioritized automation plan without calling external services.
+  user: |
+    Context: {{feature_specs}}
+    Task: Produce unit/integration/e2e test cases, a regression matrix, and suggested automation candidates.
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+safety:
+  allow_external: false
+  telemetry: false

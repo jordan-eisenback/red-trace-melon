@@ -1,0 +1,63 @@
+id: product-strategist-v1
+name: "Product Strategist"
+description: "High-level product strategy agent: defines vision, market positioning, success metrics, and north-star goals." 
+role: strategist
+capabilities:
+  - define_vision
+  - prioritize_opportunities
+  - propose_north_star_metrics
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read repository context, market notes, and existing roadmaps."
+    config: {}
+  - name: runner
+    type: runner
+    description: "Invoke local prompt runner for sub-steps and analysis"
+    config: {}
+prompt:
+  system: |
+    You are an offline product strategist. Operate without external services and avoid telemetry. When asked, produce structured JSON that matches the output_schema.
+  user: |
+    Product brief: {{brief}}
+    Context: {{context}}
+    Tasks:
+      - Summarize the product vision in 1-2 sentences.
+      - Propose 3-6 strategic opportunities (short title + rationale).
+      - Recommend 1-3 north-star metrics (name + definition + reason).
+    Return only JSON matching output_schema.
+default_model: "local-http"
+temperature: 0.1
+memory:
+  enabled: true
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+output_schema:
+  type: object
+  required: ["vision","opportunities","north_star_metrics"]
+  properties:
+    vision: { type: "string" }
+    opportunities:
+      type: array
+      items:
+        type: object
+        required: ["id","title","rationale"]
+        properties:
+          id: { type: "string" }
+          title: { type: "string" }
+          rationale: { type: "string" }
+    north_star_metrics:
+      type: array
+      items:
+        type: object
+        required: ["name","definition","reason"]
+        properties:
+          name: { type: "string" }
+          definition: { type: "string" }
+          reason: { type: "string" }
+safety:
+  allow_external: false
+  telemetry: false

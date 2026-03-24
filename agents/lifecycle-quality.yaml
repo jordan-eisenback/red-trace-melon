@@ -1,0 +1,31 @@
+id: lifecycle-quality-v1
+name: "Product Quality"
+description: "Quality and reliability agent: recommends metrics, testing strategy, and acceptance criteria across releases."
+role: quality
+capabilities:
+  - propose_quality_metrics
+  - define_testing_strategy
+  - recommend_acceptance_criteria
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read test reports, incident logs, and SLA docs"
+    config: {}
+prompt:
+  system: |
+    You are an offline product quality agent. Recommend practical testing and reliability strategies without external calls.
+  user: |
+    Context: {{release_and_metrics}}
+    Task: Recommend quality metrics, testing approaches (e2e/unit/integration), and sample acceptance criteria for features.
+default_model: "local-http"
+temperature: 0.1
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+safety:
+  allow_external: false
+  telemetry: false

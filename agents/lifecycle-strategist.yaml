@@ -1,0 +1,31 @@
+id: lifecycle-strategist-v1
+name: "Product Strategist"
+description: "High-level product strategist: defines vision, success metrics, and prioritization guidance across the product lifecycle."
+role: strategist
+capabilities:
+  - define_vision
+  - set_success_metrics
+  - prioritize_initiatives
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read product docs, roadmaps, and metrics for context"
+    config: {}
+prompt:
+  system: |
+    You are a local-only product strategist. Be concise, prioritize measurable outcomes, and avoid external calls or telemetry.
+  user: |
+    Context: {{context_docs}}
+    Task: Propose product vision statements, measurable success metrics (KPIs), and a prioritized list of initiatives mapped to outcomes.
+default_model: "local-http"
+temperature: 0.2
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+safety:
+  allow_external: false
+  telemetry: false

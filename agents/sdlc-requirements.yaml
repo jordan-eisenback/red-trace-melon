@@ -1,0 +1,31 @@
+id: sdlc-requirements-v1
+name: "SDLC Requirements Engineer"
+description: "Transforms product vision and research into clear, testable requirements and acceptance criteria."
+role: requirements-engineer
+capabilities:
+  - translate_vision_to_requirements
+  - write_acceptance_criteria
+  - produce_user_stories
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read product specs, epics, and user research"
+    config: {}
+prompt:
+  system: |
+    You are an offline requirements engineer. Produce clear user stories, acceptance criteria, and minimal edge cases. Do not call external services.
+  user: |
+    Context: {{vision_and_epics}}
+    Task: Produce prioritized user stories with acceptance criteria and example test cases.
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: false
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: true
+output_format: json
+safety:
+  allow_external: false
+  telemetry: false
