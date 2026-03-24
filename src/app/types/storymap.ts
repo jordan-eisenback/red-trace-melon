@@ -1,13 +1,14 @@
 import type { Epic, UserStory } from './epic';
 
-// A step inside an activity (equivalent to a story card)
 export interface StoryMapStep {
   id: string;
   title: string;
   description?: string;
   requirementId?: string;
-  linkedStoryIds?: string[]; // stories linked to this step
+  linkedStoryIds?: string[];
   order?: number;
+  complianceTags?: string[];  // e.g. ['SOC2', 'ISO27001', 'SOX']
+  slaHours?: number;          // provisioning SLA in hours
 }
 
 export interface StoryMapActivity {
@@ -16,6 +17,7 @@ export interface StoryMapActivity {
   description?: string;
   steps: StoryMapStep[];
   order?: number;
+  persona?: string;           // e.g. 'IT Admin', 'HR', 'Manager', 'Employee'
 }
 
 export interface StoryMapOutcome {
@@ -24,11 +26,11 @@ export interface StoryMapOutcome {
   description?: string;
   activities: StoryMapActivity[];
   order?: number;
+  phase?: 'joiner' | 'mover' | 'leaver' | 'governance' | 'contractor';
 }
 
 export type StoryMap = StoryMapOutcome[];
 
 export type GeneratorConfig = {
-  // future mapping rules, keywords, tag maps, etc.
   defaultUnmappedTitle?: string;
 };
