@@ -7,6 +7,7 @@ import StoryMapping from "./pages/StoryMapping";
 import EpicsAndStories from "./pages/EpicsAndStories";
 import FrameworksAndControls from "./pages/FrameworksAndControls";
 import HelpCenter from "./pages/HelpCenter";
+import WorkstreamsPage from "./pages/Workstreams";
 import { RootLayout } from "./components/RootLayout";
 
 export const router = createBrowserRouter([
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
       { path: "story-mapping", Component: StoryMapping },
       { path: "epics-stories", Component: EpicsAndStories },
       { path: "frameworks", Component: FrameworksAndControls },
+      { path: "workstreams", Component: WorkstreamsPage },
       { path: "help", Component: HelpCenter },
     ],
   },
