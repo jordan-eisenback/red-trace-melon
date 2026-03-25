@@ -1,10 +1,10 @@
-import { useState, useMemo, useRef, useCallback } from "react";
+import { useState, useMemo } from "react";
 import {
   GitBranch, Plus, Edit, Trash2, X, ChevronDown, ChevronRight,
-  ArrowRight, Layers, List, Network, Check, AlertCircle,
+  ArrowRight, ArrowLeft, Layers, Network, Check, AlertCircle,
   Clock, CheckCircle2, Circle, Pencil,
 } from "lucide-react";
-import { Workstream, WorkstreamActivity, WorkstreamLayer } from "../types/workstream";
+import { Workstream, WorkstreamLayer } from "../types/workstream";
 import { initialWorkstreams } from "../data/initial-workstreams";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -47,9 +47,15 @@ interface WorkstreamModalProps {
 
 function WorkstreamModal({ workstream, allWorkstreams, onSave, onClose }: WorkstreamModalProps) {
   const isEditing = workstream !== null;
-  const [form, setForm] = useState<Workstream>(() =>
-    workstream ?? {
-      id: `WS-${String(allWorkstreams.length + 1).padStart(2, '0')}`,
+  const [titleError, setTitleError] = useState(false);
+  const [form, setForm] = useState<Workstream>(() => {
+    if (workstream) return workstream;
+    const existingNums = allWorkstreams
+      .map(w => parseInt(w.id.replace('WS-', ''), 10))
+      .filter(n => !isNaN(n));
+    const nextNum = existingNums.length > 0 ? Math.max(...existingNums) + 1 : 1;
+    return {
+      id: `WS-${String(nextNum).padStart(2, '0')}`,
       order: allWorkstreams.length + 1,
       title: '',
       description: '',
@@ -59,8 +65,8 @@ function WorkstreamModal({ workstream, allWorkstreams, onSave, onClose }: Workst
       status: 'not-started',
       owner: '',
       notes: '',
-    }
-  );
+    };
+  });
   const [newActivityTitle, setNewActivityTitle] = useState('');
   const [editingActIdx, setEditingActIdx] = useState<number | null>(null);
   const [editingActVal, setEditingActVal] = useState('');
@@ -122,8 +128,10 @@ function WorkstreamModal({ workstream, allWorkstreams, onSave, onClose }: Workst
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
-            <input required value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
-              placeholder="Workstream name" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input required value={form.title} onChange={e => { setForm(p => ({ ...p, title: e.target.value })); if (e.target.value.trim()) setTitleError(false); }}
+              placeholder="Workstream name"
+              className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${titleError ? 'border-red-400 bg-red-50' : 'border-gray-300'}`} />
+            {titleError && <p className="text-xs text-red-500 mt-1">Title is required.</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -201,7 +209,7 @@ function WorkstreamModal({ workstream, allWorkstreams, onSave, onClose }: Workst
 
           <div className="flex justify-end gap-3 pt-2 border-t border-gray-100">
             <button type="button" onClick={onClose} className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors text-sm">Cancel</button>
-            <button type="button" onClick={() => { if (form.title.trim()) { onSave(form); onClose(); } }}
+            <button type="button" onClick={() => { if (form.title.trim()) { onSave(form); onClose(); } else { setTitleError(true); } }}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
               {isEditing ? 'Save Changes' : 'Add Workstream'}
             </button>
@@ -281,6 +289,15 @@ interface DepGraphProps {
 function DependencyGraph({ workstreams, onSelect, selectedId }: DepGraphProps) {
   const { nodes, svgW, svgH } = useMemo(() => buildGraphLayout(workstreams), [workstreams]);
 
+  if (workstreams.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-48 bg-gray-50 rounded-xl border border-gray-200 text-gray-400">
+        <Network className="w-8 h-8 mb-2" />
+        <p className="text-sm">No workstreams to display.</p>
+      </div>
+    );
+  }
+
   const nodeById = Object.fromEntries(nodes.map(n => [n.ws.id, n]));
 
   // Build edges: for every dependsOn link draw from source node right-edge to dest node left-edge
@@ -333,8 +350,10 @@ function DependencyGraph({ workstreams, onSelect, selectedId }: DepGraphProps) {
           const isSelected = ws.id === selectedId;
           const isRelated = selectedId
             ? ws.id === selectedId ||
+              // ws is a direct predecessor of selectedId (selectedId depends on ws)
               workstreams.find(w => w.id === selectedId)?.dependsOn.includes(ws.id) ||
-              workstreams.find(w => w.id === ws.id)?.dependsOn.includes(selectedId ?? '')
+              // ws is a direct successor of selectedId (ws depends on selectedId)
+              workstreams.find(w => w.id === ws.id)?.dependsOn.includes(selectedId)
             : true;
 
           return (
@@ -389,9 +408,24 @@ function SwimlaneView({ workstreams, onEdit, onDelete, onSelect, selectedId }: S
         if (wss.length === 0) return null;
         return (
           <div key={layerId} className={`rounded-xl border ${layer.border} overflow-hidden`}>
-            <div className={`px-4 py-2.5 ${layer.bg} border-b ${layer.border}`}>
-              <span className={`text-sm font-semibold ${layer.color}`}>{layer.label}</span>
-              <span className="ml-2 text-xs text-gray-500">{wss.length} workstream{wss.length !== 1 ? 's' : ''}</span>
+            <div className={`px-4 py-2.5 ${layer.bg} border-b ${layer.border} flex items-center justify-between`}>
+              <div>
+                <span className={`text-sm font-semibold ${layer.color}`}>{layer.label}</span>
+                <span className="ml-2 text-xs text-gray-500">{wss.length} workstream{wss.length !== 1 ? 's' : ''}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {(['in-progress', 'complete', 'blocked'] as const).map(s => {
+                  const n = wss.filter(w => (w.status ?? 'not-started') === s).length;
+                  if (!n) return null;
+                  const cfg = STATUS_CONFIG[s];
+                  const Icon = cfg.icon;
+                  return (
+                    <span key={s} className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${cfg.bg} ${cfg.color}`}>
+                      <Icon className="w-3 h-3" />{n}
+                    </span>
+                  );
+                })}
+              </div>
             </div>
             <div className="divide-y divide-gray-100">
               {wss.map(ws => {
@@ -402,13 +436,20 @@ function SwimlaneView({ workstreams, onEdit, onDelete, onSelect, selectedId }: S
                 return (
                   <div key={ws.id} className={`bg-white transition-colors ${isSelected ? 'ring-1 ring-inset ring-blue-400' : ''}`}>
                     <div
-                      className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50"
-                      onClick={() => { toggle(ws.id); onSelect(ws); }}
+                      className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50"
                     >
-                      <button className="mt-0.5 text-gray-400 shrink-0">
+                      <button
+                        className="mt-0.5 text-gray-400 shrink-0 hover:text-gray-600"
+                        onClick={() => toggle(ws.id)}
+                        aria-label={isExpanded ? 'Collapse' : 'Expand'}
+                      >
                         {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                       </button>
-                      <div className="flex-1 min-w-0">
+                      <div
+                        className="flex-1 min-w-0 cursor-pointer"
+                        onClick={() => onSelect(ws)}
+                        title="Click to open detail panel"
+                      >
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-mono text-xs text-gray-400">{ws.id}</span>
                           <span className="font-semibold text-sm text-gray-900">{ws.title}</span>
@@ -421,13 +462,22 @@ function SwimlaneView({ workstreams, onEdit, onDelete, onSelect, selectedId }: S
                         {ws.dependsOn.length > 0 && (
                           <div className="flex items-center gap-1 mt-1 flex-wrap">
                             <span className="text-xs text-gray-400">Depends on:</span>
-                            {ws.dependsOn.map(depId => (
-                              <span key={depId} className="font-mono text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">{depId}</span>
-                            ))}
+                            {ws.dependsOn.map(depId => {
+                              const dep = workstreams.find(w => w.id === depId);
+                              return (
+                                <span
+                                  key={depId}
+                                  className="font-mono text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded cursor-default"
+                                  title={dep?.title ?? depId}
+                                >
+                                  {depId}
+                                </span>
+                              );
+                            })}
                           </div>
                         )}
                       </div>
-                      <div className="flex items-center gap-1 shrink-0 ml-2" onClick={e => e.stopPropagation()}>
+                      <div className="flex items-center gap-1 shrink-0 ml-2">
                         <button onClick={() => onEdit(ws)} className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors">
                           <Edit className="w-3.5 h-3.5" />
                         </button>
@@ -522,7 +572,7 @@ function DetailPanel({ ws, allWorkstreams, onEdit, onClose }: DetailPanelProps) 
             <div className="space-y-1">
               {dependsOnWS.map(dep => (
                 <div key={dep.id} className="flex items-center gap-2 text-sm bg-gray-50 rounded-lg px-3 py-2">
-                  <ArrowRight className="w-3.5 h-3.5 text-gray-400 rotate-180 shrink-0" />
+                  <ArrowLeft className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                   <span className="font-mono text-xs text-gray-400">{dep.id}</span>
                   <span className="text-gray-700 line-clamp-1">{dep.title}</span>
                 </div>
@@ -588,8 +638,8 @@ export default function WorkstreamsPage() {
     setDeleteConfirm(null);
   };
 
-  // Stats
   const total = workstreams.length;
+  const notStarted = workstreams.filter(w => (w.status ?? 'not-started') === 'not-started').length;
   const complete = workstreams.filter(w => w.status === 'complete').length;
   const inProgress = workstreams.filter(w => w.status === 'in-progress').length;
   const blocked = workstreams.filter(w => w.status === 'blocked').length;
@@ -618,9 +668,10 @@ export default function WorkstreamsPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-5 gap-3 mt-5">
+        <div className="grid grid-cols-6 gap-3 mt-5">
           {[
             { label: 'Total', value: total, color: 'bg-white/10' },
+            { label: 'Not Started', value: notStarted, color: 'bg-gray-500/20' },
             { label: 'In Progress', value: inProgress, color: 'bg-blue-500/30' },
             { label: 'Complete', value: complete, color: 'bg-green-500/30' },
             { label: 'Blocked', value: blocked, color: 'bg-red-500/30' },
@@ -679,7 +730,7 @@ export default function WorkstreamsPage() {
 
         {/* Detail panel */}
         {selected && (
-          <div className="w-80 shrink-0">
+          <div className="w-80 shrink-0 self-stretch">
             <DetailPanel
               ws={selected}
               allWorkstreams={workstreams}
