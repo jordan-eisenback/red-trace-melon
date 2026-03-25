@@ -120,10 +120,10 @@ export function RootLayout() {
                     key={item.path}
                     to={item.path}
                     data-tour={item.tourAttr}
-                    className={`inline-flex items-center gap-2 px-4 py-3 border-b-2 transition-colors ${
+                    className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       isActive
-                        ? "border-blue-600 text-blue-600"
-                        : "border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300"
+                        ? "bg-blue-50 text-blue-700"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                     }`}
                   >
                     <Icon className="w-4 h-4" />

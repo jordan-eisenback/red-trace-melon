@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { useEpics } from "../contexts/EpicContext";
 import { useRequirements } from "../context/RequirementsContext";
 import { toast } from "sonner";
-import { Plus, Edit, Trash2, Search, Filter, Map } from "lucide-react";
+import { Plus, Edit, Trash2, Search, Filter, Map, ChevronDown, ChevronRight, Pencil } from "lucide-react";
 import { Epic, UserStory } from "../types/epic";
 import EpicModal from "../components/EpicModal";
 import UserStoryModal from "../components/UserStoryModal";
@@ -49,7 +49,7 @@ export default function EpicsAndStories() {
       epic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       epic.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       epic.description.toLowerCase().includes(searchQuery.toLowerCase());
-  const matchesStatus = true; // status filtering not used for organizing work
+    const matchesStatus = statusFilter === "all" || (epic.status ?? "") === statusFilter;
     const matchesPriority = priorityFilter === "all" || epic.priority === priorityFilter;
     return matchesSearch && matchesStatus && matchesPriority;
   });
@@ -59,7 +59,7 @@ export default function EpicsAndStories() {
       story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       story.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       story.description.toLowerCase().includes(searchQuery.toLowerCase());
-  const matchesStatus = true; // status filtering not used for organizing work
+    const matchesStatus = statusFilter === "all" || (story.status ?? "") === statusFilter;
     const matchesPriority = priorityFilter === "all" || story.priority === priorityFilter;
     return matchesSearch && matchesStatus && matchesPriority;
   });
@@ -97,7 +97,6 @@ export default function EpicsAndStories() {
   // expand/collapse state for epics
   const [expandedEpics, setExpandedEpics] = useState<Record<string, boolean>>({});
   const [dragOverEpicId, setDragOverEpicId] = useState<string | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
   const [expandedStories, setExpandedStories] = useState<Record<string, boolean>>({});
 
   const toggleStoryExpanded = (id: string) => {
@@ -189,27 +188,6 @@ export default function EpicsAndStories() {
     toast.success(`Linked requirement ${reqId} to ${storyId}`);
   };
 
-  const handleSave = async () => {
-    try {
-      setIsSaving(true);
-      const res = await fetch('/api/save-epics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ epics, userStories, storyMap }),
-      });
-      const json = await res.json();
-      if (res.ok && json.ok) {
-        toast.success('Saved epics & stories to disk');
-      } else {
-        toast.error('Save failed: ' + (json?.error || res.statusText));
-      }
-    } catch (err: any) {
-      toast.error('Save failed: ' + String(err));
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "High":
@@ -250,16 +228,6 @@ export default function EpicsAndStories() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              onClick={handleSave}
-              disabled={isSaving}
-              className={`px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm ${
-                isSaving ? 'opacity-60 cursor-wait' : ''
-              }`}
-            >
-              {isSaving ? 'Saving…' : 'Save'}
-            </button>
-
             <button
               onClick={viewMode === "epics" ? handleAddEpic : handleAddStory}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -367,10 +335,10 @@ export default function EpicsAndStories() {
                       <div className="flex items-center gap-2 mb-2">
                         <button
                           onClick={() => toggleEpicExpanded(epic.id)}
-                          className="text-sm text-gray-400 hover:text-gray-600 mr-2"
+                          className="p-1 text-gray-400 hover:text-gray-600 mr-1"
                           aria-expanded={isExpanded}
                         >
-                          {isExpanded ? "▾" : "▸"}
+                          {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                         </button>
                         <span className="font-mono text-sm text-gray-500">{epic.id}</span>
                         <span
@@ -447,10 +415,10 @@ export default function EpicsAndStories() {
                               <div className="flex items-center gap-3">
                                 <button
                                   onClick={() => toggleStoryExpanded(story.id)}
-                                  className="text-sm text-gray-400 hover:text-gray-600"
+                                  className="p-1 text-gray-400 hover:text-gray-600"
                                   aria-expanded={isStoryExpanded}
                                 >
-                                  {isStoryExpanded ? '▾' : '▸'}
+                                  {isStoryExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                                 </button>
                                 <div>
                                   <div className="text-sm text-gray-500">{story.id}</div>
@@ -475,12 +443,20 @@ export default function EpicsAndStories() {
                                       </button>
                                     </div>
                                   ) : (
-                                    <div
-                                      className="font-medium text-gray-900 break-words whitespace-normal max-w-[48rem]"
-                                            onDoubleClick={() => startEditingTitle(story.id, story.title)}
-                                      title="Double-click to edit"
-                                    >
-                                      {story.title}
+                                    <div className="flex items-center gap-1.5 group/title">
+                                      <span
+                                        className="font-medium text-gray-900 break-words whitespace-normal max-w-[48rem]"
+                                        onDoubleClick={() => startEditingTitle(story.id, story.title)}
+                                      >
+                                        {story.title}
+                                      </span>
+                                      <button
+                                        onClick={() => startEditingTitle(story.id, story.title)}
+                                        className="opacity-0 group-hover/title:opacity-100 p-0.5 text-gray-400 hover:text-blue-600 rounded transition-all"
+                                        title="Edit title"
+                                      >
+                                        <Pencil className="w-3 h-3" />
+                                      </button>
                                     </div>
                                   )}
                                 </div>
@@ -566,9 +542,10 @@ export default function EpicsAndStories() {
                                           <div className="flex items-center gap-2">
                                             <button
                                               onClick={() => removeDetailFromStory(story.id, d.id)}
-                                              className="text-sm text-red-600 hover:underline"
+                                              className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                                              title="Remove linked detail"
                                             >
-                                              Remove
+                                              <Trash2 className="w-3.5 h-3.5" />
                                             </button>
                                           </div>
                                         </li>

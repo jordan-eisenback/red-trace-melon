@@ -83,7 +83,7 @@ export function RequirementDetail() {
           </button>
           <button
             onClick={() => setShowDeleteDialog(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-red-300 text-red-600 rounded-lg hover:bg-red-600 hover:text-white hover:border-red-600 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             Delete

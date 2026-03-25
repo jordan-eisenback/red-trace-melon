@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { useRequirements } from "../context/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { useEpics } from "../contexts/EpicContext";
-import { Search, Edit, Trash2, Eye, AlertTriangle, CheckCircle, FileText, Sparkles, Download } from "lucide-react";
+import { Search, Edit, Trash2, Eye, AlertTriangle, CheckCircle, FileText, Sparkles, Download, GripVertical } from "lucide-react";
 import { RequirementFormDialog } from "../components/RequirementFormDialog";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { EmptyState } from "../components/EmptyState";
@@ -20,6 +20,7 @@ export function RequirementsList() {
   const { epics, userStories } = useEpics();
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   const [editingRequirement, setEditingRequirement] = useState<Requirement | undefined>();
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
   const [showValidation, setShowValidation] = useState(true);
@@ -55,10 +56,11 @@ export function RequirementsList() {
         req.owner.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesType = typeFilter === "" || req.type === typeFilter;
+      const matchesStatus = statusFilter === "" || (req.status ?? "") === statusFilter;
 
-      return matchesSearch && matchesType;
+      return matchesSearch && matchesType && matchesStatus;
     });
-  }, [requirements, searchTerm, typeFilter]);
+  }, [requirements, searchTerm, typeFilter, statusFilter]);
 
   const handleDelete = (id: string) => {
     const req = requirements.find((r) => r.id === id);
@@ -163,6 +165,19 @@ export function RequirementsList() {
               </option>
             ))}
           </select>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            title="Filter requirements by status"
+          >
+            <option value="">All Statuses</option>
+            <option value="Draft">Draft</option>
+            <option value="Active">Active</option>
+            <option value="Deprecated">Deprecated</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
+          </select>
         </div>
       </div>
 
@@ -195,15 +210,19 @@ export function RequirementsList() {
               {filteredRequirements.map((req) => (
                 <tr
                   key={req.id}
-                  className="hover:bg-slate-50 transition-colors"
+                  className="hover:bg-slate-50 transition-colors group"
                   draggable
                   onDragStart={(e) => onRequirementDragStart(e, req.id)}
-                  title="Drag this requirement to a user story to create a linked activity/step"
                 >
                   <td className="px-4 py-3">
-                    <code className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
-                      {req.id}
-                    </code>
+                    <div className="flex items-center gap-1">
+                      <span title="Drag to link to a user story">
+                        <GripVertical className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-400 cursor-grab shrink-0" />
+                      </span>
+                      <code className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
+                        {req.id}
+                      </code>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="max-w-md">
@@ -233,15 +252,13 @@ export function RequirementsList() {
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-center gap-2">
                       {isRequirementMapped(req.id) ? (
-                        <CheckCircle 
-                          className="w-4 h-4 text-green-600" 
-                          title="Mapped to framework control"
-                        />
+                        <span title="Mapped to framework control">
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                        </span>
                       ) : (
-                        <AlertTriangle 
-                          className="w-4 h-4 text-orange-500" 
-                          title="Not mapped to any framework"
-                        />
+                        <span title="Not mapped to any framework">
+                          <AlertTriangle className="w-4 h-4 text-orange-500" />
+                        </span>
                       )}
                       <Link
                         to={`/requirements/${req.id}`}
@@ -272,9 +289,15 @@ export function RequirementsList() {
           </table>
 
           {filteredRequirements.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-slate-500">No requirements found</p>
-            </div>
+            <EmptyState
+              icon={FileText}
+              title="No requirements found"
+              description={searchTerm || typeFilter || statusFilter ? "Try adjusting your search or filters." : "Add your first requirement to get started."}
+              action={searchTerm || typeFilter || statusFilter ? {
+                label: "Clear filters",
+                onClick: () => { setSearchTerm(""); setTypeFilter(""); setStatusFilter(""); },
+              } : undefined}
+            />
           )}
         </div>
       </div>

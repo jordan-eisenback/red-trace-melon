@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import {
   BookOpen,
   Search,
@@ -270,9 +271,9 @@ export default function HelpCenter() {
             };
 
             return (
-              <a
+              <Link
                 key={link.title}
-                href={link.link}
+                to={link.link}
                 className="p-4 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all group"
               >
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 ${colorClasses[link.color as keyof typeof colorClasses]}`}>
@@ -285,7 +286,7 @@ export default function HelpCenter() {
                 <div className="mt-3 text-sm text-purple-600 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                   Go <ChevronRight className="w-4 h-4" />
                 </div>
-              </a>
+              </Link>
             );
           })}
         </div>

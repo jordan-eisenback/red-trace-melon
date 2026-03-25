@@ -8,10 +8,12 @@ interface TreeNodeProps {
   requirement: Requirement;
   children: Requirement[];
   level: number;
+  forceExpanded?: boolean;
 }
 
-function TreeNode({ requirement, children, level }: TreeNodeProps) {
+function TreeNode({ requirement, children, level, forceExpanded }: TreeNodeProps) {
   const [isExpanded, setIsExpanded] = useState(level < 2);
+  const expanded = forceExpanded !== undefined ? forceExpanded : isExpanded;
 
   const hasChildren = children.length > 0;
   const indent = level * 24;
@@ -28,7 +30,7 @@ function TreeNode({ requirement, children, level }: TreeNodeProps) {
           disabled={!hasChildren}
         >
           {hasChildren ? (
-            isExpanded ? (
+            expanded ? (
               <ChevronDown className="w-4 h-4" />
             ) : (
               <ChevronRight className="w-4 h-4" />
@@ -57,10 +59,10 @@ function TreeNode({ requirement, children, level }: TreeNodeProps) {
         </Link>
       </div>
 
-      {hasChildren && isExpanded && (
+      {hasChildren && expanded && (
         <div>
           {children.map((child) => (
-            <TreeNodeContainer key={child.id} requirement={child} level={level + 1} />
+            <TreeNodeContainer key={child.id} requirement={child} level={level + 1} forceExpanded={forceExpanded} />
           ))}
         </div>
       )}
@@ -71,19 +73,21 @@ function TreeNode({ requirement, children, level }: TreeNodeProps) {
 function TreeNodeContainer({
   requirement,
   level,
+  forceExpanded,
 }: {
   requirement: Requirement;
   level: number;
+  forceExpanded?: boolean;
 }) {
   const { getChildren } = useRequirements();
   const children = getChildren(requirement.id);
 
-  return <TreeNode requirement={requirement} children={children} level={level} />;
+  return <TreeNode requirement={requirement} children={children} level={level} forceExpanded={forceExpanded} />;
 }
 
 export function HierarchyView() {
   const { requirements } = useRequirements();
-  const [expandAll, setExpandAll] = useState(false);
+  const [expandAll, setExpandAll] = useState<boolean | undefined>(undefined);
 
   const rootRequirements = useMemo(() => {
     return requirements.filter((req) => !req.parent || req.parent === "None");
@@ -111,10 +115,10 @@ export function HierarchyView() {
             </p>
           </div>
           <button
-            onClick={() => setExpandAll(!expandAll)}
+            onClick={() => setExpandAll(prev => prev === true ? false : true)}
             className="px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
           >
-            {expandAll ? "Collapse All" : "Expand All"}
+            {expandAll === true ? "Collapse All" : "Expand All"}
           </button>
         </div>
       </div>
@@ -135,7 +139,7 @@ export function HierarchyView() {
             </div>
             <div className="p-2">
               {reqs.map((req) => (
-                <TreeNodeContainer key={req.id} requirement={req} level={0} />
+                <TreeNodeContainer key={req.id} requirement={req} level={0} forceExpanded={expandAll} />
               ))}
             </div>
           </div>
