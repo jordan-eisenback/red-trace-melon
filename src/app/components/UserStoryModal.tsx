@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Plus, Trash2 } from "lucide-react";
+import { X, Plus, Trash2, Pencil, Check } from "lucide-react";
 import { UserStory } from "../types/epic";
 import { useEpics } from "../contexts/EpicContext";
 import { useRequirements } from "../context/RequirementsContext";
@@ -32,6 +32,8 @@ export default function UserStoryModal({ story, onClose }: UserStoryModalProps) 
 
   const [selectedReqs, setSelectedReqs] = useState<string[]>(story?.requirements || []);
   const [newAC, setNewAC] = useState("");
+  const [editingACIndex, setEditingACIndex] = useState<number | null>(null);
+  const [editingACValue, setEditingACValue] = useState("");
 
   useEffect(() => {
     if (!isEditing) {
@@ -84,6 +86,20 @@ export default function UserStoryModal({ story, onClose }: UserStoryModalProps) 
       ...formData,
       acceptanceCriteria: formData.acceptanceCriteria.filter((_, i) => i !== index),
     });
+  };
+
+  const startEditingAC = (index: number) => {
+    setEditingACIndex(index);
+    setEditingACValue(formData.acceptanceCriteria[index]);
+  };
+
+  const saveEditingAC = () => {
+    if (editingACIndex === null) return;
+    const updated = [...formData.acceptanceCriteria];
+    updated[editingACIndex] = editingACValue.trim() || updated[editingACIndex];
+    setFormData({ ...formData, acceptanceCriteria: updated });
+    setEditingACIndex(null);
+    setEditingACValue("");
   };
 
   return (
@@ -163,12 +179,32 @@ export default function UserStoryModal({ story, onClose }: UserStoryModalProps) 
             <div className="space-y-2">
               {formData.acceptanceCriteria.map((ac, index) => (
                 <div key={index} className="flex items-start gap-2 bg-gray-50 p-2 rounded">
-                  <span className="text-sm text-gray-600 mt-1">{index + 1}.</span>
-                  <span className="flex-1 text-sm text-gray-900">{ac}</span>
+                  <span className="text-sm text-gray-600 mt-1 w-4 shrink-0">{index + 1}.</span>
+                  {editingACIndex === index ? (
+                    <>
+                      <input
+                        autoFocus
+                        value={editingACValue}
+                        onChange={(e) => setEditingACValue(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); saveEditingAC(); } if (e.key === "Escape") setEditingACIndex(null); }}
+                        className="flex-1 px-2 py-0.5 border border-blue-400 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      />
+                      <button type="button" onClick={saveEditingAC} className="text-green-600 hover:text-green-700 mt-0.5" title="Save">
+                        <Check className="w-4 h-4" />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <span className="flex-1 text-sm text-gray-900">{ac}</span>
+                      <button type="button" onClick={() => startEditingAC(index)} className="text-gray-400 hover:text-blue-600 mt-0.5" title="Edit">
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                    </>
+                  )}
                   <button
                     type="button"
                     onClick={() => removeAcceptanceCriteria(index)}
-                    className="text-red-600 hover:text-red-700"
+                    className="text-red-600 hover:text-red-700 mt-0.5"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

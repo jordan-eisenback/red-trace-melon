@@ -13,11 +13,172 @@ import {
   AlertCircle,
   MinusCircle,
   Link2,
+  X,
 } from "lucide-react";
 import { Framework, Control } from "../types/framework";
 import { GapAnalysisPanel } from "../components/GapAnalysisPanel";
 import { RequirementMappingModal } from "../components/RequirementMappingModal";
 import { HelpTooltip, InfoTooltip } from "../components/HelpTooltip";
+
+// ─── Framework modal ────────────────────────────────────────────────────────
+interface FrameworkModalProps {
+  framework: Framework | null; // null = create
+  onClose: () => void;
+}
+
+function FrameworkModal({ framework, onClose }: FrameworkModalProps) {
+  const { addFramework, updateFramework, frameworks } = useFrameworks();
+  const isEditing = framework !== null;
+
+  const [form, setForm] = useState<Omit<Framework, "controls">>(() =>
+    framework
+      ? { id: framework.id, name: framework.name, version: framework.version, description: framework.description, category: framework.category, isActive: framework.isActive, effectiveDate: framework.effectiveDate ?? "", notes: framework.notes ?? "" }
+      : { id: "", name: "", version: "", description: "", category: "Compliance", isActive: true, effectiveDate: "", notes: "" }
+  );
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isEditing) {
+      updateFramework(framework.id, { ...framework, ...form });
+    } else {
+      const nextNum = frameworks.length + 1;
+      addFramework({ ...form, id: form.id || `FW-${nextNum}`, controls: [] });
+    }
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">{isEditing ? "Edit Framework" : "Add Framework"}</h2>
+          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg"><X className="w-4 h-4" /></button>
+        </div>
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">ID</label>
+              <input value={form.id} onChange={(e) => setForm((p) => ({ ...p, id: e.target.value }))} disabled={isEditing} placeholder="e.g. FW-5" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Version</label>
+              <input value={form.version} onChange={(e) => setForm((p) => ({ ...p, version: e.target.value }))} placeholder="e.g. 2022" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+            <input required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="e.g. ISO 27001" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea rows={2} value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value as Framework["category"] }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {["Compliance", "Security", "Privacy", "Quality", "Other"].map((c) => <option key={c}>{c}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Effective Date</label>
+              <input type="date" value={form.effectiveDate ?? ""} onChange={(e) => setForm((p) => ({ ...p, effectiveDate: e.target.value }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="isActive" checked={form.isActive} onChange={(e) => setForm((p) => ({ ...p, isActive: e.target.checked }))} className="rounded" />
+            <label htmlFor="isActive" className="text-sm font-medium text-gray-700">Active</label>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <textarea rows={2} value={form.notes ?? ""} onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+          </div>
+          <div className="flex justify-end gap-3 pt-2">
+            <button type="button" onClick={onClose} className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Cancel</button>
+            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">{isEditing ? "Save Changes" : "Add Framework"}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ─── Control modal ───────────────────────────────────────────────────────────
+interface ControlModalProps {
+  frameworkId: string;
+  control: Control | null; // null = create
+  onClose: () => void;
+}
+
+function ControlModal({ frameworkId, control, onClose }: ControlModalProps) {
+  const { addControl, updateControl } = useFrameworks();
+  const isEditing = control !== null;
+
+  const [form, setForm] = useState<Omit<Control, "requirements">>(() =>
+    control
+      ? { id: control.id, frameworkId: control.frameworkId, controlId: control.controlId, title: control.title, description: control.description, category: control.category ?? "", priority: control.priority ?? "Medium", notes: control.notes ?? "" }
+      : { id: "", frameworkId, controlId: "", title: "", description: "", category: "", priority: "Medium", notes: "" }
+  );
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isEditing) {
+      updateControl(frameworkId, control.id, { ...control, ...form });
+    } else {
+      addControl(frameworkId, {
+        ...form,
+        id: form.id || `${frameworkId}-${form.controlId || Date.now()}`,
+        requirements: [],
+      });
+    }
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">{isEditing ? "Edit Control" : "Add Control"}</h2>
+          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg"><X className="w-4 h-4" /></button>
+        </div>
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Control ID *</label>
+              <input required value={form.controlId} onChange={(e) => setForm((p) => ({ ...p, controlId: e.target.value }))} placeholder="e.g. AC-1" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+              <select value={form.priority ?? "Medium"} onChange={(e) => setForm((p) => ({ ...p, priority: e.target.value as Control["priority"] }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {["Critical", "High", "Medium", "Low"].map((p) => <option key={p}>{p}</option>)}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+            <input required value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))} placeholder="Control title" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea rows={3} value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <input value={form.category ?? ""} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))} placeholder="e.g. Access Control" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+            <textarea rows={2} value={form.notes ?? ""} onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+          </div>
+          <div className="flex justify-end gap-3 pt-2">
+            <button type="button" onClick={onClose} className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Cancel</button>
+            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">{isEditing ? "Save Changes" : "Add Control"}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
 
 export default function FrameworksAndControls() {
   const { frameworks, deleteFramework, deleteControl } = useFrameworks();
@@ -34,6 +195,10 @@ export default function FrameworksAndControls() {
     controlId: string;
     frameworkId: string;
   } | null>(null);
+
+  // Framework / Control CRUD modal state
+  const [frameworkModal, setFrameworkModal] = useState<{ framework: Framework | null } | null>(null);
+  const [controlModal, setControlModal] = useState<{ frameworkId: string; control: Control | null } | null>(null);
 
   const toggleFramework = (frameworkId: string) => {
     setExpandedFrameworks((prev) => {
@@ -155,7 +320,9 @@ export default function FrameworksAndControls() {
               Map requirements to compliance frameworks and security controls
             </p>
           </div>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+          <button
+            onClick={() => setFrameworkModal({ framework: null })}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
             <Plus className="w-4 h-4" />
             Add Framework
           </button>
@@ -298,6 +465,7 @@ export default function FrameworksAndControls() {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
+                              setFrameworkModal({ framework });
                             }}
                             className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           >
@@ -322,6 +490,14 @@ export default function FrameworksAndControls() {
                 {isExpanded && framework.controls.length > 0 && (
                   <div className="border-t border-gray-200 bg-gray-50">
                     <div className="p-4 space-y-3">
+                      <div className="flex justify-end mb-1">
+                        <button
+                          onClick={() => setControlModal({ frameworkId: framework.id, control: null })}
+                          className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                        >
+                          <Plus className="w-3 h-3" /> Add Control
+                        </button>
+                      </div>
                       {framework.controls.map((control) => {
                         const isControlExpanded = expandedControls.has(control.id);
 
@@ -382,6 +558,7 @@ export default function FrameworksAndControls() {
                                       <button
                                         onClick={(e) => {
                                           e.stopPropagation();
+                                          setControlModal({ frameworkId: framework.id, control });
                                         }}
                                         className="p-1.5 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                                       >
@@ -489,7 +666,10 @@ export default function FrameworksAndControls() {
                 {isExpanded && framework.controls.length === 0 && (
                   <div className="border-t border-gray-200 bg-gray-50 p-8 text-center">
                     <p className="text-sm text-gray-500">No controls defined for this framework</p>
-                    <button className="mt-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    <button
+                      onClick={() => setControlModal({ frameworkId: framework.id, control: null })}
+                      className="mt-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                    >
                       Add Control
                     </button>
                   </div>
@@ -514,6 +694,23 @@ export default function FrameworksAndControls() {
           controlId={mappingModal.controlId}
           frameworkId={mappingModal.frameworkId}
           onClose={() => setMappingModal(null)}
+        />
+      )}
+
+      {/* Framework add/edit modal */}
+      {frameworkModal && (
+        <FrameworkModal
+          framework={frameworkModal.framework}
+          onClose={() => setFrameworkModal(null)}
+        />
+      )}
+
+      {/* Control add/edit modal */}
+      {controlModal && (
+        <ControlModal
+          frameworkId={controlModal.frameworkId}
+          control={controlModal.control}
+          onClose={() => setControlModal(null)}
         />
       )}
     </div>
