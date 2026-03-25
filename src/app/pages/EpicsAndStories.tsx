@@ -7,6 +7,7 @@ import { Plus, Edit, Trash2, Search, Filter, Map } from "lucide-react";
 import { Epic, UserStory } from "../types/epic";
 import EpicModal from "../components/EpicModal";
 import UserStoryModal from "../components/UserStoryModal";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 
 type ViewMode = "epics" | "stories";
 
@@ -40,6 +41,7 @@ export default function EpicsAndStories() {
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
   const [selectedEpic, setSelectedEpic] = useState<Epic | null>(null);
   const [selectedStory, setSelectedStory] = useState<UserStory | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'epic' | 'story'; id: string; label: string } | null>(null);
 
   // Filtering
   const filteredEpics = epics.filter((epic) => {
@@ -68,9 +70,8 @@ export default function EpicsAndStories() {
   };
 
   const handleDeleteEpic = (id: string) => {
-    if (confirm("Are you sure you want to delete this epic and all its stories?")) {
-      deleteEpic(id);
-    }
+    const epic = epics.find(e => e.id === id);
+    setDeleteConfirm({ type: 'epic', id, label: epic?.title ?? id });
   };
 
   const handleEditStory = (story: UserStory) => {
@@ -79,9 +80,8 @@ export default function EpicsAndStories() {
   };
 
   const handleDeleteStory = (id: string) => {
-    if (confirm("Are you sure you want to delete this user story?")) {
-      deleteUserStory(id);
-    }
+    const story = userStories.find(s => s.id === id);
+    setDeleteConfirm({ type: 'story', id, label: story?.title ?? id });
   };
 
   const handleAddEpic = () => {
@@ -751,6 +751,25 @@ export default function EpicsAndStories() {
       {isStoryModalOpen && (
         <UserStoryModal story={selectedStory} onClose={() => setIsStoryModalOpen(false)} />
       )}
+
+      <ConfirmDialog
+        open={!!deleteConfirm}
+        onOpenChange={(open) => { if (!open) setDeleteConfirm(null); }}
+        title={deleteConfirm?.type === 'epic' ? 'Delete Epic' : 'Delete User Story'}
+        description={
+          deleteConfirm?.type === 'epic'
+            ? `Are you sure you want to delete "${deleteConfirm.label}" and all its stories? This action cannot be undone.`
+            : `Are you sure you want to delete "${deleteConfirm?.label}"? This action cannot be undone.`
+        }
+        confirmLabel="Delete"
+        onConfirm={() => {
+          if (!deleteConfirm) return;
+          if (deleteConfirm.type === 'epic') deleteEpic(deleteConfirm.id);
+          else deleteUserStory(deleteConfirm.id);
+          setDeleteConfirm(null);
+        }}
+        variant="danger"
+      />
     </div>
   );
 }

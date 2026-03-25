@@ -5,6 +5,7 @@ import { useEpics } from "../contexts/EpicContext";
 import { ArrowLeft, Edit, Trash2, Network, Users, Shield, BookOpen, Map, GitBranch } from "lucide-react";
 import { useState } from "react";
 import { RequirementFormDialog } from "../components/RequirementFormDialog";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 
 export function RequirementDetail() {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +14,7 @@ export function RequirementDetail() {
   const { frameworks } = useFrameworks();
   const { epics, userStories, storyMap } = useEpics();
   const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const requirement = id ? getRequirement(id) : undefined;
   const children = id ? getChildren(id) : [];
@@ -57,10 +59,8 @@ export function RequirementDetail() {
   }
 
   const handleDelete = () => {
-    if (confirm(`Are you sure you want to delete requirement ${requirement.id}?`)) {
-      deleteRequirement(requirement.id);
-      navigate("/");
-    }
+    deleteRequirement(requirement.id);
+    navigate("/");
   };
 
   return (
@@ -82,7 +82,7 @@ export function RequirementDetail() {
             Edit
           </button>
           <button
-            onClick={handleDelete}
+            onClick={() => setShowDeleteDialog(true)}
             className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
@@ -288,6 +288,16 @@ export function RequirementDetail() {
         open={showEditDialog}
         onClose={() => setShowEditDialog(false)}
         requirement={requirement}
+      />
+
+      <ConfirmDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        title="Delete Requirement"
+        description={`Are you sure you want to delete requirement ${requirement.id}? This action cannot be undone.`}
+        confirmLabel="Delete"
+        onConfirm={handleDelete}
+        variant="danger"
       />
     </div>
   );

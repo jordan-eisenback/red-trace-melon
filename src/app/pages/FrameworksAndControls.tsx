@@ -18,6 +18,7 @@ import {
 import { Framework, Control } from "../types/framework";
 import { GapAnalysisPanel } from "../components/GapAnalysisPanel";
 import { RequirementMappingModal } from "../components/RequirementMappingModal";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { HelpTooltip, InfoTooltip } from "../components/HelpTooltip";
 
 // ─── Framework modal ────────────────────────────────────────────────────────
@@ -199,6 +200,11 @@ export default function FrameworksAndControls() {
   // Framework / Control CRUD modal state
   const [frameworkModal, setFrameworkModal] = useState<{ framework: Framework | null } | null>(null);
   const [controlModal, setControlModal] = useState<{ frameworkId: string; control: Control | null } | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    title: string;
+    description: string;
+    onConfirm: () => void;
+  } | null>(null);
 
   const toggleFramework = (frameworkId: string) => {
     setExpandedFrameworks((prev) => {
@@ -244,15 +250,19 @@ export default function FrameworksAndControls() {
   };
 
   const handleDeleteFramework = (id: string, name: string) => {
-    if (confirm(`Are you sure you want to delete the "${name}" framework and all its controls?`)) {
-      deleteFramework(id);
-    }
+    setDeleteConfirm({
+      title: 'Delete Framework',
+      description: `Are you sure you want to delete the "${name}" framework and all its controls? This action cannot be undone.`,
+      onConfirm: () => { deleteFramework(id); setDeleteConfirm(null); },
+    });
   };
 
   const handleDeleteControl = (frameworkId: string, controlId: string, title: string) => {
-    if (confirm(`Are you sure you want to delete control "${title}"?`)) {
-      deleteControl(frameworkId, controlId);
-    }
+    setDeleteConfirm({
+      title: 'Delete Control',
+      description: `Are you sure you want to delete control "${title}"? This action cannot be undone.`,
+      onConfirm: () => { deleteControl(frameworkId, controlId); setDeleteConfirm(null); },
+    });
   };
 
   const getRequirementTitle = (reqId: string): string => {
@@ -713,6 +723,16 @@ export default function FrameworksAndControls() {
           onClose={() => setControlModal(null)}
         />
       )}
+
+      <ConfirmDialog
+        open={!!deleteConfirm}
+        onOpenChange={(open) => { if (!open) setDeleteConfirm(null); }}
+        title={deleteConfirm?.title ?? 'Delete'}
+        description={deleteConfirm?.description ?? ''}
+        confirmLabel="Delete"
+        onConfirm={() => deleteConfirm?.onConfirm()}
+        variant="danger"
+      />
     </div>
   );
 }
