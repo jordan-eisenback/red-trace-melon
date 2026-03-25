@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { useEpics } from "../contexts/EpicContext";
 import { useRequirements } from "../context/RequirementsContext";
 import { toast } from "sonner";
@@ -386,9 +387,21 @@ export default function EpicsAndStories() {
                         <span>Owner: {epic.owner}</span>
                         <span>•</span>
                         <span>{storyCount} stories</span>
-                        <span>•</span>
-                        <span>{epic.requirements.length} requirements</span>
                       </div>
+                      {epic.requirements.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {epic.requirements.map((reqId) => (
+                            <Link
+                              key={reqId}
+                              to={`/requirements/${reqId}`}
+                              className="font-mono text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200 transition-colors"
+                              title={getRequirement(reqId)?.req}
+                            >
+                              {reqId}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
                       {epic.notes && (
                         <p className="text-sm text-gray-500 italic mt-2">Note: {epic.notes}</p>
                       )}
@@ -494,9 +507,18 @@ export default function EpicsAndStories() {
                                 )}
                                 {story.requirements && story.requirements.length > 0 && (
                                   <div className="text-sm text-gray-700 mb-2">
-                                    <div className="font-medium text-gray-800">Requirements</div>
-                                    <div className="text-xs text-gray-600">
-                                      {story.requirements.join(', ')}
+                                    <div className="font-medium text-gray-800 mb-1">Requirements</div>
+                                    <div className="flex flex-wrap gap-1">
+                                      {story.requirements.map((reqId) => (
+                                        <Link
+                                          key={reqId}
+                                          to={`/requirements/${reqId}`}
+                                          className="font-mono text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200 transition-colors"
+                                          title={getRequirement(reqId)?.req}
+                                        >
+                                          {reqId}
+                                        </Link>
+                                      ))}
                                     </div>
                                   </div>
                                 )}
@@ -649,9 +671,24 @@ export default function EpicsAndStories() {
                       )}
                       <div className="flex items-center gap-4 text-sm text-gray-500">
                         {story.assignee && <span>Assignee: {story.assignee}</span>}
-                        {story.assignee && story.requirements.length > 0 && <span>•</span>}
-                        <span>{story.requirements.length} requirements</span>
                       </div>
+                      {story.requirements.length > 0 && (
+                        <div className="mt-2">
+                          <div className="text-sm font-medium text-gray-700 mb-1">Requirements</div>
+                          <div className="flex flex-wrap gap-1">
+                            {story.requirements.map((reqId) => (
+                              <Link
+                                key={reqId}
+                                to={`/requirements/${reqId}`}
+                                className="font-mono text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200 transition-colors"
+                                title={getRequirement(reqId)?.req}
+                              >
+                                {reqId}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                       {story.notes && (
                         <p className="text-sm text-gray-500 italic mt-2">Note: {story.notes}</p>
                       )}

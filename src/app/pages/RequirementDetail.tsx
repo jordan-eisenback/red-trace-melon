@@ -1,6 +1,8 @@
 import { useParams, Link, useNavigate } from "react-router";
 import { useRequirements } from "../context/RequirementsContext";
-import { ArrowLeft, Edit, Trash2, Network, Users } from "lucide-react";
+import { useFrameworks } from "../contexts/FrameworkContext";
+import { useEpics } from "../contexts/EpicContext";
+import { ArrowLeft, Edit, Trash2, Network, Users, Shield, BookOpen, Map, GitBranch } from "lucide-react";
 import { useState } from "react";
 import { RequirementFormDialog } from "../components/RequirementFormDialog";
 
@@ -8,11 +10,40 @@ export function RequirementDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { getRequirement, getChildren, getParent, deleteRequirement } = useRequirements();
+  const { frameworks } = useFrameworks();
+  const { epics, userStories, storyMap } = useEpics();
   const [showEditDialog, setShowEditDialog] = useState(false);
 
   const requirement = id ? getRequirement(id) : undefined;
   const children = id ? getChildren(id) : [];
   const parent = id ? getParent(id) : undefined;
+
+  // Cross-link lookups
+  const linkedControls = id
+    ? frameworks.flatMap((f) =>
+        f.controls
+          .filter((c) => c.requirements.includes(id))
+          .map((c) => ({ framework: f, control: c }))
+      )
+    : [];
+
+  const linkedEpics = id
+    ? epics.filter((e) => e.requirements.includes(id))
+    : [];
+
+  const linkedStories = id
+    ? userStories.filter((s) => s.requirements.includes(id))
+    : [];
+
+  const linkedSteps = id
+    ? storyMap.flatMap((outcome) =>
+        outcome.activities.flatMap((activity) =>
+          activity.steps
+            .filter((step) => step.requirementId === id)
+            .map((step) => ({ outcome, activity, step }))
+        )
+      )
+    : [];
 
   if (!requirement) {
     return (
@@ -147,6 +178,109 @@ export function RequirementDetail() {
               </Link>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* ── Traceability cross-links ─────────────────────────────────── */}
+      {(linkedControls.length > 0 || linkedEpics.length > 0 || linkedStories.length > 0 || linkedSteps.length > 0) && (
+        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 space-y-6">
+          <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+            <GitBranch className="w-5 h-5 text-purple-600" />
+            Traceability
+          </h3>
+
+          {/* Framework Controls */}
+          {linkedControls.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-blue-600" />
+                Framework Controls ({linkedControls.length})
+              </h4>
+              <div className="space-y-2">
+                {linkedControls.map(({ framework, control }) => (
+                  <Link
+                    key={control.id}
+                    to="/frameworks"
+                    className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
+                  >
+                    <span className="font-mono text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">{control.controlId}</span>
+                    <span className="text-sm text-slate-900 flex-1 line-clamp-1">{control.title}</span>
+                    <span className="text-xs text-slate-500 shrink-0">{framework.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Epics */}
+          {linkedEpics.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
+                <BookOpen className="w-4 h-4 text-green-600" />
+                Epics ({linkedEpics.length})
+              </h4>
+              <div className="space-y-2">
+                {linkedEpics.map((epic) => (
+                  <Link
+                    key={epic.id}
+                    to="/epics"
+                    className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors"
+                  >
+                    <span className="font-mono text-xs bg-green-100 text-green-700 px-2 py-1 rounded">{epic.id}</span>
+                    <span className="text-sm text-slate-900 flex-1 line-clamp-1">{epic.title}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${epic.priority === 'High' ? 'bg-orange-100 text-orange-700' : epic.priority === 'Low' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{epic.priority}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* User Stories */}
+          {linkedStories.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
+                <Users className="w-4 h-4 text-violet-600" />
+                User Stories ({linkedStories.length})
+              </h4>
+              <div className="space-y-2">
+                {linkedStories.map((story) => (
+                  <Link
+                    key={story.id}
+                    to="/epics"
+                    className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:border-violet-300 hover:bg-violet-50 transition-colors"
+                  >
+                    <span className="font-mono text-xs bg-violet-100 text-violet-700 px-2 py-1 rounded">{story.id}</span>
+                    <span className="text-sm text-slate-900 flex-1 line-clamp-1">{story.title}</span>
+                    <span className="text-xs text-slate-500 shrink-0">{story.epicId}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Story Map Steps */}
+          {linkedSteps.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
+                <Map className="w-4 h-4 text-amber-600" />
+                Story Map Steps ({linkedSteps.length})
+              </h4>
+              <div className="space-y-2">
+                {linkedSteps.map(({ outcome, activity, step }) => (
+                  <Link
+                    key={step.id}
+                    to="/story-mapping"
+                    className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:border-amber-300 hover:bg-amber-50 transition-colors"
+                  >
+                    <span className="text-sm text-slate-900 flex-1 line-clamp-1">{step.title}</span>
+                    <span className="text-xs text-slate-500 shrink-0 hidden sm:block">
+                      {outcome.title} › {activity.title}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
