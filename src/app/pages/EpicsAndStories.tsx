@@ -8,6 +8,7 @@ import { Epic, UserStory } from "../types/epic";
 import EpicModal from "../components/EpicModal";
 import UserStoryModal from "../components/UserStoryModal";
 import { ConfirmDialog } from "../components/ConfirmDialog";
+import { Tip } from "../components/Tip";
 
 type ViewMode = "epics" | "stories";
 
@@ -374,19 +375,23 @@ export default function EpicsAndStories() {
                         <p className="text-sm text-gray-500 italic mt-2">Note: {epic.notes}</p>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 ml-4">
-                      <button
-                        onClick={() => handleEditEpic(epic)}
-                        className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteEpic(epic.id)}
-                        className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                    <div className="flex items-center gap-1 ml-4">
+                      <Tip label="Edit epic">
+                        <button
+                          onClick={() => handleEditEpic(epic)}
+                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                      </Tip>
+                      <Tip label="Delete epic and all its stories">
+                        <button
+                          onClick={() => handleDeleteEpic(epic.id)}
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </Tip>
                     </div>
                   </div>
 
@@ -694,19 +699,23 @@ export default function EpicsAndStories() {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 ml-4">
-                      <button
-                        onClick={() => handleEditStory(story)}
-                        className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteStory(story.id)}
-                        className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                    <div className="flex items-center gap-1 ml-4">
+                      <Tip label="Edit story">
+                        <button
+                          onClick={() => handleEditStory(story)}
+                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                      </Tip>
+                      <Tip label="Delete story">
+                        <button
+                          onClick={() => handleDeleteStory(story.id)}
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </Tip>
                     </div>
                   </div>
                 </div>

@@ -9,6 +9,7 @@ import { ConfirmDialog } from "../components/ConfirmDialog";
 import { EmptyState } from "../components/EmptyState";
 import { RequirementValidationPanel } from "../components/RequirementValidationPanel";
 import { HelpTooltip, InfoTooltip } from "../components/HelpTooltip";
+import { Tip } from "../components/Tip";
 import { Requirement } from "../types/requirement";
 import { exportToExcel } from "../utils/excelExport";
 import { toast } from "sonner";
@@ -120,22 +121,24 @@ export function RequirementsList() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={handleExportToExcel}
-            className="px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
-            title="Export all requirements, framework mappings, epics, and user stories to an Excel workbook with 8 comprehensive sheets including a full traceability matrix."
-          >
-            <Download className="w-4 h-4" />
-            Export to Excel
-          </button>
-          <button
-            onClick={() => setShowValidation(!showValidation)}
-            className="px-4 py-2 text-sm font-medium text-purple-600 hover:text-purple-700 flex items-center gap-2"
-            title="Toggle the AI-powered validation panel to view quality scores, validation issues, and smart suggestions for improving requirements."
-          >
-            <Sparkles className="w-4 h-4" />
-            {showValidation ? "Hide" : "Show"} Validation
-          </button>
+          <Tip label="Export all requirements, mappings, epics, and stories to an 8-sheet Excel workbook" side="bottom">
+            <button
+              onClick={handleExportToExcel}
+              className="px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+            >
+              <Download className="w-4 h-4" />
+              Export to Excel
+            </button>
+          </Tip>
+          <Tip label={showValidation ? "Hide the quality score and validation panel" : "Show AI-powered quality scores and fix suggestions"} side="bottom">
+            <button
+              onClick={() => setShowValidation(!showValidation)}
+              className="px-4 py-2 text-sm font-medium text-purple-600 hover:text-purple-700 flex items-center gap-2"
+            >
+              <Sparkles className="w-4 h-4" />
+              {showValidation ? "Hide" : "Show"} Validation
+            </button>
+          </Tip>
         </div>
       </div>
 
@@ -216,9 +219,11 @@ export function RequirementsList() {
                 >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <span title="Drag to link to a user story">
-                        <GripVertical className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-400 cursor-grab shrink-0" />
-                      </span>
+                      <Tip label="Drag to link this requirement to a user story" side="left">
+                        <span className="cursor-grab">
+                          <GripVertical className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-400 shrink-0" />
+                        </span>
+                      </Tip>
                       <code className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
                         {req.id}
                       </code>
@@ -250,37 +255,40 @@ export function RequirementsList() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-1.5">
                       {isRequirementMapped(req.id) ? (
-                        <span title="Mapped to framework control">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                        </span>
+                        <Tip label="Mapped to at least one framework control">
+                          <span><CheckCircle className="w-4 h-4 text-green-600" /></span>
+                        </Tip>
                       ) : (
-                        <span title="Not mapped to any framework">
-                          <AlertTriangle className="w-4 h-4 text-orange-500" />
-                        </span>
+                        <Tip label="Not yet mapped to any framework control">
+                          <span><AlertTriangle className="w-4 h-4 text-orange-500" /></span>
+                        </Tip>
                       )}
-                      <Link
-                        to={`/requirements/${req.id}`}
-                        className="p-1 text-slate-600 hover:text-blue-600 transition-colors"
-                        title="View details"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </Link>
-                      <button
-                        onClick={() => setEditingRequirement(req)}
-                        className="p-1 text-slate-600 hover:text-blue-600 transition-colors"
-                        title="Edit"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(req.id)}
-                        className="p-1 text-slate-600 hover:text-red-600 transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <Tip label="View full details and traceability">
+                        <Link
+                          to={`/requirements/${req.id}`}
+                          className="p-1 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Link>
+                      </Tip>
+                      <Tip label="Edit this requirement">
+                        <button
+                          onClick={() => setEditingRequirement(req)}
+                          className="p-1 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                      </Tip>
+                      <Tip label="Delete this requirement">
+                        <button
+                          onClick={() => handleDelete(req.id)}
+                          className="p-1 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </Tip>
                     </div>
                   </td>
                 </tr>

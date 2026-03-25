@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Workstream, WorkstreamLayer } from "../types/workstream";
 import { initialWorkstreams } from "../data/initial-workstreams";
+import { Tip } from "../components/Tip";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -478,12 +479,16 @@ function SwimlaneView({ workstreams, onEdit, onDelete, onSelect, selectedId }: S
                         )}
                       </div>
                       <div className="flex items-center gap-1 shrink-0 ml-2">
-                        <button onClick={() => onEdit(ws)} className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors">
-                          <Edit className="w-3.5 h-3.5" />
-                        </button>
-                        <button onClick={() => onDelete(ws.id)} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                        <Tip label="Edit workstream">
+                          <button onClick={() => onEdit(ws)} className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors">
+                            <Edit className="w-3.5 h-3.5" />
+                          </button>
+                        </Tip>
+                        <Tip label="Delete workstream">
+                          <button onClick={() => onDelete(ws.id)} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </Tip>
                       </div>
                     </div>
                     {isExpanded && (
@@ -533,8 +538,12 @@ function DetailPanel({ ws, allWorkstreams, onEdit, onClose }: DetailPanelProps) 
           <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${layer.bg} ${layer.color}`}>{layer.label}</span>
         </div>
         <div className="flex items-center gap-1">
-          <button onClick={onEdit} className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><Edit className="w-3.5 h-3.5" /></button>
-          <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors"><X className="w-3.5 h-3.5" /></button>
+          <Tip label="Edit this workstream">
+            <button onClick={onEdit} className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><Edit className="w-3.5 h-3.5" /></button>
+          </Tip>
+          <Tip label="Close detail panel">
+            <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors"><X className="w-3.5 h-3.5" /></button>
+          </Tip>
         </div>
       </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -659,12 +668,14 @@ export default function WorkstreamsPage() {
               <p className="text-indigo-200 text-sm mt-0.5">High-level workstreams, activities, and dependency sequencing</p>
             </div>
           </div>
-          <button
-            onClick={() => setModal({ ws: null })}
-            className="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur border border-white/30 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
-          >
-            <Plus className="w-4 h-4" /> Add Workstream
-          </button>
+          <Tip label="Add a new workstream" side="bottom">
+            <button
+              onClick={() => setModal({ ws: null })}
+              className="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur border border-white/30 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
+            >
+              <Plus className="w-4 h-4" /> Add Workstream
+            </button>
+          </Tip>
         </div>
 
         {/* Stats */}
@@ -688,18 +699,22 @@ export default function WorkstreamsPage() {
       {/* Toolbar */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
-          <button
-            onClick={() => setViewMode('swimlane')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'swimlane' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
-          >
-            <Layers className="w-4 h-4" /> Swimlane
-          </button>
-          <button
-            onClick={() => setViewMode('graph')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'graph' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
-          >
-            <Network className="w-4 h-4" /> Dependency Graph
-          </button>
+          <Tip label="View workstreams grouped by layer" side="bottom">
+            <button
+              onClick={() => setViewMode('swimlane')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'swimlane' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
+            >
+              <Layers className="w-4 h-4" /> Swimlane
+            </button>
+          </Tip>
+          <Tip label="View dependency relationships between workstreams" side="bottom">
+            <button
+              onClick={() => setViewMode('graph')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'graph' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
+            >
+              <Network className="w-4 h-4" /> Dependency Graph
+            </button>
+          </Tip>
         </div>
         {selectedId && (
           <button onClick={() => setSelectedId(null)} className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">

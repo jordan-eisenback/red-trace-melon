@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import type { StoryMapOutcome, StoryMapActivity, StoryMapStep } from "../types/storymap";
 import type { UserStory } from "../types/epic";
 import { computeAutoLinks, previewAutoLinks, type AutoLinkResult } from "../utils/autolinkStories";
+import { Tip } from "../components/Tip";
 
 // ── colour maps ────────────────────────────────────────────────────────────────
 const PHASE_COLORS: Record<string, string> = {
@@ -467,32 +468,42 @@ export default function StoryMapping() {
           <p className="text-sm text-gray-500">HR &amp; IAM identity lifecycle — {source.length} outcomes · {source.flatMap(o => o.activities).length} activities</p>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <button
-            onClick={() => setCoverageOpen(v => !v)}
-            className="px-3 py-1.5 text-sm bg-white border rounded flex items-center gap-1.5 hover:bg-gray-50"
-          >
-            <BarChart2 className="w-4 h-4 text-gray-500" />
-            Coverage
-            {coverageData.totalStories - coverageData.linkedCount > 0 && (
-              <span className="bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                {coverageData.totalStories - coverageData.linkedCount}
-              </span>
-            )}
-          </button>
-          <button onClick={exportJSON} className="px-3 py-1.5 text-sm bg-white border rounded hover:bg-gray-50">Export JSON</button>
-          <button onClick={exportCSV}  className="px-3 py-1.5 text-sm bg-white border rounded hover:bg-gray-50">Export CSV</button>
-          <button
-            onClick={openAutoLink}
-            className="px-3 py-1.5 text-sm bg-violet-600 text-white rounded flex items-center gap-1.5 hover:bg-violet-700"
-          >
-            <Zap className="w-4 h-4" />Auto-link
-          </button>
-          <button
-            onClick={() => setCrudTarget({ kind: "outcome" })}
-            className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded flex items-center gap-1.5 hover:bg-blue-700"
-          >
-            <Plus className="w-4 h-4" />Outcome
-          </button>
+          <Tip label="View story coverage — how many stories are linked to map steps" side="bottom">
+            <button
+              onClick={() => setCoverageOpen(v => !v)}
+              className="px-3 py-1.5 text-sm bg-white border rounded flex items-center gap-1.5 hover:bg-gray-50"
+            >
+              <BarChart2 className="w-4 h-4 text-gray-500" />
+              Coverage
+              {coverageData.totalStories - coverageData.linkedCount > 0 && (
+                <span className="bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  {coverageData.totalStories - coverageData.linkedCount}
+                </span>
+              )}
+            </button>
+          </Tip>
+          <Tip label="Download story map as JSON" side="bottom">
+            <button onClick={exportJSON} className="px-3 py-1.5 text-sm bg-white border rounded hover:bg-gray-50">Export JSON</button>
+          </Tip>
+          <Tip label="Download story map as flat CSV spreadsheet" side="bottom">
+            <button onClick={exportCSV}  className="px-3 py-1.5 text-sm bg-white border rounded hover:bg-gray-50">Export CSV</button>
+          </Tip>
+          <Tip label="Auto-suggest story links for each step using keyword and requirement matching" side="bottom">
+            <button
+              onClick={openAutoLink}
+              className="px-3 py-1.5 text-sm bg-violet-600 text-white rounded flex items-center gap-1.5 hover:bg-violet-700"
+            >
+              <Zap className="w-4 h-4" />Auto-link
+            </button>
+          </Tip>
+          <Tip label="Add a new lifecycle outcome to the story map" side="bottom">
+            <button
+              onClick={() => setCrudTarget({ kind: "outcome" })}
+              className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded flex items-center gap-1.5 hover:bg-blue-700"
+            >
+              <Plus className="w-4 h-4" />Outcome
+            </button>
+          </Tip>
         </div>
       </div>
 

@@ -20,6 +20,7 @@ import { GapAnalysisPanel } from "../components/GapAnalysisPanel";
 import { RequirementMappingModal } from "../components/RequirementMappingModal";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { HelpTooltip, InfoTooltip } from "../components/HelpTooltip";
+import { Tip } from "../components/Tip";
 
 // ─── Framework modal ────────────────────────────────────────────────────────
 interface FrameworkModalProps {
@@ -330,12 +331,14 @@ export default function FrameworksAndControls() {
               Map requirements to compliance frameworks and security controls
             </p>
           </div>
-          <button
-            onClick={() => setFrameworkModal({ framework: null })}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-            <Plus className="w-4 h-4" />
-            Add Framework
-          </button>
+          <Tip label="Add a new compliance framework" side="bottom">
+            <button
+              onClick={() => setFrameworkModal({ framework: null })}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+              <Plus className="w-4 h-4" />
+              Add Framework
+            </button>
+          </Tip>
         </div>
       </div>
 
@@ -388,18 +391,22 @@ export default function FrameworksAndControls() {
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={expandAll}
-              className="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              Expand All
-            </button>
-            <button
-              onClick={collapseAll}
-              className="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              Collapse All
-            </button>
+            <Tip label="Expand all frameworks and controls" side="bottom">
+              <button
+                onClick={expandAll}
+                className="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Expand All
+              </button>
+            </Tip>
+            <Tip label="Collapse all frameworks and controls" side="bottom">
+              <button
+                onClick={collapseAll}
+                className="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Collapse All
+              </button>
+            </Tip>
           </div>
         </div>
       </div>
@@ -472,24 +479,28 @@ export default function FrameworksAndControls() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2 ml-4">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setFrameworkModal({ framework });
-                            }}
-                            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteFramework(framework.id, framework.name);
-                            }}
-                            className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <Tip label="Edit framework">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setFrameworkModal({ framework });
+                              }}
+                              className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                          </Tip>
+                          <Tip label="Delete framework and all its controls">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteFramework(framework.id, framework.name);
+                              }}
+                              className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </Tip>
                         </div>
                       </div>
                     </div>
@@ -501,12 +512,14 @@ export default function FrameworksAndControls() {
                   <div className="border-t border-gray-200 bg-gray-50">
                     <div className="p-4 space-y-3">
                       <div className="flex justify-end mb-1">
-                        <button
-                          onClick={() => setControlModal({ frameworkId: framework.id, control: null })}
-                          className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
-                        >
-                          <Plus className="w-3 h-3" /> Add Control
-                        </button>
+                        <Tip label="Add a control to this framework" side="bottom">
+                          <button
+                            onClick={() => setControlModal({ frameworkId: framework.id, control: null })}
+                            className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                          >
+                            <Plus className="w-3 h-3" /> Add Control
+                          </button>
+                        </Tip>
                       </div>
                       {framework.controls.map((control) => {
                         const isControlExpanded = expandedControls.has(control.id);
@@ -565,28 +578,32 @@ export default function FrameworksAndControls() {
                                       </div>
                                     </div>
                                     <div className="flex items-center gap-2 ml-4">
-                                      <button
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setControlModal({ frameworkId: framework.id, control });
-                                        }}
-                                        className="p-1.5 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                                      >
-                                        <Edit className="w-3.5 h-3.5" />
-                                      </button>
-                                      <button
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          handleDeleteControl(
-                                            framework.id,
-                                            control.id,
-                                            control.title
-                                          );
-                                        }}
-                                        className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-                                      >
-                                        <Trash2 className="w-3.5 h-3.5" />
-                                      </button>
+                                      <Tip label="Edit control">
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setControlModal({ frameworkId: framework.id, control });
+                                          }}
+                                          className="p-1.5 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                                        >
+                                          <Edit className="w-3.5 h-3.5" />
+                                        </button>
+                                      </Tip>
+                                      <Tip label="Delete control">
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDeleteControl(
+                                              framework.id,
+                                              control.id,
+                                              control.title
+                                            );
+                                          }}
+                                          className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                                        >
+                                          <Trash2 className="w-3.5 h-3.5" />
+                                        </button>
+                                      </Tip>
                                     </div>
                                   </div>
                                 </div>
@@ -602,15 +619,17 @@ export default function FrameworksAndControls() {
                                       <div className="text-xs font-medium text-gray-700">
                                         Mapped Requirements:
                                       </div>
-                                      <button
-                                        className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
-                                        onClick={() =>
-                                          setMappingModal({ controlId: control.id, frameworkId: framework.id })
-                                        }
-                                      >
-                                        <Link2 className="w-3 h-3" />
-                                        Manage Mappings
-                                      </button>
+                                      <Tip label="Manage requirement mappings for this control" side="left">
+                                        <button
+                                          className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                                          onClick={() =>
+                                            setMappingModal({ controlId: control.id, frameworkId: framework.id })
+                                          }
+                                        >
+                                          <Link2 className="w-3 h-3" />
+                                          Manage Mappings
+                                        </button>
+                                      </Tip>
                                     </div>
                                     <div className="space-y-1">
                                       {control.requirements.map((reqId) => {
@@ -630,15 +649,16 @@ export default function FrameworksAndControls() {
                                                 </p>
                                               )}
                                             </div>
-                                            <button
-                                              onClick={() => {
-                                                // Unmap functionality would go here
-                                              }}
-                                              className="p-1 text-gray-400 hover:text-red-600 transition-colors"
-                                              title="Remove mapping"
-                                            >
-                                              <XCircle className="w-4 h-4" />
-                                            </button>
+                                            <Tip label="Remove requirement mapping" side="left">
+                                              <button
+                                                onClick={() => {
+                                                  // Unmap functionality would go here
+                                                }}
+                                                className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                                              >
+                                                <XCircle className="w-4 h-4" />
+                                              </button>
+                                            </Tip>
                                           </div>
                                         );
                                       })}
