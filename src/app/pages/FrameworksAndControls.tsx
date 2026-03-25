@@ -481,6 +481,7 @@ export default function FrameworksAndControls() {
                         <div className="flex items-center gap-2 ml-4">
                           <Tip label="Edit framework">
                             <button
+                              data-testid="edit-framework"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setFrameworkModal({ framework });

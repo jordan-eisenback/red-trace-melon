@@ -8,6 +8,9 @@ node_modules/
 /scripts/*.csv
 /scripts/*.txt
 
+# Playwright
+/playwright-report/
+/test-results/
 # Script backups (keep current backups in repo if already present, but ignore new ones)
 /scripts/backups/
 
