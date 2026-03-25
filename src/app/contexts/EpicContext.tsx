@@ -17,8 +17,14 @@ interface EpicContextType {
   updateUserStory: (id: string, story: UserStory) => void;
   deleteUserStory: (id: string) => void;
   addOutcome: (outcome: StoryMapOutcome) => void;
+  updateOutcome: (id: string, patch: Partial<StoryMapOutcome>) => void;
+  deleteOutcome: (id: string) => void;
   addActivity: (outcomeId: string, activity: StoryMapActivity) => void;
+  updateActivity: (outcomeId: string, activityId: string, patch: Partial<StoryMapActivity>) => void;
+  deleteActivity: (outcomeId: string, activityId: string) => void;
   addStep: (outcomeId: string, activityId: string, step: StoryMapStep) => void;
+  updateStep: (outcomeId: string, activityId: string, stepId: string, patch: Partial<StoryMapStep>) => void;
+  deleteStep: (outcomeId: string, activityId: string, stepId: string) => void;
   linkStoryToStep: (stepId: string, storyId: string) => void;
   unlinkStoryFromStep: (stepId: string, storyId: string) => void;
   getStoriesByEpic: (epicId: string) => UserStory[];
@@ -108,9 +114,37 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
     setStoryMap((prev) => [...prev, outcome]);
   };
 
+  const updateOutcome = (id: string, patch: Partial<StoryMapOutcome>) => {
+    setStoryMap((prev) => prev.map((o) => (o.id === id ? { ...o, ...patch } : o)));
+  };
+
+  const deleteOutcome = (id: string) => {
+    setStoryMap((prev) => prev.filter((o) => o.id !== id));
+  };
+
   const addActivity = (outcomeId: string, activity: StoryMapActivity) => {
     setStoryMap((prev) =>
       prev.map((o) => (o.id === outcomeId ? { ...o, activities: [...(o.activities || []), activity] } : o))
+    );
+  };
+
+  const updateActivity = (outcomeId: string, activityId: string, patch: Partial<StoryMapActivity>) => {
+    setStoryMap((prev) =>
+      prev.map((o) =>
+        o.id === outcomeId
+          ? { ...o, activities: (o.activities || []).map((a) => (a.id === activityId ? { ...a, ...patch } : a)) }
+          : o
+      )
+    );
+  };
+
+  const deleteActivity = (outcomeId: string, activityId: string) => {
+    setStoryMap((prev) =>
+      prev.map((o) =>
+        o.id === outcomeId
+          ? { ...o, activities: (o.activities || []).filter((a) => a.id !== activityId) }
+          : o
+      )
     );
   };
 
@@ -122,6 +156,38 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
               ...o,
               activities: (o.activities || []).map((a) =>
                 a.id === activityId ? { ...a, steps: [...(a.steps || []), step] } : a
+              ),
+            }
+          : o
+      )
+    );
+  };
+
+  const updateStep = (outcomeId: string, activityId: string, stepId: string, patch: Partial<StoryMapStep>) => {
+    setStoryMap((prev) =>
+      prev.map((o) =>
+        o.id === outcomeId
+          ? {
+              ...o,
+              activities: (o.activities || []).map((a) =>
+                a.id === activityId
+                  ? { ...a, steps: (a.steps || []).map((s) => (s.id === stepId ? { ...s, ...patch } : s)) }
+                  : a
+              ),
+            }
+          : o
+      )
+    );
+  };
+
+  const deleteStep = (outcomeId: string, activityId: string, stepId: string) => {
+    setStoryMap((prev) =>
+      prev.map((o) =>
+        o.id === outcomeId
+          ? {
+              ...o,
+              activities: (o.activities || []).map((a) =>
+                a.id === activityId ? { ...a, steps: (a.steps || []).filter((s) => s.id !== stepId) } : a
               ),
             }
           : o
@@ -193,8 +259,14 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
         removeDetailFromStory,
   updateDetailOnStory,
         addOutcome,
+        updateOutcome,
+        deleteOutcome,
         addActivity,
+        updateActivity,
+        deleteActivity,
         addStep,
+        updateStep,
+        deleteStep,
         linkStoryToStep,
         unlinkStoryFromStep,
         addJamNode,

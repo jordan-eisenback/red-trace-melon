@@ -1,6 +1,9 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { useEpics } from "../contexts/EpicContext";
-import { Plus, Clock, Filter, X, BookOpen, Search, Link2, Unlink, Zap, BarChart2, ChevronDown, ChevronRight } from "lucide-react";
+import {
+  Plus, Clock, Filter, X, BookOpen, Search, Link2, Unlink, Zap,
+  BarChart2, ChevronDown, ChevronRight, Pencil, Trash2, MoreVertical,
+} from "lucide-react";
 import { toast } from "sonner";
 import type { StoryMapOutcome, StoryMapActivity, StoryMapStep } from "../types/storymap";
 import type { UserStory } from "../types/epic";
@@ -68,12 +71,235 @@ function PersonaBadge({ persona }: { persona: string }) {
   );
 }
 
-// ── main component ─────────────────────────────────────────────────────────────
+// ── shared inline field ────────────────────────────────────────────────────────
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
+      {children}
+    </div>
+  );
+}
+const inputCls = "w-full text-sm border rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400";
+const textareaCls = `${inputCls} resize-none`;
+
+// ── CRUD modal ────────────────────────────────────────────────────────────────
+type CrudTarget =
+  | { kind: "outcome"; outcome?: StoryMapOutcome }
+  | { kind: "activity"; outcomeId: string; activity?: StoryMapActivity }
+  | { kind: "step"; outcomeId: string; activityId: string; step?: StoryMapStep };
+
+const PHASES = ["joiner", "mover", "leaver", "governance", "contractor", "platform"] as const;
+const PERSONAS = ["HR", "IT Admin", "Manager", "Employee"] as const;
+const ALL_TAGS = ["SOC2", "ISO27001", "SOX", "GDPR", "HIPAA", "NIST"] as const;
+
+function CrudModal({
+  target,
+  onClose,
+  onSave,
+}: {
+  target: CrudTarget;
+  onClose: () => void;
+  onSave: (data: Record<string, unknown>) => void;
+}) {
+  const isEdit = target.kind === "outcome"
+    ? !!target.outcome
+    : target.kind === "activity"
+      ? !!target.activity
+      : !!target.step;
+
+  // Seed state from existing object or blank
+  const [title, setTitle] = useState(
+    target.kind === "outcome" ? target.outcome?.title ?? ""
+    : target.kind === "activity" ? target.activity?.title ?? ""
+    : target.step?.title ?? ""
+  );
+  const [description, setDescription] = useState(
+    target.kind === "outcome" ? target.outcome?.description ?? ""
+    : target.kind === "activity" ? target.activity?.description ?? ""
+    : target.step?.description ?? ""
+  );
+  const [phase, setPhase] = useState<string>(
+    target.kind === "outcome" ? target.outcome?.phase ?? "" : ""
+  );
+  const [persona, setPersona] = useState<string>(
+    target.kind === "activity" ? target.activity?.persona ?? "" : ""
+  );
+  const [slaHours, setSlaHours] = useState<string>(
+    target.kind === "step" ? String(target.step?.slaHours ?? "") : ""
+  );
+  const [tags, setTags] = useState<string[]>(
+    target.kind === "step" ? target.step?.complianceTags ?? [] : []
+  );
+
+  function toggleTag(t: string) {
+    setTags(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]);
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!title.trim()) { toast.error("Title is required"); return; }
+    const data: Record<string, unknown> = { title: title.trim(), description: description.trim() };
+    if (target.kind === "outcome") data.phase = phase || undefined;
+    if (target.kind === "activity") data.persona = persona || undefined;
+    if (target.kind === "step") {
+      const h = parseFloat(slaHours);
+      data.slaHours = isNaN(h) ? undefined : h;
+      data.complianceTags = tags.length ? tags : undefined;
+    }
+    onSave(data);
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md">
+        <div className="flex items-center justify-between px-6 py-4 border-b">
+          <h2 className="text-sm font-semibold text-gray-900">
+            {isEdit ? "Edit" : "New"}{" "}
+            {target.kind === "outcome" ? "Outcome" : target.kind === "activity" ? "Activity" : "Step"}
+          </h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600"><X className="w-4 h-4" /></button>
+        </div>
+        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+          <Field label="Title *">
+            <input autoFocus className={inputCls} value={title} onChange={e => setTitle(e.target.value)} placeholder="Enter title…" />
+          </Field>
+          <Field label="Description">
+            <textarea className={textareaCls} rows={3} value={description} onChange={e => setDescription(e.target.value)} placeholder="Optional description…" />
+          </Field>
+
+          {target.kind === "outcome" && (
+            <Field label="Phase">
+              <select className={inputCls} value={phase} onChange={e => setPhase(e.target.value)}>
+                <option value="">— none —</option>
+                {PHASES.map(p => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </Field>
+          )}
+
+          {target.kind === "activity" && (
+            <Field label="Persona">
+              <select className={inputCls} value={persona} onChange={e => setPersona(e.target.value)}>
+                <option value="">— none —</option>
+                {PERSONAS.map(p => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </Field>
+          )}
+
+          {target.kind === "step" && (
+            <>
+              <Field label="SLA (hours)">
+                <input className={inputCls} type="number" min="0" value={slaHours} onChange={e => setSlaHours(e.target.value)} placeholder="e.g. 4" />
+              </Field>
+              <Field label="Compliance Tags">
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {ALL_TAGS.map(t => (
+                    <button type="button" key={t} onClick={() => toggleTag(t)}
+                      className={`px-2 py-0.5 rounded text-xs border font-medium transition-colors ${
+                        tags.includes(t) ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"
+                      }`}
+                    >{t}</button>
+                  ))}
+                </div>
+              </Field>
+            </>
+          )}
+
+          <div className="flex justify-end gap-3 pt-2">
+            <button type="button" onClick={onClose} className="px-4 py-2 text-sm border rounded-lg hover:bg-gray-50">Cancel</button>
+            <button type="submit" className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              {isEdit ? "Save changes" : "Create"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ── delete confirm ─────────────────────────────────────────────────────────────
+function DeleteConfirm({ label, onConfirm, onCancel }: { label: string; onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm px-6 py-6">
+        <h2 className="text-sm font-semibold text-gray-900 mb-2">Delete "{label}"?</h2>
+        <p className="text-xs text-gray-500 mb-5">This cannot be undone. All nested items will also be removed.</p>
+        <div className="flex justify-end gap-3">
+          <button onClick={onCancel} className="px-4 py-2 text-sm border rounded-lg hover:bg-gray-50">Cancel</button>
+          <button onClick={onConfirm} className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700">Delete</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── context menu ───────────────────────────────────────────────────────────────
+function ContextMenu({ onEdit, onDelete, onClose }: { onEdit: () => void; onDelete: () => void; onClose: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) onClose(); };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, [onClose]);
+  return (
+    <div ref={ref} className="absolute right-0 top-6 z-30 bg-white border rounded-lg shadow-lg py-1 min-w-[130px]">
+      <button onClick={() => { onEdit(); onClose(); }} className="w-full flex items-center gap-2 px-3 py-1.5 text-xs hover:bg-gray-50 text-gray-700">
+        <Pencil className="w-3.5 h-3.5" />Edit
+      </button>
+      <button onClick={() => { onDelete(); onClose(); }} className="w-full flex items-center gap-2 px-3 py-1.5 text-xs hover:bg-red-50 text-red-600">
+        <Trash2 className="w-3.5 h-3.5" />Delete
+      </button>
+    </div>
+  );
+}
 export default function StoryMapping() {
-  const { storyMap, userStories, addOutcome, linkStoryToStep, unlinkStoryFromStep } = useEpics();
+  const {
+    storyMap, userStories,
+    addOutcome, updateOutcome, deleteOutcome,
+    addActivity, updateActivity, deleteActivity,
+    addStep, updateStep, deleteStep,
+    linkStoryToStep, unlinkStoryFromStep,
+  } = useEpics();
 
   // Use context-managed storymap (supports live link/unlink mutations)
   const source: StoryMapOutcome[] = storyMap;
+
+  // ── CRUD state ────────────────────────────────────────────────────────────
+  const [crudTarget, setCrudTarget] = useState<CrudTarget | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ label: string; onConfirm: () => void } | null>(null);
+  const [openMenu, setOpenMenu]     = useState<string | null>(null); // id of the item whose menu is open
+
+  function handleCrudSave(data: Record<string, unknown>) {
+    if (!crudTarget) return;
+    const id = `${crudTarget.kind}-${Date.now()}`;
+
+    if (crudTarget.kind === "outcome") {
+      if (crudTarget.outcome) {
+        updateOutcome(crudTarget.outcome.id, data as Partial<StoryMapOutcome>);
+        toast.success("Outcome updated");
+      } else {
+        addOutcome({ id, title: "", description: "", activities: [], ...data } as StoryMapOutcome);
+        toast.success("Outcome created");
+      }
+    } else if (crudTarget.kind === "activity") {
+      if (crudTarget.activity) {
+        updateActivity(crudTarget.outcomeId, crudTarget.activity.id, data as Partial<StoryMapActivity>);
+        toast.success("Activity updated");
+      } else {
+        addActivity(crudTarget.outcomeId, { id, title: "", steps: [], ...data } as StoryMapActivity);
+        toast.success("Activity created");
+      }
+    } else if (crudTarget.kind === "step") {
+      if (crudTarget.step) {
+        updateStep(crudTarget.outcomeId, crudTarget.activityId, crudTarget.step.id, data as Partial<StoryMapStep>);
+        toast.success("Step updated");
+      } else {
+        addStep(crudTarget.outcomeId, crudTarget.activityId, { id, title: "", ...data } as StoryMapStep);
+        toast.success("Step created");
+      }
+    }
+    setCrudTarget(null);
+  }
 
   // filter state
   const [filterPhase, setFilterPhase]       = useState<string>("");
@@ -262,7 +488,7 @@ export default function StoryMapping() {
             <Zap className="w-4 h-4" />Auto-link
           </button>
           <button
-            onClick={() => { const id = `OUT-${Date.now()}`; addOutcome({ id, title: "New Outcome", description: "", activities: [] }); toast.success("Added outcome"); }}
+            onClick={() => setCrudTarget({ kind: "outcome" })}
             className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded flex items-center gap-1.5 hover:bg-blue-700"
           >
             <Plus className="w-4 h-4" />Outcome
@@ -310,14 +536,42 @@ export default function StoryMapping() {
             {/* outcome header */}
             <div className="flex items-center gap-3 mb-4">
               <div className={`w-2 h-6 rounded-full ${PHASE_HEADER[outcome.phase ?? ""] ?? "bg-gray-300"}`} />
-              <div>
-                <span className="text-base font-semibold text-gray-900">{outcome.title}</span>
-                {outcome.phase && (
-                  <span className={`ml-2 text-[11px] font-medium px-2 py-0.5 rounded-full border ${PHASE_COLORS[outcome.phase] ?? ""}`}>
-                    {outcome.phase}
-                  </span>
-                )}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-semibold text-gray-900">{outcome.title}</span>
+                  {outcome.phase && (
+                    <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${PHASE_COLORS[outcome.phase] ?? ""}`}>
+                      {outcome.phase}
+                    </span>
+                  )}
+                </div>
                 {outcome.description && <p className="text-xs text-gray-500 mt-0.5">{outcome.description}</p>}
+              </div>
+              {/* outcome actions */}
+              <div className="relative shrink-0 flex items-center gap-1">
+                <button
+                  onClick={() => setCrudTarget({ kind: "activity", outcomeId: outcome.id })}
+                  className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-blue-600"
+                  title="Add activity"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setOpenMenu(openMenu === outcome.id ? null : outcome.id)}
+                  className="p-1 rounded hover:bg-gray-100 text-gray-400"
+                >
+                  <MoreVertical className="w-4 h-4" />
+                </button>
+                {openMenu === outcome.id && (
+                  <ContextMenu
+                    onEdit={() => setCrudTarget({ kind: "outcome", outcome })}
+                    onDelete={() => setDeleteTarget({
+                      label: outcome.title,
+                      onConfirm: () => { deleteOutcome(outcome.id); setDeleteTarget(null); toast.success("Outcome deleted"); },
+                    })}
+                    onClose={() => setOpenMenu(null)}
+                  />
+                )}
               </div>
             </div>
 
@@ -330,8 +584,28 @@ export default function StoryMapping() {
                 >
                   {/* activity header */}
                   <div className="flex items-start justify-between gap-2 mb-3">
-                    <div className="text-sm font-semibold text-gray-800 leading-tight">{act.title}</div>
-                    <div className="text-xs text-gray-400 shrink-0">{act.steps.length}</div>
+                    <div className="text-sm font-semibold text-gray-800 leading-tight flex-1 min-w-0">{act.title}</div>
+                    <div className="flex items-center gap-0.5 shrink-0">
+                      <span className="text-xs text-gray-400">{act.steps.length}</span>
+                      <div className="relative">
+                        <button
+                          onClick={() => setOpenMenu(openMenu === act.id ? null : act.id)}
+                          className="p-0.5 rounded hover:bg-gray-100 text-gray-400"
+                        >
+                          <MoreVertical className="w-3.5 h-3.5" />
+                        </button>
+                        {openMenu === act.id && (
+                          <ContextMenu
+                            onEdit={() => setCrudTarget({ kind: "activity", outcomeId: outcome.id, activity: act })}
+                            onDelete={() => setDeleteTarget({
+                              label: act.title,
+                              onConfirm: () => { deleteActivity(outcome.id, act.id); setDeleteTarget(null); toast.success("Activity deleted"); },
+                            })}
+                            onClose={() => setOpenMenu(null)}
+                          />
+                        )}
+                      </div>
+                    </div>
                   </div>
                   {act.persona && <div className="mb-3"><PersonaBadge persona={act.persona} /></div>}
 
@@ -340,10 +614,34 @@ export default function StoryMapping() {
                     {act.steps.map(step => (
                       <div
                         key={step.id}
-                        onClick={() => { setSelected({ outcome, activity: act, step }); setPickerOpen(false); setStorySearch(""); }}
-                        className="bg-gray-50 rounded-md border p-2.5 cursor-pointer hover:shadow-sm hover:border-gray-300 transition-shadow"
+                        className="bg-gray-50 rounded-md border p-2.5 hover:shadow-sm hover:border-gray-300 transition-shadow group"
                       >
-                        <p className="text-xs font-medium text-gray-800 leading-snug">{step.title}</p>
+                        <div className="flex items-start gap-1">
+                          <p
+                            className="text-xs font-medium text-gray-800 leading-snug flex-1 cursor-pointer"
+                            onClick={() => { setSelected({ outcome, activity: act, step }); setPickerOpen(false); setStorySearch(""); }}
+                          >
+                            {step.title}
+                          </p>
+                          <div className="relative shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={e => { e.stopPropagation(); setOpenMenu(openMenu === step.id ? null : step.id); }}
+                              className="p-0.5 rounded hover:bg-gray-200 text-gray-400"
+                            >
+                              <MoreVertical className="w-3 h-3" />
+                            </button>
+                            {openMenu === step.id && (
+                              <ContextMenu
+                                onEdit={() => setCrudTarget({ kind: "step", outcomeId: outcome.id, activityId: act.id, step })}
+                                onDelete={() => setDeleteTarget({
+                                  label: step.title,
+                                  onConfirm: () => { deleteStep(outcome.id, act.id, step.id); setDeleteTarget(null); toast.success("Step deleted"); },
+                                })}
+                                onClose={() => setOpenMenu(null)}
+                              />
+                            )}
+                          </div>
+                        </div>
 
                         {/* badges row */}
                         {(step.complianceTags?.length || step.slaHours || step.linkedStoryIds?.length) && (
@@ -359,6 +657,14 @@ export default function StoryMapping() {
                         )}
                       </div>
                     ))}
+
+                    {/* add step button */}
+                    <button
+                      onClick={() => setCrudTarget({ kind: "step", outcomeId: outcome.id, activityId: act.id })}
+                      className="w-full mt-1 flex items-center justify-center gap-1 py-1.5 text-xs text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md border border-dashed border-gray-200 hover:border-blue-300 transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />Add step
+                    </button>
                   </div>
                 </div>
               ))}
@@ -693,8 +999,42 @@ export default function StoryMapping() {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Activity context</p>
               <p className="text-gray-600">{effectiveSelected.activity.description || "—"}</p>
             </div>
+
+            {/* edit step from detail panel */}
+            <div className="border-t pt-4 flex gap-2">
+              <button
+                onClick={() => setCrudTarget({ kind: "step", outcomeId: effectiveSelected.outcome.id, activityId: effectiveSelected.activity.id, step: effectiveSelected.step })}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs border rounded-lg hover:bg-gray-50 text-gray-600"
+              >
+                <Pencil className="w-3.5 h-3.5" />Edit step
+              </button>
+              <button
+                onClick={() => setDeleteTarget({
+                  label: effectiveSelected.step.title,
+                  onConfirm: () => {
+                    deleteStep(effectiveSelected.outcome.id, effectiveSelected.activity.id, effectiveSelected.step.id);
+                    setSelected(null);
+                    setDeleteTarget(null);
+                    toast.success("Step deleted");
+                  },
+                })}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs border border-red-200 rounded-lg hover:bg-red-50 text-red-600"
+              >
+                <Trash2 className="w-3.5 h-3.5" />Delete step
+              </button>
+            </div>
           </div>
         </aside>
+      )}
+
+      {/* ── CRUD modal ── */}
+      {crudTarget && (
+        <CrudModal target={crudTarget} onClose={() => setCrudTarget(null)} onSave={handleCrudSave} />
+      )}
+
+      {/* ── delete confirm ── */}
+      {deleteTarget && (
+        <DeleteConfirm label={deleteTarget.label} onConfirm={deleteTarget.onConfirm} onCancel={() => setDeleteTarget(null)} />
       )}
     </div>
   );
