@@ -45,12 +45,25 @@ const EpicContext = createContext<EpicContextType | undefined>(undefined);
 export const EpicProvider = ({ children }: { children: ReactNode }) => {
   const [epics, setEpics] = useState<Epic[]>((initialEpics as unknown) as Epic[]);
   // Sanitize imported titles by removing any leading "Imported: " prefix
-  const [userStories, setUserStories] = useState<UserStory[]>(
-    (initialUserStories.map((s) => ({
+  const [userStories, setUserStories] = useState<UserStory[]>(() => {
+    // Build a storyId → stepId[] reverse index from the initial story map
+    const reverseIndex: Record<string, string[]> = {};
+    for (const outcome of initialStoryMap) {
+      for (const activity of outcome.activities ?? []) {
+        for (const step of activity.steps ?? []) {
+          for (const sid of step.linkedStoryIds ?? []) {
+            if (!reverseIndex[sid]) reverseIndex[sid] = [];
+            if (!reverseIndex[sid].includes(step.id)) reverseIndex[sid].push(step.id);
+          }
+        }
+      }
+    }
+    return (initialUserStories.map((s) => ({
       ...s,
       title: s.title ? s.title.replace(/^Imported:\s*/i, "") : s.title,
-    })) as unknown) as UserStory[]
-  );
+      linkedStepIds: reverseIndex[s.id] ?? [],
+    })) as unknown) as UserStory[];
+  });
 
   const [storyMap, setStoryMap] = useState<StoryMap>(initialStoryMap);
   const [storyJam, setStoryJam] = useState<StoryJam>(initialStoryJam);
@@ -181,8 +194,18 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const deleteStep = (outcomeId: string, activityId: string, stepId: string) => {
-    setStoryMap((prev) =>
-      prev.map((o) =>
+    // First capture the step's linked stories so we can clean up the reverse index
+    let orphanedStoryIds: string[] = [];
+    setStoryMap((prev) => {
+      prev.forEach((o) => {
+        if (o.id !== outcomeId) return;
+        (o.activities || []).forEach((a) => {
+          if (a.id !== activityId) return;
+          const step = (a.steps || []).find((s) => s.id === stepId);
+          if (step) orphanedStoryIds = step.linkedStoryIds ?? [];
+        });
+      });
+      return prev.map((o) =>
         o.id === outcomeId
           ? {
               ...o,
@@ -191,8 +214,18 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
               ),
             }
           : o
-      )
-    );
+      );
+    });
+    // Remove stepId from each formerly-linked story's linkedStepIds
+    if (orphanedStoryIds.length > 0) {
+      setUserStories((prev) =>
+        prev.map((s) =>
+          orphanedStoryIds.includes(s.id)
+            ? { ...s, linkedStepIds: (s.linkedStepIds || []).filter((id) => id !== stepId) }
+            : s
+        )
+      );
+    }
   };
 
   const linkStoryToStep = (stepId: string, storyId: string) => {
@@ -207,6 +240,14 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
         })),
       }))
     );
+    // Mirror: add stepId to the story's linkedStepIds
+    setUserStories((prev) =>
+      prev.map((s) =>
+        s.id === storyId
+          ? { ...s, linkedStepIds: Array.from(new Set([...(s.linkedStepIds || []), stepId])) }
+          : s
+      )
+    );
   };
 
   const unlinkStoryFromStep = (stepId: string, storyId: string) => {
@@ -218,6 +259,14 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
           steps: (a.steps || []).map((s) => (s.id === stepId ? { ...s, linkedStoryIds: (s.linkedStoryIds || []).filter((id) => id !== storyId) } : s)),
         })),
       }))
+    );
+    // Mirror: remove stepId from the story's linkedStepIds
+    setUserStories((prev) =>
+      prev.map((s) =>
+        s.id === storyId
+          ? { ...s, linkedStepIds: (s.linkedStepIds || []).filter((id) => id !== stepId) }
+          : s
+      )
     );
   };
 

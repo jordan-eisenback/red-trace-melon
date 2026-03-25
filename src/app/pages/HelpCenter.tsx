@@ -123,6 +123,58 @@ const faqs: FAQItem[] = [
     question: "I see IDs like RBAC-INT-012 — what do they mean?",
     answer: "IDs follow a Type-Domain-Number pattern. For example RBAC-INT-012 indicates an Interface requirement (INT) in the RBAC domain; RBAC-INT-012 was added to represent directory event logging (creates/updates/deletes). Use the Requirements List to click through and see details for any ID.",
   },
+  // ── Story Mapping ─────────────────────────────────────────────────────────
+  {
+    category: "Story Mapping",
+    question: "What is the Story Map and how is it organised?",
+    answer: "The Story Map page visualises the full HR / IAM identity lifecycle as a three-level hierarchy: Outcomes → Activities → Steps. Each Outcome represents a major lifecycle phase (Joiner, Mover, Leaver, Access Review / Governance, Contractor, and Platform). Activities break each outcome into workstreams, and Steps are the granular tasks within each workstream. User Stories from your epics are linked to individual Steps to show exactly which backlog items deliver each piece of work.",
+  },
+  {
+    category: "Story Mapping",
+    question: "What are the six lifecycle Outcomes?",
+    answer: "The story map ships with six pre-built Outcomes: (1) Joiner — onboarding a new employee, (2) Mover — internal role or department transfers, (3) Leaver — offboarding and access revocation, (4) Access Review / Governance — periodic access certification and audit, (5) Contractor — external / contingent worker lifecycle, and (6) Platform — cross-cutting IAM platform operations such as break-glass, federation, and audit logging. Each outcome can be edited or supplemented with your own custom outcomes.",
+  },
+  {
+    category: "Story Mapping",
+    question: "How do I add, edit, or delete Outcomes, Activities, and Steps?",
+    answer: "To add: use the '+ Add Outcome' button in the top toolbar for a new outcome; the '+ Activity' button in an outcome's header row for a new activity; and the dashed '+ Step' card at the bottom of any activity column for a new step. To edit or delete existing items, hover over the card or header and click the ⋮ menu (three-dot) that appears — then choose Edit or Delete. All changes are saved to local storage automatically.",
+  },
+  {
+    category: "Story Mapping",
+    question: "How do I link a User Story to a Step?",
+    answer: "Click any Step card to open its detail panel on the right. Scroll to the 'Linked Stories' section and click 'Link story'. A searchable picker will appear showing all User Stories from your epics. Select one or more stories to link them. Linked stories appear as violet pill badges on the step card. To unlink a story, open the detail panel and click 'Unlink' next to the story you want to remove.",
+  },
+  {
+    category: "Story Mapping",
+    question: "What information is shown in the Step detail panel?",
+    answer: "Clicking a Step card opens a detail panel displaying: the step's description, its SLA target (colour-coded badge), compliance framework tags, the parent Activity and Outcome for context, a list of all linked User Stories with unlink controls, and Edit / Delete buttons. If the step has a Requirement ID (requirementId field), it is shown as a reference to the corresponding RTM entry.",
+  },
+  {
+    category: "Story Mapping",
+    question: "What do the badges on a Step card mean?",
+    answer: "Step cards can show three types of badges: (1) Compliance badges (SOC2, ISO 27001, SOX, GDPR, HIPAA, NIST) indicate which regulatory frameworks the step helps satisfy — shown as small coloured tags. (2) SLA badges indicate the target response time — red means ≤ 4 hours, amber means ≤ 24 hours, and grey means more than 24 hours. (3) Persona badges (HR, IT Admin, Manager, Employee) show which role is responsible for or affected by the step.",
+  },
+  {
+    category: "Story Mapping",
+    question: "How do I filter the Story Map?",
+    answer: "The toolbar above the map contains three filter dropdowns: Phase (filters by lifecycle outcome), Persona (HR, IT Admin, Manager, Employee), and Compliance Tag (SOC2, ISO 27001, SOX, GDPR, HIPAA, NIST). Select one or more values in any dropdown to show only the matching steps. A 'Clear filters' button resets all active filters. Filters can be combined — for example, show only Joiner steps that are tagged GDPR and owned by HR.",
+  },
+  // ── Auto-link & Coverage ──────────────────────────────────────────────────
+  {
+    category: "Story Mapping",
+    question: "What is Auto-link and how does it work?",
+    answer: "Auto-link (⚡ button in the toolbar) automatically suggests User Stories for each Step using a three-signal scoring algorithm: (1) Requirement ID match — if a step's requirementId matches a story's linked requirement, it scores +50 points. (2) Keyword overlap — shared meaningful words between the step description and story title/description score up to +40 points. (3) Compliance tag synonyms — matching compliance terms in the step tags and story metadata score +10 points. Steps with a total score above 16 receive up to 3 story suggestions. Clicking ⚡ opens a preview modal showing all proposed links before anything is applied — click 'Apply' to accept or dismiss to cancel.",
+  },
+  {
+    category: "Story Mapping",
+    question: "What is the Coverage Panel?",
+    answer: "The Coverage Panel (📊 button in the toolbar) shows how many of your User Stories are linked to at least one Step. It displays: overall coverage as a percentage, a progress bar per Epic showing linked vs. total stories, and a list of unlinked stories so you know exactly what still needs to be placed on the map. A 'Run Auto-link' shortcut inside the panel lets you trigger the auto-link algorithm directly from the coverage view.",
+  },
+  {
+    category: "Story Mapping",
+    question: "How do I export the Story Map?",
+    answer: "Use the Export buttons in the toolbar: 'Export JSON' downloads the full story map structure (outcomes, activities, steps, and all linked story IDs) as a JSON file. 'Export CSV' produces a flat spreadsheet with one row per Step, including columns for outcome, activity, step description, SLA, compliance tags, personas, requirement ID, and all linked story IDs. Both formats include every field so the export can be imported into project management tools or used for audit evidence.",
+  },
 ];
 
 const quickLinks = [

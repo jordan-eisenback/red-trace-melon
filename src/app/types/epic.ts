@@ -23,6 +23,8 @@ export interface UserStory {
   storyPoints?: number;
   assignee?: string;
   notes?: string;
+  /** Step IDs in the Story Map that reference this story (reverse of StoryMapStep.linkedStoryIds) */
+  linkedStepIds?: string[];
 }
 
 export interface StoryDetail {

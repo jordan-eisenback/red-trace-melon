@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEpics } from "../contexts/EpicContext";
 import { useRequirements } from "../context/RequirementsContext";
 import { toast } from "sonner";
-import { Plus, Edit, Trash2, Search, Filter } from "lucide-react";
+import { Plus, Edit, Trash2, Search, Filter, Map } from "lucide-react";
 import { Epic, UserStory } from "../types/epic";
 import EpicModal from "../components/EpicModal";
 import UserStoryModal from "../components/UserStoryModal";
@@ -12,6 +12,23 @@ type ViewMode = "epics" | "stories";
 export default function EpicsAndStories() {
   const { epics, userStories, deleteEpic, deleteUserStory, getStoriesByEpic, updateUserStory, addDetailToStory, removeDetailFromStory, storyMap } = useEpics();
   const { getRequirement } = useRequirements();
+
+  // Build a flat stepId → { outcomeTitle, activityTitle, stepTitle } lookup for back-links
+  const stepLookup = (() => {
+    const map: Record<string, { outcomeTitle: string; activityTitle: string; stepTitle: string }> = {};
+    for (const outcome of storyMap) {
+      for (const activity of outcome.activities ?? []) {
+        for (const step of activity.steps ?? []) {
+          map[step.id] = {
+            outcomeTitle: outcome.title,
+            activityTitle: activity.title,
+            stepTitle: step.title,
+          };
+        }
+      }
+    }
+    return map;
+  })();
   const [viewMode, setViewMode] = useState<ViewMode>("epics");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -486,6 +503,31 @@ export default function EpicsAndStories() {
                                 {story.notes && (
                                   <div className="text-sm italic text-gray-600">Note: {story.notes}</div>
                                 )}
+                                {/* Story Map back-links */}
+                                {(story.linkedStepIds ?? []).length > 0 && (
+                                  <div className="mt-2">
+                                    <div className="text-sm font-medium text-gray-800 mb-1 flex items-center gap-1">
+                                      <Map className="w-3.5 h-3.5 text-violet-500" />
+                                      Story Map Steps
+                                    </div>
+                                    <div className="flex flex-wrap gap-1">
+                                      {(story.linkedStepIds ?? []).map((sid) => {
+                                        const info = stepLookup[sid];
+                                        return (
+                                          <a
+                                            key={sid}
+                                            href="/story-mapping"
+                                            title={info ? `${info.outcomeTitle} › ${info.activityTitle} › ${info.stepTitle}` : sid}
+                                            className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-100 text-violet-700 text-xs rounded-full hover:bg-violet-200 transition-colors"
+                                          >
+                                            <Map className="w-3 h-3" />
+                                            {info ? info.stepTitle : sid}
+                                          </a>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                )}
                                 {/* Story details (activities/steps) */}
                                 {story.details && story.details.length > 0 && (
                                   <div className="mt-2">
@@ -612,6 +654,30 @@ export default function EpicsAndStories() {
                       </div>
                       {story.notes && (
                         <p className="text-sm text-gray-500 italic mt-2">Note: {story.notes}</p>
+                      )}
+                      {(story.linkedStepIds ?? []).length > 0 && (
+                        <div className="mt-3">
+                          <div className="text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                            <Map className="w-3.5 h-3.5 text-violet-500" />
+                            Story Map Steps
+                          </div>
+                          <div className="flex flex-wrap gap-1">
+                            {(story.linkedStepIds ?? []).map((sid) => {
+                              const info = stepLookup[sid];
+                              return (
+                                <a
+                                  key={sid}
+                                  href="/story-mapping"
+                                  title={info ? `${info.outcomeTitle} › ${info.activityTitle} › ${info.stepTitle}` : sid}
+                                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-100 text-violet-700 text-xs rounded-full hover:bg-violet-200 transition-colors"
+                                >
+                                  <Map className="w-3 h-3" />
+                                  {info ? info.stepTitle : sid}
+                                </a>
+                              );
+                            })}
+                          </div>
+                        </div>
                       )}
                     </div>
                     <div className="flex items-center gap-2 ml-4">
