@@ -1,9 +1,10 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { useEpics } from "../contexts/EpicContext";
-import { Plus, Clock, Filter, X, BookOpen, Search, Link2, Unlink } from "lucide-react";
+import { Plus, Clock, Filter, X, BookOpen, Search, Link2, Unlink, Zap } from "lucide-react";
 import { toast } from "sonner";
 import type { StoryMapOutcome, StoryMapActivity, StoryMapStep } from "../types/storymap";
 import type { UserStory } from "../types/epic";
+import { computeAutoLinks, previewAutoLinks, type AutoLinkResult } from "../utils/autolinkStories";
 
 // ── colour maps ────────────────────────────────────────────────────────────────
 const PHASE_COLORS: Record<string, string> = {
@@ -120,6 +121,29 @@ export default function StoryMapping() {
   // lookup map for story titles
   const storyById = useMemo(() => new Map<string, UserStory>(userStories.map(s => [s.id, s])), [userStories]);
 
+  // ── auto-link ──────────────────────────────────────────────────────────────
+  const [autoLinkPreview, setAutoLinkPreview] = useState<AutoLinkResult[] | null>(null);
+
+  function openAutoLink() {
+    const preview = previewAutoLinks(source, userStories, { threshold: 16, maxPerStep: 3 });
+    if (preview.length === 0) {
+      toast.info("No new matches found above the confidence threshold.");
+      return;
+    }
+    setAutoLinkPreview(preview);
+  }
+
+  function applyAutoLink() {
+    if (!autoLinkPreview) return;
+    const links = computeAutoLinks(source, userStories, { threshold: 16, maxPerStep: 3 });
+    let total = 0;
+    links.forEach((storyIds, stepId) => {
+      storyIds.forEach(storyId => { linkStoryToStep(stepId, storyId); total++; });
+    });
+    setAutoLinkPreview(null);
+    toast.success(`Auto-linked ${total} stor${total === 1 ? "y" : "ies"} across ${links.size} step${links.size === 1 ? "" : "s"}.`);
+  }
+
   // derive unique filter options from data
   const allPhases   = useMemo(() => [...new Set(source.map(o => o.phase).filter(Boolean))] as string[], [source]);
   const allPersonas = useMemo(() => [...new Set(source.flatMap(o => o.activities.map(a => a.persona)).filter(Boolean))] as string[], [source]);
@@ -177,6 +201,12 @@ export default function StoryMapping() {
         <div className="flex gap-2 flex-wrap">
           <button onClick={exportJSON} className="px-3 py-1.5 text-sm bg-white border rounded hover:bg-gray-50">Export JSON</button>
           <button onClick={exportCSV}  className="px-3 py-1.5 text-sm bg-white border rounded hover:bg-gray-50">Export CSV</button>
+          <button
+            onClick={openAutoLink}
+            className="px-3 py-1.5 text-sm bg-violet-600 text-white rounded flex items-center gap-1.5 hover:bg-violet-700"
+          >
+            <Zap className="w-4 h-4" />Auto-link
+          </button>
           <button
             onClick={() => { const id = `OUT-${Date.now()}`; addOutcome({ id, title: "New Outcome", description: "", activities: [] }); toast.success("Added outcome"); }}
             className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded flex items-center gap-1.5 hover:bg-blue-700"
@@ -290,6 +320,72 @@ export default function StoryMapping() {
           </div>
         )}
       </div>
+
+      {/* ── auto-link preview modal ── */}
+      {autoLinkPreview && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+            {/* header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b">
+              <div>
+                <h2 className="text-base font-semibold text-gray-900 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-violet-600" />Auto-link Preview
+                </h2>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {autoLinkPreview.reduce((n, r) => n + r.matches.length, 0)} suggested links across {autoLinkPreview.length} steps — review before applying.
+                </p>
+              </div>
+              <button onClick={() => setAutoLinkPreview(null)} className="text-gray-400 hover:text-gray-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* scrollable match list */}
+            <div className="overflow-y-auto flex-1 divide-y">
+              {autoLinkPreview.map(result => {
+                // find step label for display
+                let stepLabel = result.stepId;
+                for (const o of source) {
+                  for (const a of o.activities) {
+                    const s = a.steps.find(s => s.id === result.stepId);
+                    if (s) { stepLabel = s.title; break; }
+                  }
+                }
+                return (
+                  <div key={result.stepId} className="px-6 py-4">
+                    <p className="text-xs font-semibold text-gray-700 mb-2 truncate">{stepLabel}</p>
+                    <div className="space-y-1.5">
+                      {result.matches.map(m => {
+                        const story = storyById.get(m.storyId);
+                        return (
+                          <div key={m.storyId} className="flex items-start gap-3 bg-violet-50 border border-violet-100 rounded-md px-3 py-2">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-medium text-violet-900 truncate">{story?.title ?? m.storyId}</p>
+                              <p className="text-[10px] text-violet-500 mt-0.5">{m.storyId} · score {m.score} · {m.reasons.join(' · ')}</p>
+                            </div>
+                            <span className="text-[10px] font-bold text-violet-700 bg-violet-100 px-1.5 py-0.5 rounded shrink-0">{m.score}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* actions */}
+            <div className="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-xl">
+              <button onClick={() => setAutoLinkPreview(null)} className="px-4 py-2 text-sm border rounded hover:bg-white">Cancel</button>
+              <button
+                onClick={applyAutoLink}
+                className="px-4 py-2 text-sm bg-violet-600 text-white rounded hover:bg-violet-700 flex items-center gap-2"
+              >
+                <Zap className="w-4 h-4" />Apply {autoLinkPreview.reduce((n, r) => n + r.matches.length, 0)} links
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── detail panel ── */}
       {effectiveSelected && (
