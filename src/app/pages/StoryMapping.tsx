@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { useEpics } from "../contexts/EpicContext";
-import { Plus, Clock, Filter, X, BookOpen, Search, Link2, Unlink, Zap } from "lucide-react";
+import { Plus, Clock, Filter, X, BookOpen, Search, Link2, Unlink, Zap, BarChart2, ChevronDown, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import type { StoryMapOutcome, StoryMapActivity, StoryMapStep } from "../types/storymap";
 import type { UserStory } from "../types/epic";
@@ -13,6 +13,7 @@ const PHASE_COLORS: Record<string, string> = {
   leaver:     "bg-red-100 text-red-800 border-red-200",
   governance: "bg-purple-100 text-purple-800 border-purple-200",
   contractor: "bg-amber-100 text-amber-800 border-amber-200",
+  platform:   "bg-slate-100 text-slate-800 border-slate-200",
 };
 const PHASE_HEADER: Record<string, string> = {
   joiner:     "border-t-emerald-500",
@@ -20,6 +21,7 @@ const PHASE_HEADER: Record<string, string> = {
   leaver:     "border-t-red-500",
   governance: "border-t-purple-500",
   contractor: "border-t-amber-500",
+  platform:   "border-t-slate-500",
 };
 const COMPLIANCE_COLORS: Record<string, string> = {
   SOC2:     "bg-blue-50 text-blue-700 border-blue-200",
@@ -144,6 +146,46 @@ export default function StoryMapping() {
     toast.success(`Auto-linked ${total} stor${total === 1 ? "y" : "ies"} across ${links.size} step${links.size === 1 ? "" : "s"}.`);
   }
 
+  // ── coverage panel ─────────────────────────────────────────────────────────
+  const [coverageOpen, setCoverageOpen] = useState(false);
+  const [expandedEpics, setExpandedEpics] = useState<Set<string>>(new Set());
+
+  // Build coverage: which stories are linked anywhere in the storymap
+  const coverageData = useMemo(() => {
+    const linkedIds = new Set(
+      source.flatMap(o => o.activities.flatMap(a => a.steps.flatMap(s => s.linkedStoryIds ?? [])))
+    );
+
+    // Group by epic
+    const epicMap = new Map<string, { epicId: string; epicTitle: string; linked: typeof userStories; unlinked: typeof userStories }>();
+    // Build epic title lookup from epics in context
+    const epicTitleMap = new Map<string, string>();
+
+    userStories.forEach(story => {
+      const epicId = story.epicId ?? "unknown";
+      if (!epicMap.has(epicId)) {
+        epicMap.set(epicId, { epicId, epicTitle: epicTitleMap.get(epicId) ?? epicId, linked: [], unlinked: [] });
+      }
+      const entry = epicMap.get(epicId)!;
+      if (linkedIds.has(story.id)) entry.linked.push(story);
+      else entry.unlinked.push(story);
+    });
+
+    return {
+      totalStories: userStories.length,
+      linkedCount: linkedIds.size,
+      epics: [...epicMap.values()].sort((a, b) => b.unlinked.length - a.unlinked.length),
+    };
+  }, [source, userStories]);
+
+  function toggleEpic(epicId: string) {
+    setExpandedEpics(prev => {
+      const next = new Set(prev);
+      if (next.has(epicId)) next.delete(epicId); else next.add(epicId);
+      return next;
+    });
+  }
+
   // derive unique filter options from data
   const allPhases   = useMemo(() => [...new Set(source.map(o => o.phase).filter(Boolean))] as string[], [source]);
   const allPersonas = useMemo(() => [...new Set(source.flatMap(o => o.activities.map(a => a.persona)).filter(Boolean))] as string[], [source]);
@@ -199,6 +241,18 @@ export default function StoryMapping() {
           <p className="text-sm text-gray-500">HR &amp; IAM identity lifecycle — {source.length} outcomes · {source.flatMap(o => o.activities).length} activities</p>
         </div>
         <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={() => setCoverageOpen(v => !v)}
+            className="px-3 py-1.5 text-sm bg-white border rounded flex items-center gap-1.5 hover:bg-gray-50"
+          >
+            <BarChart2 className="w-4 h-4 text-gray-500" />
+            Coverage
+            {coverageData.totalStories - coverageData.linkedCount > 0 && (
+              <span className="bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                {coverageData.totalStories - coverageData.linkedCount}
+              </span>
+            )}
+          </button>
           <button onClick={exportJSON} className="px-3 py-1.5 text-sm bg-white border rounded hover:bg-gray-50">Export JSON</button>
           <button onClick={exportCSV}  className="px-3 py-1.5 text-sm bg-white border rounded hover:bg-gray-50">Export CSV</button>
           <button
@@ -320,6 +374,120 @@ export default function StoryMapping() {
           </div>
         )}
       </div>
+
+      {/* ── coverage panel ── */}
+      {coverageOpen && (
+        <aside className="fixed left-0 top-0 h-full w-80 bg-white shadow-2xl border-r z-40 flex flex-col">
+          <div className="flex items-center justify-between px-5 py-4 border-b">
+            <div>
+              <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <BarChart2 className="w-4 h-4 text-gray-500" />Story Coverage
+              </h2>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {coverageData.linkedCount} / {coverageData.totalStories} stories linked
+              </p>
+            </div>
+            <button onClick={() => setCoverageOpen(false)} className="text-gray-400 hover:text-gray-600">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* overall progress bar */}
+          <div className="px-5 py-3 border-b">
+            <div className="flex justify-between text-xs text-gray-500 mb-1">
+              <span>Overall coverage</span>
+              <span>{Math.round(coverageData.linkedCount / coverageData.totalStories * 100)}%</span>
+            </div>
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-violet-500 rounded-full transition-all"
+                style={{ width: `${Math.round(coverageData.linkedCount / coverageData.totalStories * 100)}%` }}
+              />
+            </div>
+          </div>
+
+          {/* per-epic breakdown */}
+          <div className="overflow-y-auto flex-1 divide-y">
+            {coverageData.epics.map(epic => {
+              const total = epic.linked.length + epic.unlinked.length;
+              const pct = Math.round(epic.linked.length / total * 100);
+              const isExpanded = expandedEpics.has(epic.epicId);
+              return (
+                <div key={epic.epicId}>
+                  <button
+                    className="w-full px-5 py-3 flex items-center gap-3 hover:bg-gray-50 text-left"
+                    onClick={() => toggleEpic(epic.epicId)}
+                  >
+                    {isExpanded
+                      ? <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                      : <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-medium text-gray-700 truncate">{epic.epicId}</span>
+                        <span className={`text-[10px] font-bold shrink-0 ${epic.unlinked.length > 0 ? 'text-amber-600' : 'text-emerald-600'}`}>
+                          {epic.linked.length}/{total}
+                        </span>
+                      </div>
+                      <div className="h-1.5 bg-gray-100 rounded-full mt-1.5 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${pct === 100 ? 'bg-emerald-400' : pct > 50 ? 'bg-blue-400' : 'bg-amber-400'}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* unlinked stories list */}
+                  {isExpanded && epic.unlinked.length > 0 && (
+                    <div className="pb-2">
+                      <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide px-5 py-1">
+                        Unlinked ({epic.unlinked.length})
+                      </p>
+                      {epic.unlinked.map(story => (
+                        <div key={story.id} className="px-5 py-1.5 flex items-start gap-2">
+                          <span className="text-[10px] text-amber-500 mt-0.5 shrink-0">●</span>
+                          <div className="min-w-0">
+                            <p className="text-xs text-gray-700 leading-snug line-clamp-2">{story.title}</p>
+                            <p className="text-[10px] text-gray-400 mt-0.5">{story.id} · {story.status}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* linked stories list */}
+                  {isExpanded && epic.linked.length > 0 && (
+                    <div className="pb-2">
+                      <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide px-5 py-1">
+                        Linked ({epic.linked.length})
+                      </p>
+                      {epic.linked.map(story => (
+                        <div key={story.id} className="px-5 py-1.5 flex items-start gap-2">
+                          <span className="text-[10px] text-emerald-500 mt-0.5 shrink-0">●</span>
+                          <div className="min-w-0">
+                            <p className="text-xs text-gray-600 leading-snug line-clamp-2">{story.title}</p>
+                            <p className="text-[10px] text-gray-400 mt-0.5">{story.id}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* quick action */}
+          <div className="px-5 py-3 border-t bg-gray-50">
+            <button
+              onClick={() => { setCoverageOpen(false); openAutoLink(); }}
+              className="w-full py-2 text-sm bg-violet-600 text-white rounded hover:bg-violet-700 flex items-center justify-center gap-2"
+            >
+              <Zap className="w-4 h-4" />Run Auto-link
+            </button>
+          </div>
+        </aside>
+      )}
 
       {/* ── auto-link preview modal ── */}
       {autoLinkPreview && (

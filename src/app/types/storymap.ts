@@ -26,7 +26,7 @@ export interface StoryMapOutcome {
   description?: string;
   activities: StoryMapActivity[];
   order?: number;
-  phase?: 'joiner' | 'mover' | 'leaver' | 'governance' | 'contractor';
+  phase?: 'joiner' | 'mover' | 'leaver' | 'governance' | 'contractor' | 'platform';
 }
 
 export type StoryMap = StoryMapOutcome[];

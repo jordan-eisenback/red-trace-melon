@@ -179,7 +179,7 @@ describe('initial-storymap data integrity', () => {
   });
 
   test('phase values are valid when present', () => {
-    const validPhases = new Set(['joiner','mover','leaver','governance','contractor']);
+    const validPhases = new Set(['joiner','mover','leaver','governance','contractor','platform']);
     initialStoryMap.forEach(o => {
       if (o.phase) expect(validPhases.has(o.phase)).toBe(true);
     });
@@ -191,5 +191,6 @@ describe('initial-storymap data integrity', () => {
     expect(phases.has('leaver')).toBe(true);
     expect(phases.has('governance')).toBe(true);
     expect(phases.has('contractor')).toBe(true);
+    expect(phases.has('platform')).toBe(true);
   });
 });
