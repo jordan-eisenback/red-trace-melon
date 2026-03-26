@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { useVendor } from "../contexts/VendorContext";
 import { WeightingProfile, Weight } from "../types/vendor";
 import { getDefaultWeights } from "../utils/vendorCsvParser";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -76,7 +76,6 @@ export default function VendorSettings() {
     deleteWeightingProfile,
     setActiveProfile,
     getActiveCriteriaProfile,
-    getActiveProfile,
   } = useVendor();
 
   // ---- Evaluator dialog state
@@ -102,7 +101,6 @@ export default function VendorSettings() {
   const [weightingScoringMode, setWeightingScoringMode] = useState<"category" | "sub-criteria">("sub-criteria");
 
   const activeCriteriaProfile = getActiveCriteriaProfile();
-  const activeWeightingProfile = getActiveProfile();
 
   // ---------------------------------------------------------------------------
   // Evaluator handlers
@@ -261,13 +259,20 @@ export default function VendorSettings() {
     const name = fd.get("name") as string;
     const description = fd.get("description") as string;
 
-    // Build Weight[] from form fields (category-level weights)
+    // Build Weight[] at sub-criterion level so getAggregatedScores can match them.
+    // The UI collects one weight per category; we fan it out to every sub-criterion
+    // in that category so the aggregation lookup (criterionId + subCriterionId) works.
     let weights: Weight[] = [];
     if (activeCriteriaProfile) {
-      weights = activeCriteriaProfile.criteria.map((criterion) => {
+      weights = activeCriteriaProfile.criteria.flatMap((criterion) => {
         const rawVal = fd.get(`weight-${criterion.id}`);
-        const num = rawVal !== null ? parseFloat(rawVal as string) : NaN;
-        return { criterionId: criterion.id, weight: isNaN(num) ? 1 : num };
+        const categoryWeight = rawVal !== null ? parseFloat(rawVal as string) : NaN;
+        const w = isNaN(categoryWeight) ? 1 : categoryWeight;
+        return criterion.subCriteria.map((sub) => ({
+          criterionId: criterion.id,
+          subCriterionId: sub.id,
+          weight: w,
+        }));
       });
     } else {
       weights = getDefaultWeights([], weightingScoringMode);
@@ -613,11 +618,11 @@ export default function VendorSettings() {
                   <form onSubmit={handleImportCSV}>
                     <DialogHeader>
                       <div className="flex items-center gap-2">
-                        <DialogTitle>Import Criteria from CSV</DialogTitle>
-                        <HelpTooltip content="CSV must have columns: Category, Sub-Criterion, Description (optional). Use the export button on an existing profile to see the expected format." />
+                        <DialogTitle>Import Criteria from File</DialogTitle>
+                        <HelpTooltip content="Upload a CSV or TSV file with two columns: Category and Sub-Criterion. Both comma-separated (.csv) and tab-separated (.tsv or .csv exported from Excel) formats are accepted. Export an existing profile to see the exact format." />
                       </div>
                       <DialogDescription>
-                        Upload a CSV file to create a new criteria profile.
+                        Import a CSV or TSV file to create a new criteria profile. Expected columns: <strong>Category</strong>, <strong>Sub-Criterion</strong>.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
@@ -633,12 +638,12 @@ export default function VendorSettings() {
                         <Textarea id="import-profile-description" name="profile-description" rows={2} />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="csv-file">CSV File</Label>
+                        <Label htmlFor="csv-file">File <span className="text-gray-400 font-normal">(.csv or .tsv — comma or tab separated)</span></Label>
                         <Input
                           ref={fileInputRef}
                           id="csv-file"
                           type="file"
-                          accept=".csv"
+                          accept=".csv,.tsv,.txt"
                           onChange={handleFileUpload}
                           required
                         />
@@ -788,7 +793,8 @@ export default function VendorSettings() {
                                 variant="ghost"
                                 size="sm"
                                 disabled={isActive}
-                                title={isActive ? "Cannot delete the active profile" : "Delete profile"}
+                                title={isActive ? "Deactivate this profile before deleting — activate another profile first" : "Delete profile"}
+                                className={isActive ? "cursor-not-allowed opacity-40" : ""}
                               >
                                 <Trash2 className="size-4 text-red-500" />
                               </Button>
@@ -922,8 +928,11 @@ export default function VendorSettings() {
                         </p>
                         <div className="space-y-2 mt-1">
                           {activeCriteriaProfile.criteria.map((criterion) => {
+                            // Existing profiles store sub-criterion-level weights;
+                            // display the first sub-criterion weight for this category
+                            // as the representative value.
                             const existingWeight = editingWeighting?.weights?.find(
-                              (w) => w.criterionId === criterion.id && !w.subCriterionId
+                              (w) => w.criterionId === criterion.id
                             )?.weight;
                             return (
                               <div key={criterion.id} className="flex items-center gap-3">
@@ -973,7 +982,9 @@ export default function VendorSettings() {
             <div className="grid gap-3">
               {data.weightingProfiles.map((profile) => {
                 const isActive = profile.id === data.activeProfileId;
-                const criterionCount = Object.keys(profile.weights ?? {}).length;
+                // Count distinct categories (criterionId entries without subCriterionId)
+                // or fall back to total weight entries.
+                const criterionCount = new Set(profile.weights.map((w) => w.criterionId)).size;
 
                 return (
                   <Card
@@ -1038,7 +1049,8 @@ export default function VendorSettings() {
                                 variant="ghost"
                                 size="sm"
                                 disabled={isActive}
-                                title={isActive ? "Cannot delete the active profile" : "Delete profile"}
+                                title={isActive ? "Deactivate this profile before deleting — activate another profile first" : "Delete profile"}
+                                className={isActive ? "cursor-not-allowed opacity-40" : ""}
                               >
                                 <Trash2 className="size-4 text-red-500" />
                               </Button>

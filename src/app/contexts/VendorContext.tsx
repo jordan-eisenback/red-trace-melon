@@ -513,6 +513,9 @@ export function VendorProvider({ children }: { children: ReactNode }) {
 
   const getCriteriaForRequirement = useCallback(
     (requirementId: string) => {
+      // Search only the active profile. Links stored in inactive profiles are
+      // preserved in data but not surfaced here — switching profiles intentionally
+      // changes which criteria are active. The active profile is the source of truth.
       const profile = data.criteriaProfiles.find((p) => p.id === data.activeCriteriaProfileId);
       if (!profile) return [];
 

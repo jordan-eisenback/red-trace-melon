@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRequirements } from "../contexts/RequirementsContext";
 import { useVendor } from "../contexts/VendorContext";
 import { Requirement } from "../types/requirement";
@@ -30,6 +30,7 @@ import { Checkbox } from "../components/ui/checkbox";
 import { HelpTooltip } from "../components/HelpTooltip";
 import { Search, Link2, Link2Off, AlertTriangle, CheckCircle2, BarChart2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLocation } from "react-router";
 
 // ---------------------------------------------------------------------------
 // Mapping modal
@@ -132,7 +133,6 @@ export default function RequirementCoverage() {
   const {
     data,
     getActiveCriteriaProfile,
-    getAggregatedScores,
     getCriteriaForRequirement,
   } = useVendor();
 
@@ -142,8 +142,19 @@ export default function RequirementCoverage() {
   const [vendorFilter, setVendorFilter] = useState("all");
   const [mappingTarget, setMappingTarget] = useState<Requirement | null>(null);
 
-  const profile = getActiveCriteriaProfile();
-  const aggregatedScores = getAggregatedScores();
+  // Pre-populate search from ?search= query param (e.g. from GapAnalysisPanel deep-link)
+  const location = useLocation();
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const q = params.get("search");
+    if (q) setSearchTerm(q);
+  }, [location.search]);
+
+  const profile = useMemo(
+    () => getActiveCriteriaProfile(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getActiveCriteriaProfile]
+  );
 
   // Unique types from requirements
   const types = useMemo(
@@ -152,29 +163,46 @@ export default function RequirementCoverage() {
   );
 
   // For each requirement, compute linked criteria and per-vendor avg score
+  // using raw sub-criterion scores (not category-level aggregation) so the
+  // displayed score reflects only the criteria actually linked to this requirement.
   const rows = useMemo(() => {
     return requirements.map((req) => {
       const linkedCriteria = getCriteriaForRequirement(req.id);
 
-      // Per-vendor: average of all scores on linked sub-criteria
       const vendorScores = data.vendors.map((vendor) => {
-        const agg = aggregatedScores.find((a) => a.vendorId === vendor.id);
-        if (!agg || linkedCriteria.length === 0) return { vendorId: vendor.id, score: null as number | null };
+        if (linkedCriteria.length === 0) return { vendorId: vendor.id, score: null as number | null };
 
-        // Find the category scores for criteria linked to this req
-        let totalWeighted = 0;
-        let totalMax = 0;
-        linkedCriteria.forEach(({ criterion }) => {
-          const cs = agg.categoryScores.find((c) => c.category === criterion.category);
-          if (cs && cs.maxScore > 0) {
-            totalWeighted += cs.weightedScore;
-            totalMax += cs.maxScore;
+        // Collect all raw scores for this vendor on each linked sub-criterion,
+        // averaging across evaluators, then averaging across linked sub-criteria.
+        const subScores: number[] = [];
+        linkedCriteria.forEach(({ criterion, subCriterionId }) => {
+          const scoresForSub = data.scores.filter(
+            (s) =>
+              s.vendorId === vendor.id &&
+              s.criterionId === criterion.id &&
+              s.subCriterionId === subCriterionId
+          );
+          if (scoresForSub.length > 0) {
+            const avg = scoresForSub.reduce((acc, s) => acc + s.score, 0) / scoresForSub.length;
+            subScores.push(avg);
           }
         });
 
+        if (subScores.length === 0) return { vendorId: vendor.id, score: null as number | null };
+
+        // Normalise to 0–100 using the active weighting profile's scale max
+        const scaleMax =
+          data.weightingProfiles.find((p) => p.id === data.activeProfileId)
+            ?.scaleConfig.type === "1-5" ? 5
+            : data.weightingProfiles.find((p) => p.id === data.activeProfileId)
+              ?.scaleConfig.type === "1-10" ? 10
+            : data.weightingProfiles.find((p) => p.id === data.activeProfileId)
+              ?.scaleConfig.type === "0-3" ? 3
+            : 5;
+        const rawAvg = subScores.reduce((a, b) => a + b, 0) / subScores.length;
         return {
           vendorId: vendor.id,
-          score: totalMax > 0 ? Math.round((totalWeighted / totalMax) * 100) : null,
+          score: Math.round((rawAvg / scaleMax) * 100),
         };
       });
 
@@ -186,7 +214,7 @@ export default function RequirementCoverage() {
 
       return { req, linkedCriteria, vendorScores, coveragePct };
     });
-  }, [requirements, getCriteriaForRequirement, aggregatedScores, data.vendors]);
+  }, [requirements, getCriteriaForRequirement, data.vendors, data.scores, data.weightingProfiles, data.activeProfileId]);
 
   // Filtered rows
   const filteredRows = useMemo(() => {

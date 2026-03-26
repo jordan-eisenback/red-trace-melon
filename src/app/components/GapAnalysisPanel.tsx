@@ -61,7 +61,13 @@ export function GapAnalysisPanel() {
   }, [gapAnalysis.criticalGaps]);
 
   // Vendor gap rule: requirements with no linked vendor criterion
-  const vendorCriteriaProfile = getActiveCriteriaProfile();
+  // getActiveCriteriaProfile is a useCallback — call it inside useMemo so
+  // its return value is stable and doesn't cause false dependency invalidations.
+  const vendorCriteriaProfile = useMemo(
+    () => getActiveCriteriaProfile(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getActiveCriteriaProfile]
+  );
   const vendorGaps = useMemo(() => {
     if (!vendorCriteriaProfile) return [];
     return requirements.filter(
@@ -467,7 +473,7 @@ export function GapAnalysisPanel() {
                 <div
                   key={req.id}
                   className="bg-white p-3 rounded-lg border border-gray-200 hover:border-indigo-300 cursor-pointer transition-colors"
-                  onClick={() => navigate(`/requirement-coverage`)}
+                  onClick={() => navigate(`/requirement-coverage?search=${encodeURIComponent(req.id)}`)}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">

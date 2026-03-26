@@ -26,13 +26,21 @@ export function validateCSV(csvContent: string): CSVValidationResult {
   const lines = csvContent.split(/\r?\n/).filter((line) => line.trim());
 
   if (lines.length === 0) {
-    errors.push("CSV file is empty");
+    errors.push("File is empty");
     return { success: false, errors, warnings };
   }
 
-  const header = lines[0].split("\t");
+  // Auto-detect delimiter: prefer tab, fall back to comma
+  const firstLine = lines[0];
+  const delimiter = firstLine.includes("\t") ? "\t" : ",";
+
+  const header = firstLine.split(delimiter);
   if (header.length < 2) {
-    errors.push("CSV must have at least 2 tab-separated columns");
+    errors.push(
+      "File must have at least 2 columns separated by tabs or commas. " +
+      "Expected columns: Category, Sub-Criterion. " +
+      "Export an existing profile to see the required format."
+    );
     return { success: false, errors, warnings };
   }
 
@@ -45,7 +53,7 @@ export function validateCSV(csvContent: string): CSVValidationResult {
 
   const dataLines = lines.slice(1);
   if (dataLines.length === 0) {
-    errors.push("CSV has no data rows");
+    errors.push("File has no data rows");
     return { success: false, errors, warnings };
   }
 
@@ -53,7 +61,7 @@ export function validateCSV(csvContent: string): CSVValidationResult {
   let rowsWithIssues = 0;
 
   dataLines.forEach((line) => {
-    const parts = line.split("\t");
+    const parts = line.split(delimiter);
     if (parts.length < 2) {
       rowsWithIssues++;
       return;
@@ -75,7 +83,7 @@ export function validateCSV(csvContent: string): CSVValidationResult {
   });
 
   if (categoriesFound.size === 0) {
-    errors.push("No valid categories found in CSV");
+    errors.push("No valid categories found in file");
   }
   if (rowsWithIssues > 0) {
     warnings.push(
@@ -98,10 +106,16 @@ export function parseCriteriaFromCSVContent(csvContent: string): Criterion[] {
   const lines = csvContent.split(/\r?\n/).filter((line) => line.trim());
   const dataLines = lines.slice(1); // skip header
 
+  // Auto-detect delimiter matching validateCSV
+  const delimiter = lines[0]?.includes("\t") ? "\t" : ",";
+
+  // Unique prefix so IDs don't collide when multiple profiles share category names
+  const profilePrefix = `p${Date.now().toString(36)}`;
+
   const criteriaMap = new Map<string, Criterion>();
 
   dataLines.forEach((line) => {
-    const parts = line.split("\t");
+    const parts = line.split(delimiter);
     if (parts.length < 2) return;
 
     const firstPart = parts[0] ?? "";
@@ -113,14 +127,14 @@ export function parseCriteriaFromCSVContent(csvContent: string): Criterion[] {
 
     if (!criteriaMap.has(category)) {
       criteriaMap.set(category, {
-        id: `cat-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        id: `cat-${profilePrefix}-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
         category,
         subCriteria: [],
       });
     }
 
     const criterion = criteriaMap.get(category)!;
-    const subCriterionId = `sub-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${subCriterionName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    const subCriterionId = `sub-${profilePrefix}-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${subCriterionName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
     criterion.subCriteria.push({
       id: subCriterionId,

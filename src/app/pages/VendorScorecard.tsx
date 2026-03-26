@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useVendor } from "../contexts/VendorContext";
 import { Score } from "../types/vendor";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
@@ -54,12 +54,12 @@ export default function VendorScorecard() {
 
   // ---- Score lookup helpers -----------------------------------------------
 
-  function getScore(
+  const getScore = useCallback((
     evaluatorId: string,
     vendorId: string,
     criterionId: string,
     subCriterionId: string
-  ): number | undefined {
+  ): number | undefined => {
     return data.scores.find(
       (s) =>
         s.evaluatorId === evaluatorId &&
@@ -67,16 +67,33 @@ export default function VendorScorecard() {
         s.criterionId === criterionId &&
         s.subCriterionId === subCriterionId
     )?.score;
-  }
+  }, [data.scores]);
 
-  function handleScoreChange(
+  const vendorCompletion = useCallback((vendorId: string) => {
+    return (
+      completionStatus.find(
+        (s) => s.evaluatorId === selectedEvaluatorId && s.vendorId === vendorId
+      ) ?? { completed: 0, total: 0, percentage: 0 }
+    );
+  }, [completionStatus, selectedEvaluatorId]);
+
+  const handleScoreChange = useCallback((
     vendorId: string,
     criterionId: string,
     subCriterionId: string,
     value: string
-  ) {
+  ) => {
     const num = parseInt(value, 10);
     if (isNaN(num) || num < scaleMin || num > scaleMax) return;
+    // Preserve the original createdAt if this score already exists so we don't
+    // reset the audit timestamp on every edit.
+    const existing = data.scores.find(
+      (s) =>
+        s.evaluatorId === selectedEvaluatorId &&
+        s.vendorId === vendorId &&
+        s.criterionId === criterionId &&
+        s.subCriterionId === subCriterionId
+    );
     const score: Omit<Score, "updatedAt"> = {
       id: `score-${selectedEvaluatorId}-${vendorId}-${criterionId}-${subCriterionId}`,
       evaluatorId: selectedEvaluatorId,
@@ -84,20 +101,10 @@ export default function VendorScorecard() {
       criterionId,
       subCriterionId,
       score: num,
-      createdAt: new Date().toISOString(),
+      createdAt: existing?.createdAt ?? new Date().toISOString(),
     };
     updateScore(score);
-  }
-
-  // ---- Per-vendor completion for selected evaluator -----------------------
-
-  function vendorCompletion(vendorId: string) {
-    return (
-      completionStatus.find(
-        (s) => s.evaluatorId === selectedEvaluatorId && s.vendorId === vendorId
-      ) ?? { completed: 0, total: 0, percentage: 0 }
-    );
-  }
+  }, [selectedEvaluatorId, scaleMin, scaleMax, data.scores, updateScore]);
 
   // ---- Chart data ----------------------------------------------------------
 
