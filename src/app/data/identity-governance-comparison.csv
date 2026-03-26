@@ -1,0 +1,38 @@
+Category	Sub-Criterion
+1: Core Identity Governance	User Lifecycle Automation (JML)
+1: Core Identity Governance	Access Request & Approval Workflows
+1: Core Identity Governance	Certification & Bulk Capabilities
+2: Hybrid Architecture	Architecture Model
+2: Hybrid Architecture	Hybrid Coexistence Support
+3: Integration & Connectivity	Application Connectivity Model
+3: Integration & Connectivity	Workflow Integration and Automation
+3: Integration & Connectivity	ITSM & Workflow Integration
+3: Integration & Connectivity	Integration Flexibility
+4: Access Model & Roles	Decision Making Depth
+4: Access Model & Roles	Role Design & Composition
+4: Access Model & Roles	Policy Model & Enforcement
+5: Security, Audit & Compliance	Audit Depth & Traceability
+5: Security, Audit & Compliance	Change Detection & Correction
+5: Security, Audit & Compliance	Privileged Access Controls
+5: Security, Audit & Compliance	Compliance Framework Support
+6: Customization & Extensibility	Workflow Customization
+6: Customization & Extensibility	Platform Automation & APIs
+6: Customization & Extensibility	UI & Branding Extensibility
+6: Customization & Extensibility	Scripting & Low-Code Tools
+7: Deployment & Migration	Planned Deployment Support
+7: Deployment & Migration	Deployment Model Flexibility
+7: Deployment & Migration	Migration Planning & Tooling
+7: Deployment & Migration	Migration & Cutover Readiness
+8: Analytics & Reporting	Operational Reporting
+8: Analytics & Reporting	Compliance & Audit Reporting
+8: Analytics & Reporting	Dashboard & Visualization
+9: Support Model & SLAs	Support Coverage
+9: Support Model & SLAs	Portal & Resources
+9: Support Model & SLAs	Premium Tiers & SLAs
+10: Vendor Stability & Roadmap	Vendor Viability
+10: Vendor Stability & Roadmap	Roadmap Transparency
+10: Vendor Stability & Roadmap	Partner Management
+11: Cost & Commercial	Licensing Complexity
+11: Cost & Commercial	Cost Predictability
+11: Cost & Commercial	Total Cost of Ownership
+11: Cost & Commercial	Renewal Cost
