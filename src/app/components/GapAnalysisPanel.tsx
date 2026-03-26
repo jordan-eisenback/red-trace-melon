@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
+import { useVendor } from "../contexts/VendorContext";
 import { analyzeGaps, getGapSeverityColor, getGapTypeLabel } from "../utils/gapAnalysis";
 import {
   AlertTriangle,
@@ -11,17 +12,19 @@ import {
   Filter,
   ChevronDown,
   ChevronRight,
+  Star,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export function GapAnalysisPanel() {
   const { requirements } = useRequirements();
   const { frameworks } = useFrameworks();
+  const { getCriteriaForRequirement, getActiveCriteriaProfile } = useVendor();
   const navigate = useNavigate();
   const [severityFilter, setSeverityFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    new Set(["unmapped", "empty", "coverage", "byType"])
+    new Set(["unmapped", "empty", "coverage", "byType", "vendorGaps"])
   );
 
   const gapAnalysis = useMemo(
@@ -56,6 +59,15 @@ export function GapAnalysisPanel() {
     });
     return counts;
   }, [gapAnalysis.criticalGaps]);
+
+  // Vendor gap rule: requirements with no linked vendor criterion
+  const vendorCriteriaProfile = getActiveCriteriaProfile();
+  const vendorGaps = useMemo(() => {
+    if (!vendorCriteriaProfile) return [];
+    return requirements.filter(
+      (req) => getCriteriaForRequirement(req.id).length === 0
+    );
+  }, [requirements, getCriteriaForRequirement, vendorCriteriaProfile]);
 
   const getCoverageColor = (percent: number) => {
     if (percent >= 80) return "text-green-600";
@@ -138,6 +150,20 @@ export function GapAnalysisPanel() {
             </div>
           </div>
         </div>
+        {vendorCriteriaProfile && vendorGaps.length > 0 && (
+          <div className="mt-3 flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-200 rounded-lg">
+            <Star className="w-4 h-4 text-indigo-500 shrink-0" />
+            <p className="text-sm text-indigo-700">
+              <span className="font-semibold">{vendorGaps.length}</span> requirement{vendorGaps.length !== 1 ? "s" : ""} have no vendor evaluation criterion linked
+            </p>
+            <button
+              onClick={() => navigate("/requirement-coverage")}
+              className="ml-auto text-xs text-indigo-600 hover:underline whitespace-nowrap"
+            >
+              View coverage →
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Filters */}
@@ -410,6 +436,65 @@ export function GapAnalysisPanel() {
           </div>
         )}
       </div>
+
+      {/* Vendor Coverage Gaps */}
+      {vendorCriteriaProfile && (
+        <div className="border-t border-gray-200">
+          <button
+            onClick={() => toggleSection("vendorGaps")}
+            className="w-full p-4 hover:bg-gray-50 transition-colors flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              {expandedSections.has("vendorGaps") ? (
+                <ChevronDown className="w-4 h-4 text-gray-400" />
+              ) : (
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+              )}
+              <Star className="w-5 h-5 text-indigo-500" />
+              <div className="text-left">
+                <h3 className="font-medium text-gray-900">Vendor Coverage Gaps</h3>
+                <p className="text-sm text-gray-500">
+                  {vendorGaps.length} requirement{vendorGaps.length !== 1 ? "s" : ""} not linked to any vendor evaluation criterion
+                </p>
+              </div>
+            </div>
+            <span className="text-lg font-semibold text-indigo-600">{vendorGaps.length}</span>
+          </button>
+
+          {expandedSections.has("vendorGaps") && vendorGaps.length > 0 && (
+            <div className="p-4 bg-gray-50 space-y-2">
+              {vendorGaps.slice(0, 10).map((req) => (
+                <div
+                  key={req.id}
+                  className="bg-white p-3 rounded-lg border border-gray-200 hover:border-indigo-300 cursor-pointer transition-colors"
+                  onClick={() => navigate(`/requirement-coverage`)}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-sm text-indigo-600 font-medium">{req.id}</span>
+                        <span className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs rounded">{req.type}</span>
+                      </div>
+                      <p className="text-sm text-gray-700 mt-1">{req.req}</p>
+                    </div>
+                    <AlertTriangle className="w-4 h-4 text-indigo-400 flex-shrink-0 mt-1" />
+                  </div>
+                </div>
+              ))}
+              {vendorGaps.length > 10 && (
+                <div className="text-center pt-2">
+                  <button
+                    onClick={() => navigate("/requirement-coverage")}
+                    className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                  >
+                    View all {vendorGaps.length} vendor coverage gaps →
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

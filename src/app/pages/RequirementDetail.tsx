@@ -2,7 +2,8 @@ import { useParams, Link, useNavigate } from "react-router";
 import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { useEpics } from "../contexts/EpicContext";
-import { ArrowLeft, Edit, Trash2, Network, Users, Shield, BookOpen, Map, GitBranch } from "lucide-react";
+import { useVendor } from "../contexts/VendorContext";
+import { ArrowLeft, Edit, Trash2, Network, Users, Shield, BookOpen, Map, GitBranch, Star, Link2Off } from "lucide-react";
 import { useState } from "react";
 import { RequirementFormDialog } from "../components/RequirementFormDialog";
 import { ConfirmDialog } from "../components/ConfirmDialog";
@@ -14,6 +15,7 @@ export function RequirementDetail() {
   const { getRequirement, getChildren, getParent, deleteRequirement } = useRequirements();
   const { frameworks } = useFrameworks();
   const { epics, userStories, storyMap } = useEpics();
+  const { data: vendorData, getCriteriaForRequirement, getAggregatedScores } = useVendor();
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
@@ -47,6 +49,10 @@ export function RequirementDetail() {
         )
       )
     : [];
+
+  // Vendor coverage data
+  const linkedVendorCriteria = id ? getCriteriaForRequirement(id) : [];
+  const aggregatedScores = getAggregatedScores();
 
   if (!requirement) {
     return (
@@ -286,6 +292,89 @@ export function RequirementDetail() {
               </div>
             </div>
           )}
+
+          {/* Vendor Coverage */}
+          <div>
+            <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
+              <Star className="w-4 h-4 text-indigo-500" />
+              Vendor Coverage ({linkedVendorCriteria.length} criteria linked)
+            </h4>
+            {linkedVendorCriteria.length === 0 ? (
+              <div className="flex items-center gap-3 p-3 border border-dashed border-slate-200 rounded-lg bg-slate-50">
+                <Link2Off className="w-4 h-4 text-slate-400 shrink-0" />
+                <p className="text-sm text-slate-500">
+                  No vendor criteria linked.{" "}
+                  <Link
+                    to="/requirement-coverage"
+                    className="text-indigo-600 hover:underline"
+                  >
+                    Map a criterion →
+                  </Link>
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {/* Criteria chips */}
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {linkedVendorCriteria.map(({ criterion, subCriterionId, subCriterionName }) => (
+                    <span
+                      key={subCriterionId}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-indigo-50 text-indigo-700 text-xs rounded-full border border-indigo-200"
+                      title={`${criterion.category} › ${subCriterionName}`}
+                    >
+                      {subCriterionName}
+                    </span>
+                  ))}
+                </div>
+                {/* Per-vendor scores */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {vendorData.vendors.map((vendor) => {
+                    const agg = aggregatedScores.find((a) => a.vendorId === vendor.id);
+                    let pct: number | null = null;
+                    if (agg && linkedVendorCriteria.length > 0) {
+                      let tw = 0, tm = 0;
+                      linkedVendorCriteria.forEach(({ criterion }) => {
+                        const cs = agg.categoryScores.find(
+                          (c) => c.category === criterion.category
+                        );
+                        if (cs && cs.maxScore > 0) { tw += cs.weightedScore; tm += cs.maxScore; }
+                      });
+                      if (tm > 0) pct = Math.round((tw / tm) * 100);
+                    }
+                    return (
+                      <div
+                        key={vendor.id}
+                        className="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg bg-white"
+                      >
+                        <div className="min-w-0">
+                          <p className="text-xs font-medium text-slate-700 truncate">{vendor.name}</p>
+                          <p className="text-[10px] text-slate-400 capitalize">{vendor.type}</p>
+                        </div>
+                        {pct === null ? (
+                          <span className="text-xs text-slate-300 shrink-0">No scores</span>
+                        ) : (
+                          <span
+                            className={`text-sm font-semibold shrink-0 ml-2 ${
+                              pct >= 70 ? "text-emerald-600" :
+                              pct >= 40 ? "text-amber-600" : "text-red-500"
+                            }`}
+                          >
+                            {pct}%
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <Link
+                  to="/requirement-coverage"
+                  className="text-xs text-indigo-600 hover:underline inline-block mt-1"
+                >
+                  Manage coverage →
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
