@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, Info, GitBranch } from "lucide-react";
+import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, Info, GitBranch, Star } from "lucide-react";
 import { useState, useEffect } from "react";
 import { RequirementFormDialog } from "./RequirementFormDialog";
 import { ToastProvider } from "./Toast";
@@ -35,6 +35,7 @@ export function RootLayout() {
     { path: "/epics-stories", label: "Epics & Stories", icon: Layers },
     { path: "/frameworks", label: "Frameworks & Controls", icon: Shield, tourAttr: "nav-frameworks" },
     { path: "/workstreams", label: "Workstreams", icon: GitBranch },
+    { path: "/vendor-scorecard", label: "Vendor Scorecard", icon: Star },
     { path: "/help", label: "Help", icon: HelpCircle, tourAttr: "nav-help" },
   ];
 
