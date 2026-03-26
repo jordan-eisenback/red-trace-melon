@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Epic } from "../types/epic";
 import { useEpics } from "../contexts/EpicContext";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 
 interface EpicModalProps {
   epic: Epic | null;

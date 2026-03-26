@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { X, Search, CheckCircle, Circle, Link2, Sparkles } from "lucide-react";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { Control } from "../types/framework";
 import { toast } from "sonner";

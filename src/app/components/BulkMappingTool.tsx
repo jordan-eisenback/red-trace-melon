@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { X, Link2, Shield, CheckCircle, ArrowRight, Sparkles } from "lucide-react";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { toast } from "sonner";
 

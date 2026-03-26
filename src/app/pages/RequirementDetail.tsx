@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { useEpics } from "../contexts/EpicContext";
 import { ArrowLeft, Edit, Trash2, Network, Users, Shield, BookOpen, Map, GitBranch } from "lucide-react";

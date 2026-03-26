@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useEpics } from "../contexts/EpicContext";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import { toast } from "sonner";
 import { Plus, Edit, Trash2, Search, Filter, Map, ChevronDown, ChevronRight, Pencil } from "lucide-react";
 import { Epic, UserStory } from "../types/epic";

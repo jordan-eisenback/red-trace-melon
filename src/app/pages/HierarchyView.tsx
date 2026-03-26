@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import { ChevronRight, ChevronDown, FileText } from "lucide-react";
 import { Requirement } from "../types/requirement";
 

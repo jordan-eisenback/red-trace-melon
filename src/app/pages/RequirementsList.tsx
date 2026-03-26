@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { useEpics } from "../contexts/EpicContext";
 import { Search, Edit, Trash2, Eye, AlertTriangle, CheckCircle, FileText, Sparkles, Download, GripVertical } from "lucide-react";

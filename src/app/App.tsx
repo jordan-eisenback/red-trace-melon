@@ -1,6 +1,6 @@
 import { RouterProvider } from "react-router";
 import { router } from "./routes";
-import { RequirementsProvider } from "./context/RequirementsContext";
+import { RequirementsProvider } from "./contexts/RequirementsContext";
 import { EpicProvider } from "./contexts/EpicContext";
 import { FrameworkProvider } from "./contexts/FrameworkContext";
 

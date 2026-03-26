@@ -8,7 +8,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Consistent role-based access decisions across the enterprise",
     "owner": "RBAC Program / IAM Governance",
     "parent": null,
-    "_raw": null,
     "notes": "Implementation notes: Establish a standardized, enterprise role-based access governance model that defines roles, maps roles to entitlements, . Outcome: Consistent role-based access decisions across the enterprise. Provide concrete mapping, config, or references."
   },
   {
@@ -18,7 +17,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Reduced access risk and over-privilege",
     "owner": "RBAC Program / IAM Governance",
     "parent": null,
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL enforce least privilege access by ensuring users receive only the access required for their job functio. Outcome: Reduced access risk and over-privilege. Provide concrete mapping, config, or references."
   },
   {
@@ -28,7 +26,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "End-to-end controlled access lifecycle",
     "owner": "RBAC Program / IAM Governance",
     "parent": null,
-    "_raw": null,
     "notes": "Implementation notes: Govern the full access lifecycle, including request, approval, activation, review, revocation, and exception handling, i. Outcome: End-to-end controlled access lifecycle. Provide concrete mapping, config, or references."
   },
   {
@@ -38,7 +35,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Audit-ready access governance",
     "owner": "Audit / Compliance",
     "parent": null,
-    "_raw": null,
     "notes": "Implementation notes: Produce complete, attributable, and auditable evidence of access decisions sufficient to support SOX and other regulator. Outcome: Audit-ready access governance. Provide concrete mapping, config, or references."
   },
   {
@@ -48,7 +44,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Scalable RBAC adoption",
     "owner": "RBAC Program / IAM Governance",
     "parent": null,
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support scalable onboarding of applications, identities, and roles without bespoke redesign or manual c. Outcome: Scalable RBAC adoption. Provide concrete mapping, config, or references."
   },
   {
@@ -58,7 +53,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Clear separation of governance and execution",
     "owner": "Enterprise IAM",
     "parent": null,
-    "_raw": null,
     "notes": "Implementation notes: Define access intent, policy, and governance while delegating execution, automation, and enforcement to an enterprise IG. Outcome: Clear separation of governance and execution. Provide concrete mapping, config, or references."
   },
   {
@@ -68,7 +62,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Consistent, scalable application onboarding",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-005",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL provide a standardized discovery model to capture application RBAC readiness inputs. Outcome: Consistent, scalable application onboarding. Provide concrete mapping, config, or references."
   },
   {
@@ -78,7 +71,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Readiness gating enforced",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-005",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL require completion of minimum discovery criteria before entitlement mapping. Outcome: Readiness gating enforced. Provide concrete mapping, config, or references."
   },
   {
@@ -88,7 +80,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Clear accountability",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-001",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL require identification of business and technical owners. Outcome: Clear accountability. Provide concrete mapping, config, or references."
   },
   {
@@ -98,7 +89,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Role clarity",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-001",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL require documented role constructs or confirmation none exist. Outcome: Role clarity. Provide concrete mapping, config, or references."
   },
   {
@@ -108,7 +98,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Visibility into access risk",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL require a current permission inventory. Outcome: Visibility into access risk. Provide concrete mapping, config, or references."
   },
   {
@@ -118,7 +107,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Early risk identification",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL identify privileged access paths during discovery. Outcome: Early risk identification. Provide concrete mapping, config, or references."
   },
   {
@@ -128,7 +116,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "SoD risks identified",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL capture segregation-of-duties considerations. Outcome: SoD risks identified. Provide concrete mapping, config, or references."
   },
   {
@@ -138,7 +125,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Operational transparency",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-005",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL track discovery lifecycle status. Outcome: Operational transparency. Provide concrete mapping, config, or references."
   },
   {
@@ -148,7 +134,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Audit-ready onboarding evidence",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain discovery artifacts as audit evidence. Outcome: Audit-ready onboarding evidence. Provide concrete mapping, config, or references."
   },
   {
@@ -158,7 +143,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Consistent governance across identity types",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-001",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support RBAC governance for non-human identities. Outcome: Consistent governance across identity types. Provide concrete mapping, config, or references."
   },
   {
@@ -168,7 +152,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Standardized role model",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-001",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support explicit definition of business roles. Outcome: Standardized role model. Provide concrete mapping, config, or references."
   },
   {
@@ -178,7 +161,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Reduced inappropriate access",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL enforce role eligibility criteria. Outcome: Reduced inappropriate access. Provide concrete mapping, config, or references."
   },
   {
@@ -188,7 +170,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Role accountability",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-001",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL require documented role purpose and owner. Outcome: Role accountability. Provide concrete mapping, config, or references."
   },
   {
@@ -198,7 +179,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Controlled role evolution",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support role lifecycle states. Outcome: Controlled role evolution. Provide concrete mapping, config, or references."
   },
   {
@@ -208,7 +188,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Enforced least privilege",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL ensure users inherit access only through roles. Outcome: Enforced least privilege. Provide concrete mapping, config, or references."
   },
   {
@@ -218,7 +197,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Deterministic deprovisioning",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL automatically revoke access when role removed. Outcome: Deterministic deprovisioning. Provide concrete mapping, config, or references."
   },
   {
@@ -228,7 +206,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Scalable role design",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-005",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support role composition. Outcome: Scalable role design. Provide concrete mapping, config, or references."
   },
   {
@@ -238,7 +215,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Ongoing role hygiene",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support periodic role review. Outcome: Ongoing role hygiene. Provide concrete mapping, config, or references."
   },
   {
@@ -248,7 +224,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Auditable role changes",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL require approval and justification for material role changes. Outcome: Auditable role changes. Provide concrete mapping, config, or references."
   },
   {
@@ -258,7 +233,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Consistent access model",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-001",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL enforce role-to-permission mapping. Outcome: Consistent access model. Provide concrete mapping, config, or references."
   },
   {
@@ -268,7 +242,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Least privilege defensibility",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL require justification for permissions in roles. Outcome: Least privilege defensibility. Provide concrete mapping, config, or references."
   },
   {
@@ -278,7 +251,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Privileged access visibility",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL flag privileged entitlements during mapping. Outcome: Privileged access visibility. Provide concrete mapping, config, or references."
   },
   {
@@ -288,7 +260,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Controlled permission lifecycle",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL require role owner approval for permission changes. Outcome: Controlled permission lifecycle. Provide concrete mapping, config, or references."
   },
   {
@@ -298,7 +269,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Risk-based governance",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL apply privileged designation using governance criteria. Outcome: Risk-based governance. Provide concrete mapping, config, or references."
   },
   {
@@ -308,7 +278,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Consistent request experience",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-001",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support role-based access requests. Outcome: Consistent request experience. Provide concrete mapping, config, or references."
   },
   {
@@ -318,7 +287,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Policy-driven approvals",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL route approvals based on governance rules. Outcome: Policy-driven approvals. Provide concrete mapping, config, or references."
   },
   {
@@ -328,7 +296,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Attributable approval trail",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL record approval decisions as evidence. Outcome: Attributable approval trail. Provide concrete mapping, config, or references."
   },
   {
@@ -338,7 +305,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Enforced authorization",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL prevent fulfillment without approvals. Outcome: Enforced authorization. Provide concrete mapping, config, or references."
   },
   {
@@ -348,7 +314,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Reduced standing privilege",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support time-bound / JIT role activation. Outcome: Reduced standing privilege. Provide concrete mapping, config, or references."
   },
   {
@@ -358,7 +323,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Automatic cleanup",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: Automatically revoke JIT access. Outcome: Automatic cleanup. Provide concrete mapping, config, or references."
   },
   {
@@ -368,7 +332,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Full lifecycle evidence",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL record JIT events as audit evidence. Outcome: Full lifecycle evidence. Provide concrete mapping, config, or references."
   },
   {
@@ -378,7 +341,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Ongoing access validation",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support periodic access certifications. Outcome: Ongoing access validation. Provide concrete mapping, config, or references."
   },
   {
@@ -388,7 +350,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Correct reviewer assignment",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL assign certifiers by governance rules. Outcome: Correct reviewer assignment. Provide concrete mapping, config, or references."
   },
   {
@@ -398,7 +359,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Attributable review evidence",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL record certification decisions. Outcome: Attributable review evidence. Provide concrete mapping, config, or references."
   },
   {
@@ -408,7 +368,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Closed-loop enforcement",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL trigger actions from certification outcomes. Outcome: Closed-loop enforcement. Provide concrete mapping, config, or references."
   },
   {
@@ -418,7 +377,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Risk-based reviews",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL set certification cadence by risk tier. Outcome: Risk-based reviews. Provide concrete mapping, config, or references."
   },
   {
@@ -428,7 +386,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Governed deviations",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support documented access exceptions. Outcome: Governed deviations. Provide concrete mapping, config, or references."
   },
   {
@@ -438,7 +395,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Time-bound risk",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-002",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL enforce expiration or revalidation of exceptions. Outcome: Time-bound risk. Provide concrete mapping, config, or references."
   },
   {
@@ -448,7 +404,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Controlled emergency access",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support emergency (break glass) access with review. Outcome: Controlled emergency access. Provide concrete mapping, config, or references."
   },
   {
@@ -458,7 +413,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Defensible non-standard access",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain exception and emergency evidence. Outcome: Defensible non-standard access. Provide concrete mapping, config, or references."
   },
   {
@@ -468,7 +422,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Role model improvement",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-001",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL trigger role review from repeated exceptions. Outcome: Role model improvement. Provide concrete mapping, config, or references."
   },
   {
@@ -478,7 +431,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Transparency",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL report who has access and why. Outcome: Transparency. Provide concrete mapping, config, or references."
   },
   {
@@ -488,7 +440,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Longitudinal evidence",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain historical access records. Outcome: Longitudinal evidence. Provide concrete mapping, config, or references."
   },
   {
@@ -498,7 +449,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Zero manual reconstruction",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support on-demand audit evidence. Outcome: Zero manual reconstruction. Provide concrete mapping, config, or references."
   },
   {
@@ -508,7 +458,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Compliance defensibility",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL ensure evidence is complete and attributable. Outcome: Compliance defensibility. Provide concrete mapping, config, or references."
   },
   {
@@ -518,7 +467,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Clear execution boundary",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-006",
-    "_raw": null,
     "notes": "Implementation notes: RBAC depends on IGA for execution. Outcome: Clear execution boundary. Provide concrete mapping, config, or references."
   },
   {
@@ -528,7 +476,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Authoritative source",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-006",
-    "_raw": null,
     "notes": "Implementation notes: IGA is system of record for roles and assignments. Outcome: Authoritative source. Provide concrete mapping, config, or references."
   },
   {
@@ -538,7 +485,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Lifecycle automation",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-003",
-    "_raw": null,
     "notes": "Implementation notes: IGA executes provisioning, certification, JIT. Outcome: Lifecycle automation. Provide concrete mapping, config, or references."
   },
   {
@@ -548,7 +494,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Centralized evidence",
     "owner": "RBAC Product",
     "parent": "RBAC-ENT-004",
-    "_raw": null,
     "notes": "Implementation notes: IGA retains audit evidence for all access events. Outcome: Centralized evidence. Provide concrete mapping, config, or references."
   },
   {
@@ -558,7 +503,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "RBAC roles executable across all environments",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support hybrid identity environments spanning on-premises and SaaS. Outcome: RBAC roles executable across all environments. Provide concrete mapping, config, or references."
   },
   {
@@ -568,7 +512,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Phased RBAC adoption without disruption",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support coexistence of on-premises and SaaS components with equivalent capability. Outcome: Phased RBAC adoption without disruption. Provide concrete mapping, config, or references."
   },
   {
@@ -578,7 +521,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "RBAC transition without access loss",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support phased migration and parallel operation with legacy IAM systems. Outcome: RBAC transition without access loss. Provide concrete mapping, config, or references."
   },
   {
@@ -588,7 +530,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Complete access governance coverage",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support governance of connected and non-connected applications. Outcome: Complete access governance coverage. Provide concrete mapping, config, or references."
   },
   {
@@ -598,7 +539,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "All access subject to review",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-804",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL include non-connected applications in access reviews and certifications. Outcome: All access subject to review. Provide concrete mapping, config, or references."
   },
   {
@@ -608,7 +548,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Standardized provisioning execution",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support standard enterprise integration patterns (APIs, directories, DBs, files, SCIM). Outcome: Standardized provisioning execution. Provide concrete mapping, config, or references."
   },
   {
@@ -618,7 +557,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Faster application onboarding",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL provide prebuilt connectors for common enterprise and SaaS systems. Outcome: Faster application onboarding. Provide concrete mapping, config, or references."
   },
   {
@@ -628,7 +566,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Long-tail application support",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL provide extensibility mechanisms where direct connectors do not exist. Outcome: Long-tail application support. Provide concrete mapping, config, or references."
   },
   {
@@ -638,7 +575,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Foundational audit trail",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-804",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL provide comprehensive audit logging for identity, access, and governance actions. Outcome: Foundational audit trail. Provide concrete mapping, config, or references."
   },
   {
@@ -648,7 +584,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Full decision traceability",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-804",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL capture approver identity, timestamps, and before/after access state. Outcome: Full decision traceability. Provide concrete mapping, config, or references."
   },
   {
@@ -658,7 +593,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Evidence retained per policy",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-804",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support configurable audit log retention policies. Outcome: Evidence retained per policy. Provide concrete mapping, config, or references."
   },
   {
@@ -668,7 +602,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Access drift visibility",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-804",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL detect and report governed directory and group membership changes. Outcome: Access drift visibility. Provide concrete mapping, config, or references."
   },
   {
@@ -678,7 +611,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Exception and violation detection",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-804",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL detect access granted outside IGA-governed workflows. Outcome: Exception and violation detection. Provide concrete mapping, config, or references."
   },
   {
@@ -688,7 +620,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Proof of remediation",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-804",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain reconciliation actions and outcomes as audit evidence. Outcome: Proof of remediation. Provide concrete mapping, config, or references."
   },
   {
@@ -698,7 +629,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Ongoing access validation",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support periodic access certifications by role and/or entitlement. Outcome: Ongoing access validation. Provide concrete mapping, config, or references."
   },
   {
@@ -708,7 +638,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Certification evidence",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-804",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain certification decisions with reviewer, outcome, and timestamp. Outcome: Certification evidence. Provide concrete mapping, config, or references."
   },
   {
@@ -718,7 +647,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "RBAC-native reviews",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support role-level certifications. Outcome: RBAC-native reviews. Provide concrete mapping, config, or references."
   },
   {
@@ -728,7 +656,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Closed-loop access removal",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: Automatically revoke access when removal is approved during certification. Outcome: Closed-loop access removal. Provide concrete mapping, config, or references."
   },
   {
@@ -738,7 +665,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Scalable certification operations",
     "owner": "IGA Platform",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support certification delegation, escalation, and overdue tracking. Outcome: Scalable certification operations. Provide concrete mapping, config, or references."
   },
   {
@@ -748,7 +674,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Hybrid execution supported",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Duplicate of RBAC-IGA-001. Implementation notes: The system SHALL support hybrid identity environments spanning on-prem and SaaS. Outcome: Hybrid execution supported. Provide concrete mapping, config, or references.",
     "status": "duplicate"
   },
@@ -759,7 +684,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Parallel execution",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support coexistence of on-prem and SaaS components. Outcome: Parallel execution. Provide concrete mapping, config, or references."
   },
   {
@@ -769,7 +693,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "No access disruption",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support phased migration with legacy IAM. Outcome: No access disruption. Provide concrete mapping, config, or references."
   },
   {
@@ -779,7 +702,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Complete access visibility",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-105",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL ingest access from connected and non-connected apps. Outcome: Complete access visibility. Provide concrete mapping, config, or references."
   },
   {
@@ -789,7 +711,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Standard ingestion",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-105",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support API, directory, JDBC, file ingestion. Outcome: Standard ingestion. Provide concrete mapping, config, or references."
   },
   {
@@ -799,7 +720,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Accurate role mapping",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-201",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL correlate accounts and entitlements to roles. Outcome: Accurate role mapping. Provide concrete mapping, config, or references."
   },
   {
@@ -809,7 +729,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Privileged visibility",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-303",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL flag privileged access during ingestion. Outcome: Privileged visibility. Provide concrete mapping, config, or references."
   },
   {
@@ -819,7 +738,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Deterministic access",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-201",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL enforce RBAC role execution. Outcome: Deterministic access. Provide concrete mapping, config, or references."
   },
   {
@@ -829,7 +747,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Policy-based access",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-202",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support ABAC eligibility enforcement. Outcome: Policy-based access. Provide concrete mapping, config, or references."
   },
   {
@@ -839,7 +756,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Lifecycle enforcement",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-206",
-    "_raw": null,
     "notes": "Implementation notes: Auto-revoke access on attribute change. Outcome: Lifecycle enforcement. Provide concrete mapping, config, or references."
   },
   {
@@ -849,7 +765,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "No uncontrolled access",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-301",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL prevent direct entitlement bypass. Outcome: No uncontrolled access. Provide concrete mapping, config, or references."
   },
   {
@@ -859,7 +774,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Reliable fulfillment",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL execute provisioning independent of intake UI. Outcome: Reliable fulfillment. Provide concrete mapping, config, or references."
   },
   {
@@ -869,7 +783,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "End-to-end provisioning",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support cross-system orchestration. Outcome: End-to-end provisioning. Provide concrete mapping, config, or references."
   },
   {
@@ -879,7 +792,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Closed-loop governance",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-504",
-    "_raw": null,
     "notes": "Implementation notes: Auto-revoke access from certifications. Outcome: Closed-loop governance. Provide concrete mapping, config, or references."
   },
   {
@@ -889,7 +801,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Reduced standing privilege",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-405",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support just-in-time privileged access. Outcome: Reduced standing privilege. Provide concrete mapping, config, or references."
   },
   {
@@ -899,7 +810,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Time-bound enforcement",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-406",
-    "_raw": null,
     "notes": "Implementation notes: Automatically expire JIT access. Outcome: Time-bound enforcement. Provide concrete mapping, config, or references."
   },
   {
@@ -909,7 +819,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Auditable JIT",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-407",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain JIT approval and expiration evidence. Outcome: Auditable JIT. Provide concrete mapping, config, or references."
   },
   {
@@ -919,7 +828,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Ongoing validation",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-501",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support role and entitlement certifications. Outcome: Ongoing validation. Provide concrete mapping, config, or references."
   },
   {
@@ -929,7 +837,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "RBAC-native reviews",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-501",
-    "_raw": null,
     "notes": "Duplicate of RBAC-IGA-017. Implementation notes: The system SHALL support role-level certifications. Outcome: RBAC-native reviews. Provide concrete mapping, config, or references.",
     "status": "duplicate"
   },
@@ -940,7 +847,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Scalable certifications",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-501",
-    "_raw": null,
     "notes": "Duplicate of RBAC-IGA-019. Implementation notes: The system SHALL support escalation and overdue tracking. Outcome: Scalable certifications. Provide concrete mapping, config, or references.",
     "status": "duplicate"
   },
@@ -951,7 +857,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Audit defensibility",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-704",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL capture attributable audit logs. Outcome: Audit defensibility. Provide concrete mapping, config, or references."
   },
   {
@@ -961,7 +866,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Drift detection",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-701",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL detect out-of-band access. Outcome: Drift detection. Provide concrete mapping, config, or references."
   },
   {
@@ -971,7 +875,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Historical evidence",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-702",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain reconciliation history. Outcome: Historical evidence. Provide concrete mapping, config, or references."
   },
   {
@@ -981,7 +884,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Authoritative lifecycle",
     "owner": "Workday → IGA Integration",
     "parent": "RBAC-CAP-105",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL consume joiner/mover/leaver lifecycle events from Workday HR. Outcome: Authoritative lifecycle. Provide concrete mapping, config, or references."
   },
   {
@@ -991,7 +893,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Deterministic eligibility",
     "owner": "Workday → IGA Integration",
     "parent": "RBAC-CAP-206",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL ingest identity attributes from Workday to drive role eligibility. Outcome: Deterministic eligibility. Provide concrete mapping, config, or references."
   },
   {
@@ -1001,7 +902,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Near real-time enforcement",
     "owner": "Workday → IGA Integration",
     "parent": "RBAC-CAP-206",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL refresh Workday attributes to support timely access changes. Outcome: Near real-time enforcement. Provide concrete mapping, config, or references."
   },
   {
@@ -1011,7 +911,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Audit defensibility",
     "owner": "Workday → IGA Integration",
     "parent": "RBAC-CAP-704",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain audit evidence of Workday attribute changes affecting access. Outcome: Audit defensibility. Provide concrete mapping, config, or references."
   },
   {
@@ -1021,7 +920,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Directory visibility",
     "owner": "IAM",
     "parent": "RBAC-CAP-105",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL ingest directory accounts and groups. Outcome: Directory visibility. Provide concrete mapping, config, or references."
   },
   {
@@ -1031,7 +929,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "RBAC enforcement",
     "owner": "IAM",
     "parent": "RBAC-CAP-201",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL map directory groups to roles. Outcome: RBAC enforcement. Provide concrete mapping, config, or references."
   },
   {
@@ -1041,7 +938,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Privileged visibility",
     "owner": "IAM",
     "parent": "RBAC-CAP-303",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL flag privileged directory groups. Outcome: Privileged visibility. Provide concrete mapping, config, or references."
   },
   {
@@ -1051,7 +947,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Automated enforcement",
     "owner": "IAM",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: Provision directory memberships. Outcome: Automated enforcement. Provide concrete mapping, config, or references."
   },
   {
@@ -1061,7 +956,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Deterministic revocation",
     "owner": "IAM",
     "parent": "RBAC-CAP-504",
-    "_raw": null,
     "notes": "Implementation notes: Revoke directory access on role removal. Outcome: Deterministic revocation. Provide concrete mapping, config, or references."
   },
   {
@@ -1071,7 +965,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Drift detection",
     "owner": "IAM",
     "parent": "RBAC-CAP-701",
-    "_raw": null,
     "notes": "Duplicate of RBAC-IGA-041. Implementation notes: The system SHALL detect out-of-band directory changes. Outcome: Drift detection. Provide concrete mapping, config, or references.",
     "status": "duplicate"
   },
@@ -1082,7 +975,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Audit history",
     "owner": "IAM",
     "parent": "RBAC-CAP-702",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL retain directory reconciliation evidence. Outcome: Audit history. Provide concrete mapping, config, or references."
   },
   {
@@ -1092,7 +984,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Standardized requests",
     "owner": "ServiceNow ↔ IGA Integration",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL receive access request intake from ServiceNow ITSM. Outcome: Standardized requests. Provide concrete mapping, config, or references."
   },
   {
@@ -1102,7 +993,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "End-to-end traceability",
     "owner": "ServiceNow ↔ IGA Integration",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL execute fulfillment for ServiceNow-approved access requests. Outcome: End-to-end traceability. Provide concrete mapping, config, or references."
   },
   {
@@ -1112,7 +1002,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "No bypass paths",
     "owner": "ServiceNow ↔ IGA Integration",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL block fulfillment of ServiceNow requests until approval is recorded. Outcome: No bypass paths. Provide concrete mapping, config, or references."
   },
   {
@@ -1122,7 +1011,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Fast onboarding",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-105",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL provide standard connectors. Outcome: Fast onboarding. Provide concrete mapping, config, or references."
   },
   {
@@ -1132,7 +1020,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Long-tail coverage",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-105",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support extensibility where connectors unavailable. Outcome: Long-tail coverage. Provide concrete mapping, config, or references."
   },
   {
@@ -1142,7 +1029,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Target execution",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: Provision via API/JDBC/REST. Outcome: Target execution. Provide concrete mapping, config, or references."
   },
   {
@@ -1152,7 +1038,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Scripted coverage",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support governed scripting. Outcome: Scripted coverage. Provide concrete mapping, config, or references."
   },
   {
@@ -1162,7 +1047,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Auditable automation",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-704",
-    "_raw": null,
     "notes": "Implementation notes: Script execution is auditable. Outcome: Auditable automation. Provide concrete mapping, config, or references."
   },
   {
@@ -1172,7 +1056,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Operational continuity",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL provide 24x7 support for critical failures. Outcome: Operational continuity. Provide concrete mapping, config, or references."
   },
   {
@@ -1182,7 +1065,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Predictable response",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: Define SLA response times for failures. Outcome: Predictable response. Provide concrete mapping, config, or references."
   },
   {
@@ -1192,7 +1074,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Audit protection",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-704",
-    "_raw": null,
     "notes": "Implementation notes: Prioritize incidents impacting audit evidence. Outcome: Audit protection. Provide concrete mapping, config, or references."
   },
   {
@@ -1202,7 +1083,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Enterprise scale",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-105",
-    "_raw": null,
     "notes": "Implementation notes: Scale ingestion to enterprise volumes. Outcome: Enterprise scale. Provide concrete mapping, config, or references."
   },
   {
@@ -1212,7 +1092,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Performance stability",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support peak provisioning loads. Outcome: Performance stability. Provide concrete mapping, config, or references."
   },
   {
@@ -1222,7 +1101,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Scalable reviews",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-501",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support large certification campaigns. Outcome: Scalable reviews. Provide concrete mapping, config, or references."
   },
   {
@@ -1232,7 +1110,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Control integrity",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-201",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL prevent unauthorized provisioning. Outcome: Control integrity. Provide concrete mapping, config, or references."
   },
   {
@@ -1242,7 +1119,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Evidence integrity",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-704",
-    "_raw": null,
     "notes": "Implementation notes: Protect audit logs from tampering. Outcome: Evidence integrity. Provide concrete mapping, config, or references."
   },
   {
@@ -1252,7 +1128,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Admin accountability",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-704",
-    "_raw": null,
     "notes": "Implementation notes: Govern IGA admin access. Outcome: Admin accountability. Provide concrete mapping, config, or references."
   },
   {
@@ -1262,7 +1137,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Predictable change",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-803",
-    "_raw": null,
     "notes": "Implementation notes: Publish release cadence. Outcome: Predictable change. Provide concrete mapping, config, or references."
   },
   {
@@ -1272,7 +1146,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Low-risk upgrades",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-404",
-    "_raw": null,
     "notes": "Implementation notes: The system SHALL support phased rollouts. Outcome: Low-risk upgrades. Provide concrete mapping, config, or references."
   },
   {
@@ -1282,7 +1155,6 @@ export const initialRequirements: Requirement[] = [
     "outcome": "Audit continuity",
     "owner": "IGA Vendor",
     "parent": "RBAC-CAP-704",
-    "_raw": null,
     "notes": "Implementation notes: Preserve audit evidence across upgrades. Outcome: Audit continuity. Provide concrete mapping, config, or references."
   }
 ];

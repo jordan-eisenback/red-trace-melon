@@ -1,10 +1,31 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Epic, UserStory } from "../types/epic";
+import React, { createContext, useContext, ReactNode } from "react";
+import { Epic, UserStory, StoryDetail } from "../types/epic";
 import { initialEpics, initialUserStories } from "../data/initial-epics";
 import { StoryMap, StoryMapOutcome, StoryMapActivity, StoryMapStep } from "../types/storymap";
 import { initialStoryMap } from "../data/initial-storymap";
 import { StoryJam, StoryJamNode, StoryJamEdge } from "../types/storyjam";
 import { initialStoryJam } from "../data/initial-storyjam";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+
+/** Build the seeded UserStory list with linkedStepIds populated from the initial story map. */
+function buildInitialUserStories(): UserStory[] {
+  const reverseIndex: Record<string, string[]> = {};
+  for (const outcome of initialStoryMap) {
+    for (const activity of outcome.activities ?? []) {
+      for (const step of activity.steps ?? []) {
+        for (const sid of step.linkedStoryIds ?? []) {
+          if (!reverseIndex[sid]) reverseIndex[sid] = [];
+          if (!reverseIndex[sid].includes(step.id)) reverseIndex[sid].push(step.id);
+        }
+      }
+    }
+  }
+  return (initialUserStories.map((s) => ({
+    ...s,
+    title: s.title ? s.title.replace(/^Imported:\s*/i, "") : s.title,
+    linkedStepIds: reverseIndex[s.id] ?? [],
+  })) as unknown) as UserStory[];
+}
 
 interface EpicContextType {
   epics: Epic[];
@@ -28,9 +49,9 @@ interface EpicContextType {
   linkStoryToStep: (stepId: string, storyId: string) => void;
   unlinkStoryFromStep: (stepId: string, storyId: string) => void;
   getStoriesByEpic: (epicId: string) => UserStory[];
-  addDetailToStory: (storyId: string, detail: any) => void;
+  addDetailToStory: (storyId: string, detail: StoryDetail) => void;
   removeDetailFromStory: (storyId: string, detailId: string) => void;
-  updateDetailOnStory: (storyId: string, detail: any) => void;
+  updateDetailOnStory: (storyId: string, detail: StoryDetail) => void;
   // StoryJam (freeform board) API
   storyJam: StoryJam;
   addJamNode: (node: StoryJamNode) => void;
@@ -43,30 +64,10 @@ interface EpicContextType {
 const EpicContext = createContext<EpicContextType | undefined>(undefined);
 
 export const EpicProvider = ({ children }: { children: ReactNode }) => {
-  const [epics, setEpics] = useState<Epic[]>((initialEpics as unknown) as Epic[]);
-  // Sanitize imported titles by removing any leading "Imported: " prefix
-  const [userStories, setUserStories] = useState<UserStory[]>(() => {
-    // Build a storyId → stepId[] reverse index from the initial story map
-    const reverseIndex: Record<string, string[]> = {};
-    for (const outcome of initialStoryMap) {
-      for (const activity of outcome.activities ?? []) {
-        for (const step of activity.steps ?? []) {
-          for (const sid of step.linkedStoryIds ?? []) {
-            if (!reverseIndex[sid]) reverseIndex[sid] = [];
-            if (!reverseIndex[sid].includes(step.id)) reverseIndex[sid].push(step.id);
-          }
-        }
-      }
-    }
-    return (initialUserStories.map((s) => ({
-      ...s,
-      title: s.title ? s.title.replace(/^Imported:\s*/i, "") : s.title,
-      linkedStepIds: reverseIndex[s.id] ?? [],
-    })) as unknown) as UserStory[];
-  });
-
-  const [storyMap, setStoryMap] = useState<StoryMap>(initialStoryMap);
-  const [storyJam, setStoryJam] = useState<StoryJam>(initialStoryJam);
+  const [epics, setEpics] = useLocalStorage<Epic[]>("rtm-epics", (initialEpics as unknown) as Epic[]);
+  const [userStories, setUserStories] = useLocalStorage<UserStory[]>("rtm-user-stories", buildInitialUserStories());
+  const [storyMap, setStoryMap] = useLocalStorage<StoryMap>("rtm-story-map", initialStoryMap);
+  const [storyJam, setStoryJam] = useLocalStorage<StoryJam>("rtm-story-jam", initialStoryJam);
 
   const addEpic = (epic: Epic) => {
     setEpics((prev) => [...prev, epic]);
@@ -94,7 +95,7 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
     setUserStories((prev) => prev.filter((s) => s.id !== id));
   };
 
-  const addDetailToStory = (storyId: string, detail: any) => {
+  const addDetailToStory = (storyId: string, detail: StoryDetail) => {
     setUserStories((prev) =>
       prev.map((s) => (s.id === storyId ? { ...s, details: [...(s.details || []), detail] } : s))
     );
@@ -108,7 +109,7 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const updateDetailOnStory = (storyId: string, detail: any) => {
+  const updateDetailOnStory = (storyId: string, detail: StoryDetail) => {
     setUserStories((prev) =>
       prev.map((s) =>
         s.id === storyId
