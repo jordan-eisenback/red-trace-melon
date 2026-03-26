@@ -9,6 +9,7 @@ import FrameworksAndControls from "./pages/FrameworksAndControls";
 import HelpCenter from "./pages/HelpCenter";
 import WorkstreamsPage from "./pages/Workstreams";
 import VendorScorecard from "./pages/VendorScorecard";
+import RequirementCoverage from "./pages/RequirementCoverage";
 import { RootLayout } from "./components/RootLayout";
 
 export const router = createBrowserRouter([
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
       { path: "frameworks", Component: FrameworksAndControls },
       { path: "workstreams", Component: WorkstreamsPage },
       { path: "vendor-scorecard", Component: VendorScorecard },
+      { path: "requirement-coverage", Component: RequirementCoverage },
       { path: "help", Component: HelpCenter },
     ],
   },
