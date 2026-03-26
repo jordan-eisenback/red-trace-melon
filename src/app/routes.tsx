@@ -10,6 +10,7 @@ import HelpCenter from "./pages/HelpCenter";
 import WorkstreamsPage from "./pages/Workstreams";
 import VendorScorecard from "./pages/VendorScorecard";
 import RequirementCoverage from "./pages/RequirementCoverage";
+import VendorSettings from "./pages/VendorSettings";
 import { RootLayout } from "./components/RootLayout";
 
 export const router = createBrowserRouter([
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
       { path: "workstreams", Component: WorkstreamsPage },
       { path: "vendor-scorecard", Component: VendorScorecard },
       { path: "requirement-coverage", Component: RequirementCoverage },
+      { path: "vendor-settings", Component: VendorSettings },
       { path: "help", Component: HelpCenter },
     ],
   },

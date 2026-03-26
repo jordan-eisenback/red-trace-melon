@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, Info, GitBranch, Star, Target } from "lucide-react";
+import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, Info, GitBranch, Star, Target, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { RequirementFormDialog } from "./RequirementFormDialog";
 import { ToastProvider } from "./Toast";
@@ -37,6 +37,7 @@ export function RootLayout() {
     { path: "/workstreams", label: "Workstreams", icon: GitBranch },
     { path: "/vendor-scorecard", label: "Vendor Scorecard", icon: Star },
     { path: "/requirement-coverage", label: "Req. Coverage", icon: Target },
+    { path: "/vendor-settings", label: "Vendor Settings", icon: Settings },
     { path: "/help", label: "Help", icon: HelpCircle, tourAttr: "nav-help" },
   ];
 
