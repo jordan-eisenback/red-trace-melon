@@ -420,20 +420,26 @@ export function RequirementValidationPanel() {
       });
 
       if (similar.length > 0 && req.id < similar[0].id) {
+        const duplicateId = similar[0].id;
         foundSuggestions.push({
           id: `merge-${req.id}`,
           requirementId: req.id,
           type: "merge",
           title: "Potential duplicate detected",
-          description: `${req.id} and ${similar[0].id} have significant overlap. Consider merging.`,
+          description: `${req.id} and ${duplicateId} have significant overlap. Consider merging.`,
           impact: "medium",
           actionLabel: "Review both",
+          action: () => {
+            // Open both requirements in separate tabs so they can be compared side-by-side
+            window.open(`/requirements/${duplicateId}`, "_blank", "noopener");
+            navigate(`/requirements/${req.id}`);
+          },
         });
       }
     });
 
     return foundSuggestions;
-  }, [requirements, frameworks, updateRequirement]);
+  }, [requirements, frameworks, updateRequirement, navigate]);
 
   // Calculate health score
   const healthScore = useMemo(() => {
