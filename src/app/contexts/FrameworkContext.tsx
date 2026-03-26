@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useCallback, ReactNode } from "react";
 import { Framework, Control } from "../types/framework";
 import { initialFrameworks } from "../data/initial-frameworks";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface FrameworkContextType {
   frameworks: Framework[];
@@ -10,12 +11,6 @@ interface FrameworkContextType {
   addControl: (frameworkId: string, control: Control) => void;
   updateControl: (frameworkId: string, controlId: string, control: Control) => void;
   deleteControl: (frameworkId: string, controlId: string) => void;
-  mapRequirementToControl: (frameworkId: string, controlId: string, requirementId: string) => void;
-  unmapRequirementFromControl: (
-    frameworkId: string,
-    controlId: string,
-    requirementId: string
-  ) => void;
   addRequirementToControl: (frameworkId: string, controlId: string, requirementId: string) => void;
   removeRequirementFromControl: (frameworkId: string, controlId: string, requirementId: string) => void;
   getControlsByFramework: (frameworkId: string) => Control[];
@@ -24,27 +19,27 @@ interface FrameworkContextType {
 const FrameworkContext = createContext<FrameworkContextType | undefined>(undefined);
 
 export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
-  const [frameworks, setFrameworks] = useState<Framework[]>(initialFrameworks);
+  const [frameworks, setFrameworks] = useLocalStorage<Framework[]>("rtm-frameworks", initialFrameworks);
 
-  const addFramework = (framework: Framework) => {
+  const addFramework = useCallback((framework: Framework) => {
     setFrameworks((prev) => [...prev, framework]);
-  };
+  }, []);
 
-  const updateFramework = (id: string, framework: Framework) => {
+  const updateFramework = useCallback((id: string, framework: Framework) => {
     setFrameworks((prev) => prev.map((f) => (f.id === id ? framework : f)));
-  };
+  }, []);
 
-  const deleteFramework = (id: string) => {
+  const deleteFramework = useCallback((id: string) => {
     setFrameworks((prev) => prev.filter((f) => f.id !== id));
-  };
+  }, []);
 
-  const addControl = (frameworkId: string, control: Control) => {
+  const addControl = useCallback((frameworkId: string, control: Control) => {
     setFrameworks((prev) =>
       prev.map((f) => (f.id === frameworkId ? { ...f, controls: [...f.controls, control] } : f))
     );
-  };
+  }, []);
 
-  const updateControl = (frameworkId: string, controlId: string, control: Control) => {
+  const updateControl = useCallback((frameworkId: string, controlId: string, control: Control) => {
     setFrameworks((prev) =>
       prev.map((f) =>
         f.id === frameworkId
@@ -52,17 +47,17 @@ export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
           : f
       )
     );
-  };
+  }, []);
 
-  const deleteControl = (frameworkId: string, controlId: string) => {
+  const deleteControl = useCallback((frameworkId: string, controlId: string) => {
     setFrameworks((prev) =>
       prev.map((f) =>
         f.id === frameworkId ? { ...f, controls: f.controls.filter((c) => c.id !== controlId) } : f
       )
     );
-  };
+  }, []);
 
-  const mapRequirementToControl = (
+  const addRequirementToControl = useCallback((
     frameworkId: string,
     controlId: string,
     requirementId: string
@@ -81,9 +76,9 @@ export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
           : f
       )
     );
-  };
+  }, []);
 
-  const unmapRequirementFromControl = (
+  const removeRequirementFromControl = useCallback((
     frameworkId: string,
     controlId: string,
     requirementId: string
@@ -102,54 +97,12 @@ export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
           : f
       )
     );
-  };
+  }, []);
 
-  const addRequirementToControl = (
-    frameworkId: string,
-    controlId: string,
-    requirementId: string
-  ) => {
-    setFrameworks((prev) =>
-      prev.map((f) =>
-        f.id === frameworkId
-          ? {
-              ...f,
-              controls: f.controls.map((c) =>
-                c.id === controlId && !c.requirements.includes(requirementId)
-                  ? { ...c, requirements: [...c.requirements, requirementId] }
-                  : c
-              ),
-            }
-          : f
-      )
-    );
-  };
-
-  const removeRequirementFromControl = (
-    frameworkId: string,
-    controlId: string,
-    requirementId: string
-  ) => {
-    setFrameworks((prev) =>
-      prev.map((f) =>
-        f.id === frameworkId
-          ? {
-              ...f,
-              controls: f.controls.map((c) =>
-                c.id === controlId
-                  ? { ...c, requirements: c.requirements.filter((r) => r !== requirementId) }
-                  : c
-              ),
-            }
-          : f
-      )
-    );
-  };
-
-  const getControlsByFramework = (frameworkId: string): Control[] => {
+  const getControlsByFramework = useCallback((frameworkId: string): Control[] => {
     const framework = frameworks.find((f) => f.id === frameworkId);
     return framework ? framework.controls : [];
-  };
+  }, [frameworks]);
 
   return (
     <FrameworkContext.Provider
@@ -161,8 +114,6 @@ export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
         addControl,
         updateControl,
         deleteControl,
-        mapRequirementToControl,
-        unmapRequirementFromControl,
         addRequirementToControl,
         removeRequirementFromControl,
         getControlsByFramework,

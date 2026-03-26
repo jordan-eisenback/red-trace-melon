@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useCallback } from "react";
 import { Requirement } from "../types/requirement";
 import { initialRequirements } from "../data/initial-requirements";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface RequirementsContextType {
   requirements: Requirement[];
@@ -15,7 +16,7 @@ interface RequirementsContextType {
 const RequirementsContext = createContext<RequirementsContextType | undefined>(undefined);
 
 export function RequirementsProvider({ children }: { children: React.ReactNode }) {
-  const [requirements, setRequirements] = useState<Requirement[]>(initialRequirements);
+  const [requirements, setRequirements] = useLocalStorage<Requirement[]>("rtm-requirements", initialRequirements);
 
   const addRequirement = useCallback((requirement: Requirement) => {
     setRequirements((prev) => [...prev, requirement]);

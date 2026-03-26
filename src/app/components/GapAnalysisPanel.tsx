@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { analyzeGaps, getGapSeverityColor, getGapTypeLabel } from "../utils/gapAnalysis";
 import {

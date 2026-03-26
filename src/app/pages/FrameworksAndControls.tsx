@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFrameworks } from "../contexts/FrameworkContext";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import {
   ChevronDown,
   ChevronRight,
@@ -183,7 +183,7 @@ function ControlModal({ frameworkId, control, onClose }: ControlModalProps) {
 }
 
 export default function FrameworksAndControls() {
-  const { frameworks, deleteFramework, deleteControl } = useFrameworks();
+  const { frameworks, deleteFramework, deleteControl, removeRequirementFromControl } = useFrameworks();
   const { requirements } = useRequirements();
   
   const [expandedFrameworks, setExpandedFrameworks] = useState<Set<string>>(
@@ -653,7 +653,7 @@ export default function FrameworksAndControls() {
                                             <Tip label="Remove requirement mapping" side="left">
                                               <button
                                                 onClick={() => {
-                                                  // Unmap functionality would go here
+                                                  removeRequirementFromControl(framework.id, control.id, reqId);
                                                 }}
                                                 className="p-1 text-gray-400 hover:text-red-600 transition-colors"
                                               >

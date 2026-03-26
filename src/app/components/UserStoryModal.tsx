@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { X, Plus, Trash2, Pencil, Check } from "lucide-react";
 import { UserStory } from "../types/epic";
 import { useEpics } from "../contexts/EpicContext";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 
 interface UserStoryModalProps {
   story: UserStory | null;

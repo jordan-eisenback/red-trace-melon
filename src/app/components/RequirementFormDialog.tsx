@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useRequirements } from "../context/RequirementsContext";
+import { useRequirements } from "../contexts/RequirementsContext";
 import { Requirement } from "../types/requirement";
 import { X } from "lucide-react";
 import { HelpTooltip } from "./HelpTooltip";
