@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, Info, GitBranch, Star, Target, Settings } from "lucide-react";
+import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, GitBranch, Star, Target, Settings, SlidersHorizontal } from "lucide-react";
 import { useState, useEffect } from "react";
 import { RequirementFormDialog } from "./RequirementFormDialog";
 import { ToastProvider } from "./Toast";
@@ -10,9 +10,11 @@ import { ProductTour } from "./ProductTour";
 import { TooltipsGuide } from "./TooltipsGuide";
 import { toast } from "sonner";
 import * as Tooltip from "@radix-ui/react-tooltip";
+import { useAdmin, VisibilityKey } from "../contexts/AdminContext";
 
 export function RootLayout() {
   const location = useLocation();
+  const { isVisible } = useAdmin();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showTour, setShowTour] = useState(false);
@@ -27,18 +29,18 @@ export function RootLayout() {
     }
   }, []);
 
-  const navItems = [
-    { path: "/", label: "Requirements List", icon: List },
-    { path: "/dependencies", label: "Dependencies", icon: Network, tourAttr: "nav-dependencies" },
-    { path: "/hierarchy", label: "Hierarchy", icon: FolderTree },
-    { path: "/story-mapping", label: "Story Mapping", icon: Map, tourAttr: "nav-stories" },
-    { path: "/epics-stories", label: "Epics & Stories", icon: Layers },
-    { path: "/frameworks", label: "Frameworks & Controls", icon: Shield, tourAttr: "nav-frameworks" },
-    { path: "/workstreams", label: "Workstreams", icon: GitBranch },
-    { path: "/vendor-scorecard", label: "Vendor Scorecard", icon: Star },
-    { path: "/requirement-coverage", label: "Req. Coverage", icon: Target },
-    { path: "/vendor-settings", label: "Vendor Settings", icon: Settings },
-    { path: "/help", label: "Help", icon: HelpCircle, tourAttr: "nav-help" },
+  const navItems: { path: string; label: string; icon: React.ComponentType<{ className?: string }>; tourAttr?: string; visKey: VisibilityKey }[] = [
+    { path: "/", label: "Requirements List", icon: List, visKey: "page:requirements" },
+    { path: "/dependencies", label: "Dependencies", icon: Network, tourAttr: "nav-dependencies", visKey: "page:dependencies" },
+    { path: "/hierarchy", label: "Hierarchy", icon: FolderTree, visKey: "page:hierarchy" },
+    { path: "/story-mapping", label: "Story Mapping", icon: Map, tourAttr: "nav-stories", visKey: "page:story-mapping" },
+    { path: "/epics-stories", label: "Epics & Stories", icon: Layers, visKey: "page:epics-stories" },
+    { path: "/frameworks", label: "Frameworks & Controls", icon: Shield, tourAttr: "nav-frameworks", visKey: "page:frameworks" },
+    { path: "/workstreams", label: "Workstreams", icon: GitBranch, visKey: "page:workstreams" },
+    { path: "/vendor-scorecard", label: "Vendor Scorecard", icon: Star, visKey: "page:vendor-scorecard" },
+    { path: "/requirement-coverage", label: "Req. Coverage", icon: Target, visKey: "page:requirement-coverage" },
+    { path: "/vendor-settings", label: "Vendor Settings", icon: Settings, visKey: "page:vendor-settings" },
+    { path: "/help", label: "Help", icon: HelpCircle, tourAttr: "nav-help", visKey: "page:help" },
   ];
 
   const handleNewRequirement = () => {
@@ -114,8 +116,8 @@ export function RootLayout() {
 
         <nav className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex gap-1">
-              {navItems.map((item) => {
+            <div className="flex gap-1 items-center">
+              {navItems.filter((item) => isVisible(item.visKey)).map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
                 return (
@@ -134,6 +136,35 @@ export function RootLayout() {
                   </Link>
                 );
               })}
+
+              {/* Admin link — always visible, separated by a faint divider */}
+              <div className="ml-auto pl-2 border-l border-slate-200">
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <Link
+                      to="/admin"
+                      className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        location.pathname === "/admin"
+                          ? "bg-blue-50 text-blue-700"
+                          : "text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                      }`}
+                      aria-label="Admin settings"
+                    >
+                      <SlidersHorizontal className="w-4 h-4" />
+                      <span className="hidden lg:inline">Admin</span>
+                    </Link>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      className="bg-gray-900 text-white px-3 py-2 rounded-lg text-sm shadow-lg"
+                      sideOffset={5}
+                    >
+                      Admin — show/hide pages &amp; features
+                      <Tooltip.Arrow className="fill-gray-900" />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
+              </div>
             </div>
           </div>
         </nav>
