@@ -112,7 +112,8 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setVisibility((prev) => {
       const next = { ...DEFAULT_VISIBILITY, ...prev };
       (Object.keys(next) as VisibilityKey[]).forEach((k) => {
-        if (k.startsWith(`${category}:`)) next[k] = false;
+        // Never hide the requirements page — it's the app home and is protected
+        if (k.startsWith(`${category}:`) && k !== "page:requirements") next[k] = false;
       });
       return next;
     });
