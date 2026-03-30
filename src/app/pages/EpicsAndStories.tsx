@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { useEpics } from "../contexts/EpicContext";
 import { useRequirements } from "../contexts/RequirementsContext";
+import { useAdmin } from "../contexts/AdminContext";
 import { toast } from "sonner";
 import { Plus, Edit, Trash2, Search, Filter, Map, ChevronDown, ChevronRight, Pencil } from "lucide-react";
 import { Epic, UserStory } from "../types/epic";
@@ -15,8 +16,15 @@ type ViewMode = "epics" | "stories";
 export default function EpicsAndStories() {
   const { epics, userStories, deleteEpic, deleteUserStory, getStoriesByEpic, updateUserStory, addDetailToStory, removeDetailFromStory, storyMap } = useEpics();
   const { getRequirement } = useRequirements();
+  const { isVisible } = useAdmin();
 
-  // Build a flat stepId → { outcomeTitle, activityTitle, stepTitle } lookup for back-links
+  // If epics feature is disabled, force Stories view
+  const [viewMode, setViewMode] = useState<ViewMode>("epics");
+  useEffect(() => {
+    if (!isVisible("feature:epics") && viewMode === "epics") {
+      setViewMode("stories");
+    }
+  }, [isVisible("feature:epics")]);
   const stepLookup = (() => {
     const map: Record<string, { outcomeTitle: string; activityTitle: string; stepTitle: string }> = {};
     for (const outcome of storyMap) {
@@ -32,7 +40,6 @@ export default function EpicsAndStories() {
     }
     return map;
   })();
-  const [viewMode, setViewMode] = useState<ViewMode>("epics");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
@@ -234,7 +241,7 @@ export default function EpicsAndStories() {
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
-              Add {viewMode === "epics" ? "Epic" : "Story"}
+              Add {isVisible("feature:epics") && viewMode === "epics" ? "Epic" : "Story"}
             </button>
           </div>
         </div>
@@ -243,6 +250,7 @@ export default function EpicsAndStories() {
       {/* View Toggle */}
       <div className="bg-white border-b border-gray-200 px-6 py-3">
         <div className="flex items-center gap-2">
+          {isVisible("feature:epics") && (
           <button
             onClick={() => setViewMode("epics")}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -253,6 +261,7 @@ export default function EpicsAndStories() {
           >
             Epics ({epics.length})
           </button>
+          )}
           <button
             onClick={() => setViewMode("stories")}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${

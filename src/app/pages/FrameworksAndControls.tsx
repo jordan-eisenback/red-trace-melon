@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { useRequirements } from "../contexts/RequirementsContext";
+import { useAdmin } from "../contexts/AdminContext";
 import {
   ChevronDown,
   ChevronRight,
@@ -185,6 +186,7 @@ function ControlModal({ frameworkId, control, onClose }: ControlModalProps) {
 export default function FrameworksAndControls() {
   const { frameworks, deleteFramework, deleteControl, removeRequirementFromControl } = useFrameworks();
   const { requirements } = useRequirements();
+  const { isVisible } = useAdmin();
   
   const [expandedFrameworks, setExpandedFrameworks] = useState<Set<string>>(
     new Set(frameworks.map((f) => f.id))
@@ -414,12 +416,13 @@ export default function FrameworksAndControls() {
       {/* Frameworks List */}
       <div className="p-6">
         {/* Gap Analysis Panel */}
-        {showGapAnalysis && (
+        {showGapAnalysis && isVisible("feature:gap-analysis") && (
           <div className="mb-6">
             <GapAnalysisPanel />
           </div>
         )}
 
+        {isVisible("feature:frameworks") ? (
         <div className="space-y-4">
           {filteredFrameworks.map((framework) => {
             const isExpanded = expandedFrameworks.has(framework.id);
@@ -716,6 +719,16 @@ export default function FrameworksAndControls() {
             </div>
           )}
         </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <Shield className="w-12 h-12 text-gray-300 mb-4" />
+            <p className="text-gray-500 font-medium">Frameworks &amp; Controls are hidden</p>
+            <p className="text-sm text-gray-400 mt-1">
+              Enable <strong>Compliance Frameworks</strong> in{" "}
+              <a href="/admin" className="text-indigo-600 hover:underline">Admin Settings</a> to show them.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Requirement Mapping Modal */}

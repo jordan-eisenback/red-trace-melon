@@ -3,6 +3,7 @@ import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { useEpics } from "../contexts/EpicContext";
 import { useVendor } from "../contexts/VendorContext";
+import { useAdmin } from "../contexts/AdminContext";
 import { ArrowLeft, Edit, Trash2, Network, Users, Shield, BookOpen, Map, GitBranch, Star, Link2Off } from "lucide-react";
 import { useState, useMemo } from "react";
 import { RequirementFormDialog } from "../components/RequirementFormDialog";
@@ -16,6 +17,7 @@ export function RequirementDetail() {
   const { frameworks } = useFrameworks();
   const { epics, userStories, storyMap } = useEpics();
   const { data: vendorData, getCriteriaForRequirement, getActiveCriteriaProfile } = useVendor();
+  const { isVisible } = useAdmin();
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
@@ -208,7 +210,7 @@ export function RequirementDetail() {
           </h3>
 
           {/* Framework Controls */}
-          {linkedControls.length > 0 && (
+          {linkedControls.length > 0 && isVisible("feature:frameworks") && (
             <div>
               <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
                 <Shield className="w-4 h-4 text-blue-600" />
@@ -231,7 +233,7 @@ export function RequirementDetail() {
           )}
 
           {/* Epics */}
-          {linkedEpics.length > 0 && (
+          {linkedEpics.length > 0 && isVisible("feature:epics") && (
             <div>
               <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
                 <BookOpen className="w-4 h-4 text-green-600" />
@@ -254,7 +256,7 @@ export function RequirementDetail() {
           )}
 
           {/* User Stories */}
-          {linkedStories.length > 0 && (
+          {linkedStories.length > 0 && isVisible("feature:epics") && (
             <div>
               <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
                 <Users className="w-4 h-4 text-violet-600" />
@@ -277,7 +279,7 @@ export function RequirementDetail() {
           )}
 
           {/* Story Map Steps */}
-          {linkedSteps.length > 0 && (
+          {linkedSteps.length > 0 && isVisible("feature:story-jam") && (
             <div>
               <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
                 <Map className="w-4 h-4 text-amber-600" />
@@ -301,6 +303,7 @@ export function RequirementDetail() {
           )}
 
           {/* Vendor Coverage */}
+          {isVisible("feature:vendor-integration") && (
           <div>
             <h4 className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1.5">
               <Star className="w-4 h-4 text-indigo-500" />
@@ -412,6 +415,7 @@ export function RequirementDetail() {
               </div>
             )}
           </div>
+          )}
         </div>
       )}
 
