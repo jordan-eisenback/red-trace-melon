@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import {
   GitBranch, Plus, Edit, Trash2, X, ChevronDown, ChevronRight,
   ArrowRight, ArrowLeft, Layers, Network, Check, AlertCircle,
-  Clock, CheckCircle2, Circle, Pencil,
+  Clock, CheckCircle2, Circle, Pencil, CalendarDays,
 } from "lucide-react";
 import { Workstream, WorkstreamLayer } from "../types/workstream";
 import { initialWorkstreams } from "../data/initial-workstreams";
@@ -151,6 +151,18 @@ function WorkstreamModal({ workstream, allWorkstreams, onSave, onClose }: Workst
               <label className="block text-sm font-medium text-gray-700 mb-1">Owner</label>
               <input value={form.owner ?? ''} onChange={e => setForm(p => ({ ...p, owner: e.target.value }))}
                 placeholder="Team or person" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <input type="date" value={form.startDate ?? ''} onChange={e => setForm(p => ({ ...p, startDate: e.target.value || undefined }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+              <input type="date" value={form.endDate ?? ''} onChange={e => setForm(p => ({ ...p, endDate: e.target.value || undefined }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
           </div>
 
@@ -616,9 +628,311 @@ function DetailPanel({ ws, allWorkstreams, onEdit, onClose }: DetailPanelProps) 
   );
 }
 
+// ─── Gantt View ───────────────────────────────────────────────────────────────
+
+const LABEL_W = 220; // px – left label column
+const ROW_H = 44;    // px – row height
+const HEADER_H = 48; // px – month header height
+
+function parseDate(s: string) { return new Date(s + 'T00:00:00'); }
+function addDays(d: Date, n: number) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+function diffDays(a: Date, b: Date) { return Math.round((b.getTime() - a.getTime()) / 86400000); }
+
+interface GanttViewProps {
+  workstreams: Workstream[];
+  onSelect: (ws: Workstream) => void;
+  selectedId: string | null;
+  onEdit: (ws: Workstream) => void;
+}
+
+function GanttView({ workstreams, onSelect, selectedId, onEdit }: GanttViewProps) {
+  const sorted = [...workstreams].sort((a, b) => a.order - b.order);
+
+  // Compute timeline bounds from all workstreams that have dates
+  const datedWS = sorted.filter(w => w.startDate && w.endDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const timelineStart = datedWS.length > 0
+    ? datedWS.reduce((min, w) => {
+        const d = parseDate(w.startDate!);
+        return d < min ? d : min;
+      }, parseDate(datedWS[0].startDate!))
+    : new Date(today.getFullYear(), today.getMonth(), 1);
+
+  const timelineEnd = datedWS.length > 0
+    ? datedWS.reduce((max, w) => {
+        const d = parseDate(w.endDate!);
+        return d > max ? d : max;
+      }, parseDate(datedWS[0].endDate!))
+    : addDays(today, 365);
+
+  // Snap to month boundaries
+  const rangeStart = new Date(timelineStart.getFullYear(), timelineStart.getMonth(), 1);
+  const rangeEnd = new Date(timelineEnd.getFullYear(), timelineEnd.getMonth() + 1, 1);
+  const totalDays = diffDays(rangeStart, rangeEnd);
+
+  // Build month columns
+  const months: { label: string; startDay: number; days: number }[] = [];
+  let cur = new Date(rangeStart);
+  while (cur < rangeEnd) {
+    const next = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+    months.push({
+      label: cur.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
+      startDay: diffDays(rangeStart, cur),
+      days: diffDays(cur, next < rangeEnd ? next : rangeEnd),
+    });
+    cur = next;
+  }
+
+  const PX_PER_DAY = 5; // pixels per day
+  const chartW = totalDays * PX_PER_DAY;
+  const todayX = diffDays(rangeStart, today) * PX_PER_DAY;
+  const totalH = HEADER_H + sorted.length * ROW_H;
+
+  const fmtDate = (s: string) => {
+    const d = parseDate(s);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="overflow-x-auto overflow-y-visible">
+        <div style={{ display: 'flex', minWidth: LABEL_W + chartW }}>
+          {/* Label column */}
+          <div style={{ width: LABEL_W, flexShrink: 0 }} className="border-r border-gray-200 bg-gray-50 z-10">
+            {/* Header spacer */}
+            <div style={{ height: HEADER_H }} className="border-b border-gray-200 bg-gray-50 px-3 flex items-end pb-2">
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Workstream</span>
+            </div>
+            {/* Row labels */}
+            {sorted.map((ws, i) => {
+              const layer = layerFor(ws);
+              const isSelected = ws.id === selectedId;
+              return (
+                <div
+                  key={ws.id}
+                  style={{ height: ROW_H }}
+                  className={`flex items-center gap-2 px-3 cursor-pointer border-b border-gray-100 transition-colors
+                    ${isSelected ? 'bg-indigo-50' : 'hover:bg-gray-100'}`}
+                  onClick={() => onSelect(ws)}
+                >
+                  <div className={`w-1 self-stretch rounded-full ${layer.bg} border ${layer.border}`}
+                    style={{ width: 3, flexShrink: 0 }} />
+                  <div className="min-w-0">
+                    <div className="text-xs font-mono text-gray-400 leading-none">{ws.id}</div>
+                    <div className="text-xs font-medium text-gray-800 truncate leading-snug mt-0.5">{ws.title}</div>
+                  </div>
+                  <button
+                    onClick={e => { e.stopPropagation(); onEdit(ws); }}
+                    className="ml-auto shrink-0 text-gray-300 hover:text-blue-500 transition-colors"
+                  >
+                    <Pencil className="w-3 h-3" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Chart area */}
+          <div style={{ flex: 1, overflowX: 'visible', position: 'relative' }}>
+            <svg
+              width={chartW}
+              height={totalH}
+              style={{ display: 'block', minWidth: chartW }}
+            >
+              {/* Month header bands */}
+              {months.map((m, i) => (
+                <g key={i}>
+                  <rect
+                    x={m.startDay * PX_PER_DAY}
+                    y={0}
+                    width={m.days * PX_PER_DAY}
+                    height={HEADER_H}
+                    fill={i % 2 === 0 ? '#f9fafb' : '#f3f4f6'}
+                    stroke="none"
+                  />
+                  <line
+                    x1={m.startDay * PX_PER_DAY}
+                    y1={0}
+                    x2={m.startDay * PX_PER_DAY}
+                    y2={totalH}
+                    stroke="#e5e7eb"
+                    strokeWidth={1}
+                  />
+                  <text
+                    x={m.startDay * PX_PER_DAY + (m.days * PX_PER_DAY) / 2}
+                    y={HEADER_H - 14}
+                    textAnchor="middle"
+                    fontSize={10}
+                    fontWeight={600}
+                    fill="#6b7280"
+                    fontFamily="ui-sans-serif, system-ui, sans-serif"
+                  >
+                    {m.label}
+                  </text>
+                </g>
+              ))}
+              {/* Bottom border of header */}
+              <line x1={0} y1={HEADER_H} x2={chartW} y2={HEADER_H} stroke="#e5e7eb" strokeWidth={1} />
+
+              {/* Row backgrounds + bars */}
+              {sorted.map((ws, i) => {
+                const y = HEADER_H + i * ROW_H;
+                const layer = layerFor(ws);
+                const isSelected = ws.id === selectedId;
+
+                // Bar colors by layer
+                const barFill: Record<string, string> = {
+                  foundational: '#a855f7',
+                  identity: '#3b82f6',
+                  application: '#22c55e',
+                  tooling: '#f59e0b',
+                  delivery: '#ef4444',
+                };
+                const rawFill = barFill[ws.layer] ?? '#6b7280';
+
+                // Status-based opacity
+                const opacityMap: Record<string, number> = {
+                  'not-started': 0.35,
+                  'in-progress': 0.75,
+                  'complete': 1,
+                  'blocked': 1,
+                };
+                const opacity = opacityMap[ws.status ?? 'not-started'] ?? 0.5;
+                const fillColor = ws.status === 'blocked' ? '#ef4444' : rawFill;
+
+                const hasDates = ws.startDate && ws.endDate;
+                let barX = 0, barW = 0;
+                if (hasDates) {
+                  const sd = parseDate(ws.startDate!);
+                  const ed = parseDate(ws.endDate!);
+                  barX = Math.max(0, diffDays(rangeStart, sd)) * PX_PER_DAY;
+                  barW = Math.max(4, diffDays(sd, ed)) * PX_PER_DAY;
+                }
+
+                return (
+                  <g key={ws.id}>
+                    {/* Row stripe */}
+                    <rect
+                      x={0} y={y}
+                      width={chartW} height={ROW_H}
+                      fill={isSelected ? '#eef2ff' : i % 2 === 0 ? '#ffffff' : '#fafafa'}
+                    />
+                    <line x1={0} y1={y + ROW_H} x2={chartW} y2={y + ROW_H} stroke="#f3f4f6" strokeWidth={1} />
+
+                    {hasDates ? (
+                      <>
+                        {/* Bar shadow */}
+                        <rect
+                          x={barX + 1} y={y + ROW_H / 2 - 10 + 2}
+                          width={barW} height={20}
+                          rx={4} fill="rgba(0,0,0,0.08)"
+                        />
+                        {/* Bar */}
+                        <rect
+                          x={barX} y={y + ROW_H / 2 - 10}
+                          width={barW} height={20}
+                          rx={4}
+                          fill={fillColor}
+                          opacity={opacity}
+                          className="cursor-pointer"
+                          onClick={() => onSelect(ws)}
+                        />
+                        {/* In-progress stripe overlay */}
+                        {ws.status === 'in-progress' && (
+                          <rect
+                            x={barX} y={y + ROW_H / 2 - 10}
+                            width={barW} height={20}
+                            rx={4}
+                            fill="url(#stripe)"
+                            opacity={0.25}
+                          />
+                        )}
+                        {/* Bar label if wide enough */}
+                        {barW > 60 && (
+                          <text
+                            x={barX + 8} y={y + ROW_H / 2 + 4}
+                            fontSize={9} fill="white" fontWeight={600}
+                            fontFamily="ui-sans-serif, system-ui, sans-serif"
+                            style={{ pointerEvents: 'none' }}
+                          >
+                            {ws.startDate?.slice(5).replace('-', '/')} – {ws.endDate?.slice(5).replace('-', '/')}
+                          </text>
+                        )}
+                      </>
+                    ) : (
+                      /* No-dates placeholder */
+                      <text
+                        x={8} y={y + ROW_H / 2 + 4}
+                        fontSize={9} fill="#9ca3af" fontStyle="italic"
+                        fontFamily="ui-sans-serif, system-ui, sans-serif"
+                      >
+                        No dates set
+                      </text>
+                    )}
+                  </g>
+                );
+              })}
+
+              {/* Stripe pattern def for in-progress */}
+              <defs>
+                <pattern id="stripe" patternUnits="userSpaceOnUse" width={8} height={8} patternTransform="rotate(45)">
+                  <line x1={0} y1={0} x2={0} y2={8} stroke="white" strokeWidth={3} />
+                </pattern>
+              </defs>
+
+              {/* Today line */}
+              {todayX >= 0 && todayX <= chartW && (
+                <g>
+                  <line
+                    x1={todayX} y1={0}
+                    x2={todayX} y2={totalH}
+                    stroke="#ef4444"
+                    strokeWidth={1.5}
+                    strokeDasharray="4 3"
+                    opacity={0.7}
+                  />
+                  <rect x={todayX - 16} y={2} width={32} height={14} rx={3} fill="#ef4444" opacity={0.9} />
+                  <text
+                    x={todayX} y={12}
+                    textAnchor="middle" fontSize={8} fill="white" fontWeight={700}
+                    fontFamily="ui-sans-serif, system-ui, sans-serif"
+                  >
+                    TODAY
+                  </text>
+                </g>
+              )}
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="px-4 py-3 border-t border-gray-100 flex flex-wrap items-center gap-4 bg-gray-50">
+        <span className="text-xs text-gray-500 font-medium">Layers:</span>
+        {LAYERS.map(l => (
+          <div key={l.id} className="flex items-center gap-1.5">
+            <div className={`w-2.5 h-2.5 rounded-sm ${l.bg} border ${l.border}`} />
+            <span className={`text-xs ${l.color}`}>{l.label}</span>
+          </div>
+        ))}
+        <span className="ml-4 text-xs text-gray-500 font-medium">Status:</span>
+        <div className="flex items-center gap-1.5"><div className="w-8 h-2.5 rounded-sm bg-blue-400 opacity-35" /><span className="text-xs text-gray-500">Not Started</span></div>
+        <div className="flex items-center gap-1.5"><div className="w-8 h-2.5 rounded-sm bg-blue-400 opacity-75" /><span className="text-xs text-gray-500">In Progress</span></div>
+        <div className="flex items-center gap-1.5"><div className="w-8 h-2.5 rounded-sm bg-blue-400 opacity-100" /><span className="text-xs text-gray-500">Complete</span></div>
+        <div className="flex items-center gap-1.5"><div className="w-8 h-2.5 rounded-sm bg-red-500 opacity-100" /><span className="text-xs text-gray-500">Blocked</span></div>
+        <div className="flex items-center gap-2 ml-4">
+          <div className="flex items-center gap-1"><div className="w-4 border-t-2 border-dashed border-red-400" /><span className="text-xs text-gray-500">Today</span></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
-type ViewMode = 'graph' | 'swimlane';
+type ViewMode = 'graph' | 'swimlane' | 'gantt';
 
 export default function WorkstreamsPage() {
   const [workstreams, setWorkstreams] = useState<Workstream[]>(initialWorkstreams);
@@ -715,8 +1029,16 @@ export default function WorkstreamsPage() {
               <Network className="w-4 h-4" /> Dependency Graph
             </button>
           </Tip>
+          <Tip label="View workstreams on a timeline" side="bottom">
+            <button
+              onClick={() => setViewMode('gantt')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'gantt' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
+            >
+              <CalendarDays className="w-4 h-4" /> Gantt
+            </button>
+          </Tip>
         </div>
-        {selectedId && (
+        {selectedId && viewMode !== 'gantt' && (
           <button onClick={() => setSelectedId(null)} className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
             <X className="w-3.5 h-3.5" /> Clear selection
           </button>
@@ -724,7 +1046,7 @@ export default function WorkstreamsPage() {
       </div>
 
       {/* Main content */}
-      <div className={`flex gap-6 ${selected ? 'items-start' : ''}`}>
+      <div className={`flex gap-6 ${selected && viewMode !== 'gantt' ? 'items-start' : ''}`}>
         <div className="flex-1 min-w-0">
           {viewMode === 'swimlane' ? (
             <SwimlaneView
@@ -734,17 +1056,24 @@ export default function WorkstreamsPage() {
               onSelect={ws => setSelectedId(ws.id === selectedId ? null : ws.id)}
               selectedId={selectedId}
             />
-          ) : (
+          ) : viewMode === 'graph' ? (
             <DependencyGraph
               workstreams={workstreams}
               onSelect={ws => setSelectedId(ws.id === selectedId ? null : ws.id)}
               selectedId={selectedId}
             />
+          ) : (
+            <GanttView
+              workstreams={workstreams}
+              onSelect={ws => setSelectedId(ws.id === selectedId ? null : ws.id)}
+              selectedId={selectedId}
+              onEdit={ws => setModal({ ws })}
+            />
           )}
         </div>
 
-        {/* Detail panel */}
-        {selected && (
+        {/* Detail panel — only in swimlane / graph views */}
+        {selected && viewMode !== 'gantt' && (
           <div className="w-80 shrink-0 self-stretch">
             <DetailPanel
               ws={selected}

@@ -8,6 +8,10 @@ import EpicsAndStories from "./pages/EpicsAndStories";
 import FrameworksAndControls from "./pages/FrameworksAndControls";
 import HelpCenter from "./pages/HelpCenter";
 import WorkstreamsPage from "./pages/Workstreams";
+import VendorScorecard from "./pages/VendorScorecard";
+import RequirementCoverage from "./pages/RequirementCoverage";
+import VendorSettings from "./pages/VendorSettings";
+import AdminPage from "./pages/AdminPage";
 import { RootLayout } from "./components/RootLayout";
 
 export const router = createBrowserRouter([
@@ -23,6 +27,10 @@ export const router = createBrowserRouter([
       { path: "epics-stories", Component: EpicsAndStories },
       { path: "frameworks", Component: FrameworksAndControls },
       { path: "workstreams", Component: WorkstreamsPage },
+      { path: "vendor-scorecard", Component: VendorScorecard },
+      { path: "requirement-coverage", Component: RequirementCoverage },
+      { path: "vendor-settings", Component: VendorSettings },
+      { path: "admin", Component: AdminPage },
       { path: "help", Component: HelpCenter },
     ],
   },

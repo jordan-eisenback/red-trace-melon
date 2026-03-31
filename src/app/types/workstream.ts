@@ -34,4 +34,8 @@ export interface Workstream {
   status?: 'not-started' | 'in-progress' | 'complete' | 'blocked';
   owner?: string;
   notes?: string;
+  /** ISO date string e.g. "2025-01-06" — used by the Gantt view */
+  startDate?: string;
+  /** ISO date string e.g. "2025-03-31" — used by the Gantt view */
+  endDate?: string;
 }
