@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import path from 'path'
 import fs from 'fs'
@@ -74,4 +75,11 @@ export const initialUserStories = ${JSON.stringify(userStories, null, 2)};
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  test: {
+    include: ['src/__tests__/**/*.test.ts', 'src/__tests__/**/*.test.tsx'],
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['src/__tests__/setup.ts'],
+  },
 })
