@@ -124,6 +124,47 @@ export default defineConfig({
           const backupPath = writeBackup('workstreams', { workstreams });
           res.end(JSON.stringify({ ok: true, backupPath }));
         });
+
+        // ── /api/save-all ─────────────────────────────────────────────────
+        // Single endpoint for the auto-save scheduler — accepts all contexts
+        // in one payload and writes each data file + a unified backup.
+        jsonMiddleware('/api/save-all', (payload, res) => {
+          const results: Record<string, string> = {};
+
+          if (payload.requirements !== undefined) {
+            const content = `import { Requirement } from "../types/requirement";\n\nexport const initialRequirements: Requirement[] = ${JSON.stringify(payload.requirements, null, 2)};\n`;
+            writeDataFile('initial-requirements.ts', content);
+          }
+          if (payload.frameworks !== undefined) {
+            const content = `import { Framework } from "../types/framework";\n\nexport const initialFrameworks: Framework[] = ${JSON.stringify(payload.frameworks, null, 2)};\n`;
+            writeDataFile('initial-frameworks.ts', content);
+          }
+          if (payload.epics !== undefined || payload.userStories !== undefined) {
+            const epics = payload.epics ?? [];
+            const userStories = payload.userStories ?? [];
+            const storyMap = payload.storyMap ?? [];
+            const storyJam = payload.storyJam ?? { nodes: [], edges: [] };
+            const content = `export const initialEpics = ${JSON.stringify(epics, null, 2)};\n\nexport const initialUserStories = ${JSON.stringify(userStories, null, 2)};\n`;
+            writeDataFile('initial-epics.ts', content);
+            if (Array.isArray(storyMap)) {
+              writeDataFile('initial-storymap.ts', `import { StoryMap } from "../types/storymap";\n\nexport const initialStoryMap: StoryMap = ${JSON.stringify(storyMap, null, 2)};\n`);
+            }
+            if (storyJam && typeof storyJam === 'object') {
+              writeDataFile('initial-storyjam.ts', `import { StoryJam } from "../types/storyjam";\n\nexport const initialStoryJam: StoryJam = ${JSON.stringify(storyJam, null, 2)};\n`);
+            }
+          }
+          if (payload.vendorData !== undefined) {
+            const content = `import { VendorAppData } from "../types/vendor";\n\nexport const initialVendorData: VendorAppData = ${JSON.stringify(payload.vendorData, null, 2)};\n`;
+            writeDataFile('initial-vendors.ts', content);
+          }
+          if (payload.workstreams !== undefined) {
+            const content = `import { Workstream } from "../types/workstream";\n\nexport const initialWorkstreams: Workstream[] = ${JSON.stringify(payload.workstreams, null, 2)};\n`;
+            writeDataFile('initial-workstreams.ts', content);
+          }
+
+          results.backupPath = writeBackup('save-all', payload);
+          res.end(JSON.stringify({ ok: true, ...results }));
+        });
       },
     },
   ],
