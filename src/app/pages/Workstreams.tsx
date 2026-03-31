@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   GitBranch, Plus, Edit, Trash2, X, ChevronDown, ChevronRight,
   ArrowRight, ArrowLeft, Layers, Network, Check, AlertCircle,
@@ -7,6 +7,7 @@ import {
 import { Workstream, WorkstreamLayer } from "../types/workstream";
 import { initialWorkstreams } from "../data/initial-workstreams";
 import { Tip } from "../components/Tip";
+import { usePersistToDisk } from "../hooks/usePersistToDisk";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -936,6 +937,11 @@ export default function WorkstreamsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [modal, setModal] = useState<{ ws: Workstream | null } | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const persist = usePersistToDisk();
+
+  useEffect(() => {
+    persist('/api/save-workstreams', { workstreams });
+  }, [workstreams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const selected = workstreams.find(w => w.id === selectedId) ?? null;
 

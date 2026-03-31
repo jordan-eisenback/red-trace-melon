@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useCallback } from "react";
+import React, { createContext, useContext, useCallback, useEffect } from "react";
 import { Requirement } from "../types/requirement";
 import { initialRequirements } from "../data/initial-requirements";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { usePersistToDisk } from "../hooks/usePersistToDisk";
 
 interface RequirementsContextType {
   requirements: Requirement[];
@@ -17,6 +18,12 @@ const RequirementsContext = createContext<RequirementsContextType | undefined>(u
 
 export function RequirementsProvider({ children }: { children: React.ReactNode }) {
   const [requirements, setRequirements] = useLocalStorage<Requirement[]>("rtm-requirements", initialRequirements);
+  const persist = usePersistToDisk();
+
+  // Flush to disk whenever requirements change
+  useEffect(() => {
+    persist('/api/save-requirements', { requirements });
+  }, [requirements]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addRequirement = useCallback((requirement: Requirement) => {
     setRequirements((prev) => [...prev, requirement]);

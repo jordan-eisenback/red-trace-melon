@@ -1,4 +1,4 @@
-import { createContext, useContext, useCallback, ReactNode } from "react";
+import { createContext, useContext, useCallback, useEffect, ReactNode } from "react";
 import {
   VendorAppData,
   Vendor,
@@ -11,6 +11,7 @@ import {
   AggregatedScore,
 } from "../types/vendor";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { usePersistToDisk } from "../hooks/usePersistToDisk";
 import {
   parseCriteriaFromCSV,
   parseCriteriaFromCSVContent,
@@ -130,6 +131,11 @@ const VendorContext = createContext<VendorContextType | undefined>(undefined);
 
 export function VendorProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useLocalStorage<VendorAppData>("rtm-vendor-data", getInitialVendorData());
+  const persist = usePersistToDisk();
+
+  useEffect(() => {
+    persist('/api/save-vendors', { vendorData: data });
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ---- Vendors ------------------------------------------------------------
 
