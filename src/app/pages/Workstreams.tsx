@@ -358,8 +358,6 @@ function DependencyGraph({ workstreams, onSelect, selectedId }: DepGraphProps) {
 
         {/* Nodes */}
         {nodes.map(({ ws, x, y }) => {
-          const layer = layerFor(ws);
-          const status = STATUS_CONFIG[ws.status ?? 'not-started'];
           const isSelected = ws.id === selectedId;
           const isRelated = selectedId
             ? ws.id === selectedId ||
@@ -411,7 +409,11 @@ interface SwimlaneViewProps {
 
 function SwimlaneView({ workstreams, onEdit, onDelete, onSelect, selectedId }: SwimlaneViewProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
-  const toggle = (id: string) => setExpandedIds(prev => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
+  const toggle = (id: string) => setExpandedIds(prev => {
+    const s = new Set(prev);
+    if (s.has(id)) { s.delete(id); } else { s.add(id); }
+    return s;
+  });
 
   return (
     <div className="space-y-4">
@@ -690,11 +692,6 @@ function GanttView({ workstreams, onSelect, selectedId, onEdit }: GanttViewProps
   const todayX = diffDays(rangeStart, today) * PX_PER_DAY;
   const totalH = HEADER_H + sorted.length * ROW_H;
 
-  const fmtDate = (s: string) => {
-    const d = parseDate(s);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  };
-
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <div className="overflow-x-auto overflow-y-visible">
@@ -706,7 +703,7 @@ function GanttView({ workstreams, onSelect, selectedId, onEdit }: GanttViewProps
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Workstream</span>
             </div>
             {/* Row labels */}
-            {sorted.map((ws, i) => {
+            {sorted.map((ws) => {
               const layer = layerFor(ws);
               const isSelected = ws.id === selectedId;
               return (
@@ -779,7 +776,6 @@ function GanttView({ workstreams, onSelect, selectedId, onEdit }: GanttViewProps
               {/* Row backgrounds + bars */}
               {sorted.map((ws, i) => {
                 const y = HEADER_H + i * ROW_H;
-                const layer = layerFor(ws);
                 const isSelected = ws.id === selectedId;
 
                 // Bar colors by layer

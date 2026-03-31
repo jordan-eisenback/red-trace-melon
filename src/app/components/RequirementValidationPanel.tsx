@@ -5,19 +5,15 @@ import {
   XCircle,
   Lightbulb,
   Sparkles,
-  RefreshCw,
   ChevronRight,
   ChevronDown,
   AlertCircle,
-  Link2Off,
-  Copy,
   Zap,
   ExternalLink,
   Edit,
 } from "lucide-react";
 import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
-import { Requirement } from "../types/requirement";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { BulkMappingTool } from "./BulkMappingTool";
@@ -299,7 +295,6 @@ export function RequirementValidationPanel() {
   // Smart Refinement Suggestions
   const suggestions = useMemo(() => {
     const foundSuggestions: RefinementSuggestion[] = [];
-    const reqMap = new Map(requirements.map((r) => [r.id, r]));
 
     // Get mapping counts
     const mappingCounts = new Map<string, number>();
@@ -462,13 +457,6 @@ export function RequirementValidationPanel() {
     return "text-red-600";
   };
 
-  const getHealthBg = (score: number) => {
-    if (score >= 90) return "bg-green-100";
-    if (score >= 70) return "bg-yellow-100";
-    if (score >= 50) return "bg-orange-100";
-    return "bg-red-100";
-  };
-
   const issuesByCategory = useMemo(() => {
     const grouped = new Map<string, ValidationIssue[]>();
     issues.forEach((issue) => {
@@ -516,7 +504,6 @@ export function RequirementValidationPanel() {
 
   const errorCount = issues.filter((i) => i.severity === "error").length;
   const warningCount = issues.filter((i) => i.severity === "warning").length;
-  const infoCount = issues.filter((i) => i.severity === "info").length;
   const traceabilityWarnings = issues.filter((i) => i.category === "Traceability");
 
   return (

@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# 1. Lint + typecheck staged files
+npx lint-staged
+
+# 2. Block generated artifacts from being committed
 node scripts/prevent-commit.cjs

@@ -14,7 +14,6 @@ import {
   ChevronRight,
   ExternalLink,
   CheckCircle,
-  Lightbulb,
 } from "lucide-react";
 
 interface FAQItem {

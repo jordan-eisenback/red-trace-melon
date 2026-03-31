@@ -20,7 +20,6 @@ import { Framework, Control } from "../types/framework";
 import { GapAnalysisPanel } from "../components/GapAnalysisPanel";
 import { RequirementMappingModal } from "../components/RequirementMappingModal";
 import { ConfirmDialog } from "../components/ConfirmDialog";
-import { HelpTooltip, InfoTooltip } from "../components/HelpTooltip";
 import { Tip } from "../components/Tip";
 
 // ─── Framework modal ────────────────────────────────────────────────────────
@@ -194,7 +193,8 @@ export default function FrameworksAndControls() {
   const [expandedControls, setExpandedControls] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
-  const [showGapAnalysis, setShowGapAnalysis] = useState(true);
+   
+  const [showGapAnalysis, _setShowGapAnalysis] = useState(true);
   const [mappingModal, setMappingModal] = useState<{
     controlId: string;
     frameworkId: string;
@@ -266,11 +266,6 @@ export default function FrameworksAndControls() {
       description: `Are you sure you want to delete control "${title}"? This action cannot be undone.`,
       onConfirm: () => { deleteControl(frameworkId, controlId); setDeleteConfirm(null); },
     });
-  };
-
-  const getRequirementTitle = (reqId: string): string => {
-    const req = requirements.find((r) => r.id === reqId);
-    return req ? `${req.id}: ${req.req.substring(0, 60)}...` : reqId;
   };
 
   const getCategoryIcon = (category: string) => {

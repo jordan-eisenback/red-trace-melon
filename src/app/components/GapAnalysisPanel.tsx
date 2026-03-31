@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useRequirements } from "../contexts/RequirementsContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { useVendor } from "../contexts/VendorContext";
-import { analyzeGaps, getGapSeverityColor, getGapTypeLabel } from "../utils/gapAnalysis";
+import { analyzeGaps } from "../utils/gapAnalysis";
 import {
   AlertTriangle,
   CheckCircle,
@@ -44,14 +44,6 @@ export function GapAnalysisPanel() {
     });
   };
 
-  const filteredGaps = useMemo(() => {
-    return gapAnalysis.criticalGaps.filter((gap) => {
-      const matchesSeverity = severityFilter === "all" || gap.severity === severityFilter;
-      const matchesType = typeFilter === "all" || gap.type === typeFilter;
-      return matchesSeverity && matchesType;
-    });
-  }, [gapAnalysis.criticalGaps, severityFilter, typeFilter]);
-
   const gapCountBySeverity = useMemo(() => {
     const counts = { critical: 0, high: 0, medium: 0, low: 0 };
     gapAnalysis.criticalGaps.forEach((gap) => {
@@ -65,7 +57,7 @@ export function GapAnalysisPanel() {
   // its return value is stable and doesn't cause false dependency invalidations.
   const vendorCriteriaProfile = useMemo(
     () => getActiveCriteriaProfile(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [getActiveCriteriaProfile]
   );
   const vendorGaps = useMemo(() => {

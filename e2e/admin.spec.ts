@@ -21,38 +21,6 @@
 
 import { test, expect } from "./fixtures";
 
-// Helper: seed admin visibility before page load
-function withVisibility(overrides: Record<string, boolean> = {}) {
-  return async ({ page }: { page: import("@playwright/test").Page }, use: () => Promise<void>) => {
-    await page.addInitScript((data: Record<string, boolean>) => {
-      const defaults: Record<string, boolean> = {
-        "page:requirements": true,
-        "page:dependencies": true,
-        "page:hierarchy": true,
-        "page:story-mapping": true,
-        "page:epics-stories": true,
-        "page:frameworks": true,
-        "page:workstreams": true,
-        "page:vendor-scorecard": true,
-        "page:requirement-coverage": true,
-        "page:vendor-settings": true,
-        "page:help": true,
-        "feature:epics": true,
-        "feature:frameworks": true,
-        "feature:workstreams": true,
-        "feature:vendor-integration": true,
-        "feature:gap-analysis": true,
-        "feature:story-jam": true,
-        "feature:dependency-graph": true,
-        "feature:hierarchy": true,
-        ...data,
-      };
-      localStorage.setItem("rtm-admin-visibility", JSON.stringify(defaults));
-    }, overrides);
-    await use();
-  };
-}
-
 // ---------------------------------------------------------------------------
 // Navigation
 // ---------------------------------------------------------------------------

@@ -19,9 +19,6 @@ export function RequirementRemapTool({
   const { frameworks, removeRequirementFromControl, addRequirementToControl } = useFrameworks();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFramework, setSelectedFramework] = useState<string>("all");
-  const [pendingMappings, setPendingMappings] = useState<
-    Map<string, { frameworkId: string; controlId: string }[]>
-  >(new Map());
 
   // Get requirement
   const requirement = useMemo(() => {

@@ -2,17 +2,25 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
-interface Shortcut {
-  key: string;
-  description: string;
-  action: () => void;
-  ctrl?: boolean;
-  shift?: boolean;
-  alt?: boolean;
-}
-
 export function KeyboardShortcuts({ onNewRequirement }: { onNewRequirement?: () => void }) {
   const navigate = useNavigate();
+
+  const showShortcutsHelp = () => {
+    toast.info(
+      <div className="space-y-2">
+        <div className="font-semibold mb-2">Keyboard Shortcuts</div>
+        <div className="space-y-1 text-sm">
+          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">Ctrl+N</kbd> New Requirement</div>
+          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">G</kbd> then <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">R</kbd> Go to Requirements</div>
+          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">G</kbd> then <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">D</kbd> Go to Dependencies</div>
+          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">G</kbd> then <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">H</kbd> Go to Hierarchy</div>
+          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">G</kbd> then <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">F</kbd> Go to Frameworks</div>
+          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">?</kbd> Show this help</div>
+        </div>
+      </div>,
+      { duration: 8000 }
+    );
+  };
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -65,24 +73,7 @@ export function KeyboardShortcuts({ onNewRequirement }: { onNewRequirement?: () 
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [navigate, onNewRequirement]);
-
-  const showShortcutsHelp = () => {
-    toast.info(
-      <div className="space-y-2">
-        <div className="font-semibold mb-2">Keyboard Shortcuts</div>
-        <div className="space-y-1 text-sm">
-          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">Ctrl+N</kbd> New Requirement</div>
-          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">G</kbd> then <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">R</kbd> Go to Requirements</div>
-          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">G</kbd> then <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">D</kbd> Go to Dependencies</div>
-          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">G</kbd> then <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">H</kbd> Go to Hierarchy</div>
-          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">G</kbd> then <kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">F</kbd> Go to Frameworks</div>
-          <div><kbd className="px-1.5 py-0.5 bg-gray-200 rounded text-xs">?</kbd> Show this help</div>
-        </div>
-      </div>,
-      { duration: 8000 }
-    );
-  };
+  }, [navigate, onNewRequirement, showShortcutsHelp]);
 
   return null;
 }

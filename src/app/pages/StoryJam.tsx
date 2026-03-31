@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useEpics } from '../contexts/EpicContext';
-import { Plus, Link as LinkIcon, Trash2 } from 'lucide-react';
+import { Link as LinkIcon } from 'lucide-react';
 // Note: uuid is optional; if not available, we use timestamp-based ids.
 const makeId = (prefix = 'n') => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
