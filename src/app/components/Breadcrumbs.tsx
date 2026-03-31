@@ -25,7 +25,7 @@ export function Breadcrumbs() {
 
   // Build breadcrumb trail
   let currentPath = "";
-  pathSegments.forEach((segment, index) => {
+  pathSegments.forEach((segment, _index) => {
     currentPath += `/${segment}`;
     
     // Check if it's a known route

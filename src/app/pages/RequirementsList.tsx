@@ -8,7 +8,6 @@ import { RequirementFormDialog } from "../components/RequirementFormDialog";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { EmptyState } from "../components/EmptyState";
 import { RequirementValidationPanel } from "../components/RequirementValidationPanel";
-import { HelpTooltip, InfoTooltip } from "../components/HelpTooltip";
 import { Tip } from "../components/Tip";
 import { Requirement } from "../types/requirement";
 import { exportToExcel } from "../utils/excelExport";
@@ -74,7 +73,7 @@ export function RequirementsList() {
     try {
       e.dataTransfer.setData('text/requirement-id', reqId);
       e.dataTransfer.effectAllowed = 'copy';
-    } catch (err) {
+    } catch (_err) {
       // ignore
     }
   };

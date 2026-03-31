@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { useRequirements } from "../contexts/RequirementsContext";
-import { Requirement } from "../types/requirement";
+import { Requirement, RequirementType } from "../types/requirement";
 import { X } from "lucide-react";
 import { HelpTooltip } from "./HelpTooltip";
+
+// Draft form state allows empty string for type before submission
+type RequirementDraft = Omit<Requirement, "type"> & { type: RequirementType | "" };
 
 interface RequirementFormDialogProps {
   open: boolean;
@@ -16,7 +19,7 @@ export function RequirementFormDialog({
   requirement,
 }: RequirementFormDialogProps) {
   const { addRequirement, updateRequirement, requirements } = useRequirements();
-  const [formData, setFormData] = useState<Requirement>({
+  const [formData, setFormData] = useState<RequirementDraft>({
     id: "",
     req: "",
     type: "",
@@ -26,6 +29,8 @@ export function RequirementFormDialog({
     notes: "",
   });
 
+  // Sync form state when the requirement prop changes (controlled form pattern)
+   
   useEffect(() => {
     if (requirement) {
       setFormData(requirement);
@@ -42,12 +47,13 @@ export function RequirementFormDialog({
     }
   }, [requirement]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const data: Requirement = { ...formData, type: (formData.type || "Other") as RequirementType };
     if (requirement) {
-      updateRequirement(requirement.id, formData);
+      updateRequirement(requirement.id, data);
     } else {
-      addRequirement(formData);
+      addRequirement(data);
     }
     onClose();
   };
@@ -112,7 +118,7 @@ export function RequirementFormDialog({
                   required
                   value={formData.type}
                   onChange={(e) =>
-                    setFormData({ ...formData, type: e.target.value })
+                    setFormData({ ...formData, type: e.target.value as RequirementType | "" })
                   }
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="e.g., Enterprise, Capability"

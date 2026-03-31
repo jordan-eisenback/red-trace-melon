@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, HelpCircle, Sparkles, Download, Network, Shield, Users, FileText } from "lucide-react";
+import { X, HelpCircle, Sparkles, Shield, Users, FileText } from "lucide-react";
 
 interface TooltipsGuideProps {
   open: boolean;

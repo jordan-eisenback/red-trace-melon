@@ -4,11 +4,26 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "build": "vite build",
     "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src e2e --ext .ts,.tsx",
+    "lint:fix": "eslint src e2e --ext .ts,.tsx --fix",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "bash -c 'tsc --noEmit'"
+    ],
+    "e2e/**/*.ts": [
+      "eslint --fix"
+    ]
   },
   "prepare": "husky install",
   "dependencies": {
@@ -65,12 +80,27 @@
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "4.1.12",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.58.0",
+    "@typescript-eslint/parser": "^8.58.0",
     "@vitejs/plugin-react": "4.7.0",
+    "@vitest/coverage-v8": "^4.1.2",
     "ajv": "^8.18.0",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
     "husky": "8.0.0",
     "js-yaml": "^4.1.1",
+    "jsdom": "^29.0.1",
+    "lint-staged": "^16.4.0",
     "tailwindcss": "4.1.12",
-    "vite": "^6.4.1"
+    "typescript": "^6.0.2",
+    "vite": "^6.4.1",
+    "vitest": "^4.1.2"
   },
   "peerDependencies": {
     "react": "18.3.1",

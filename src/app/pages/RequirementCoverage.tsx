@@ -2,8 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useRequirements } from "../contexts/RequirementsContext";
 import { useVendor } from "../contexts/VendorContext";
 import { Requirement } from "../types/requirement";
-import { Criterion } from "../types/vendor";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -43,7 +42,6 @@ interface MappingModalProps {
 
 function MappingModal({ requirement, onClose }: MappingModalProps) {
   const {
-    data,
     getActiveCriteriaProfile,
     linkRequirementToCriterion,
     unlinkRequirementFromCriterion,
@@ -152,7 +150,7 @@ export default function RequirementCoverage() {
 
   const profile = useMemo(
     () => getActiveCriteriaProfile(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [getActiveCriteriaProfile]
   );
 

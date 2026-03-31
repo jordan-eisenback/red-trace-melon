@@ -1,5 +1,3 @@
-import type { Epic, UserStory } from './epic';
-
 export interface StoryMapStep {
   id: string;
   title: string;

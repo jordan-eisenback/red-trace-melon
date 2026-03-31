@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import path from 'path'
 import fs from 'fs'
 import tailwindcss from '@tailwindcss/vite'
@@ -74,4 +74,11 @@ export const initialUserStories = ${JSON.stringify(userStories, null, 2)};
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  test: {
+    include: ['src/__tests__/**/*.test.ts', 'src/__tests__/**/*.test.tsx'],
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['src/__tests__/setup.ts'],
+  },
 })

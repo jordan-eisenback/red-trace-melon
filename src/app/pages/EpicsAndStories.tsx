@@ -142,7 +142,7 @@ export default function EpicsAndStories() {
     try {
       e.dataTransfer.setData("text/plain", storyId);
       e.dataTransfer.effectAllowed = "move";
-    } catch (err) {
+    } catch (_err) {
       // some browsers may restrict setData in certain contexts; swallow
     }
   };
@@ -209,20 +209,7 @@ export default function EpicsAndStories() {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Completed":
-      case "Done":
-        return "bg-green-100 text-green-800";
-      case "In Progress":
-      case "Testing":
-        return "bg-blue-100 text-blue-800";
-      case "Blocked":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  // getStatusColor reserved for future story status badges
 
   return (
     <div className="min-h-screen bg-gray-50">
