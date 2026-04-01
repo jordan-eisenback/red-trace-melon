@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, useEffect, ReactNode } from "react";
 import { Epic, UserStory, StoryDetail } from "../types/epic";
 import { initialEpics, initialUserStories } from "../data/initial-epics";
 import { StoryMap, StoryMapOutcome, StoryMapActivity, StoryMapStep } from "../types/storymap";
@@ -6,6 +6,7 @@ import { initialStoryMap } from "../data/initial-storymap";
 import { StoryJam, StoryJamNode, StoryJamEdge } from "../types/storyjam";
 import { initialStoryJam } from "../data/initial-storyjam";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { usePersistToDisk } from "../hooks/usePersistToDisk";
 
 /** Build the seeded UserStory list with linkedStepIds populated from the initial story map. */
 function buildInitialUserStories(): UserStory[] {
@@ -68,6 +69,12 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
   const [userStories, setUserStories] = useLocalStorage<UserStory[]>("rtm-user-stories", buildInitialUserStories());
   const [storyMap, setStoryMap] = useLocalStorage<StoryMap>("rtm-story-map", initialStoryMap);
   const [storyJam, setStoryJam] = useLocalStorage<StoryJam>("rtm-story-jam", initialStoryJam);
+  const persist = usePersistToDisk();
+
+  // Flush epics, user stories, story map, and story jam to disk on every change
+  useEffect(() => {
+    persist('/api/save-epics', { epics, userStories, storyMap, storyJam });
+  }, [epics, userStories, storyMap, storyJam]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addEpic = (epic: Epic) => {
     setEpics((prev) => [...prev, epic]);

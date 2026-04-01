@@ -13,25 +13,27 @@ import RequirementCoverage from "./pages/RequirementCoverage";
 import VendorSettings from "./pages/VendorSettings";
 import AdminPage from "./pages/AdminPage";
 import { RootLayout } from "./components/RootLayout";
+import { RouteErrorBoundary } from "./components/RouteErrorBoundary";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
+    ErrorBoundary: RouteErrorBoundary,
     children: [
-      { index: true, Component: RequirementsList },
-      { path: "requirements/:id", Component: RequirementDetail },
-      { path: "dependencies", Component: DependencyGraph },
-      { path: "hierarchy", Component: HierarchyView },
-      { path: "story-mapping", Component: StoryMapping },
-      { path: "epics-stories", Component: EpicsAndStories },
-      { path: "frameworks", Component: FrameworksAndControls },
-      { path: "workstreams", Component: WorkstreamsPage },
-      { path: "vendor-scorecard", Component: VendorScorecard },
-      { path: "requirement-coverage", Component: RequirementCoverage },
-      { path: "vendor-settings", Component: VendorSettings },
-      { path: "admin", Component: AdminPage },
-      { path: "help", Component: HelpCenter },
+      { index: true, Component: RequirementsList, ErrorBoundary: RouteErrorBoundary },
+      { path: "requirements/:id", Component: RequirementDetail, ErrorBoundary: RouteErrorBoundary },
+      { path: "dependencies", Component: DependencyGraph, ErrorBoundary: RouteErrorBoundary },
+      { path: "hierarchy", Component: HierarchyView, ErrorBoundary: RouteErrorBoundary },
+      { path: "story-mapping", Component: StoryMapping, ErrorBoundary: RouteErrorBoundary },
+      { path: "epics-stories", Component: EpicsAndStories, ErrorBoundary: RouteErrorBoundary },
+      { path: "frameworks", Component: FrameworksAndControls, ErrorBoundary: RouteErrorBoundary },
+      { path: "workstreams", Component: WorkstreamsPage, ErrorBoundary: RouteErrorBoundary },
+      { path: "vendor-scorecard", Component: VendorScorecard, ErrorBoundary: RouteErrorBoundary },
+      { path: "requirement-coverage", Component: RequirementCoverage, ErrorBoundary: RouteErrorBoundary },
+      { path: "vendor-settings", Component: VendorSettings, ErrorBoundary: RouteErrorBoundary },
+      { path: "admin", Component: AdminPage, ErrorBoundary: RouteErrorBoundary },
+      { path: "help", Component: HelpCenter, ErrorBoundary: RouteErrorBoundary },
     ],
   },
 ]);

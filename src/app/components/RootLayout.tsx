@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, GitBranch, Star, Target, Settings, SlidersHorizontal } from "lucide-react";
+import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, GitBranch, Star, Target, Settings, SlidersHorizontal, Save, CloudOff } from "lucide-react";
 import { useState, useEffect } from "react";
 import { RequirementFormDialog } from "./RequirementFormDialog";
 import { ToastProvider } from "./Toast";
@@ -11,14 +11,45 @@ import { TooltipsGuide } from "./TooltipsGuide";
 import { toast } from "sonner";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { useAdmin, VisibilityKey } from "../contexts/AdminContext";
+import { useRequirements } from "../contexts/RequirementsContext";
+import { useEpics } from "../contexts/EpicContext";
+import { useFrameworks } from "../contexts/FrameworkContext";
+import { useVendor } from "../contexts/VendorContext";
+import { useAutoSave } from "../hooks/useAutoSave";
+
+/** Returns a human-readable relative time string like "2 min ago" or "just now". */
+function formatRelative(date: Date): string {
+  const secs = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (secs < 10) return 'just now';
+  if (secs < 60) return `${secs}s ago`;
+  const mins = Math.floor(secs / 60);
+  if (mins < 60) return `${mins} min ago`;
+  return `${Math.floor(mins / 60)}h ago`;
+}
 
 export function RootLayout() {
   const location = useLocation();
   const { isVisible } = useAdmin();
+  const { requirements } = useRequirements();
+  const { epics, userStories, storyMap, storyJam } = useEpics();
+  const { frameworks } = useFrameworks();
+  const { data: vendorData } = useVendor();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [showTooltipsGuide, setShowTooltipsGuide] = useState(false);
+
+  const { status: saveStatus, lastSavedAt, saveNow } = useAutoSave({
+    intervalMs: 5 * 60 * 1000,
+    getPayload: () => ({ requirements, epics, userStories, storyMap, storyJam, frameworks, vendorData }),
+  });
+
+  // Ticker so the "Saved N min ago" label refreshes every 30 s
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     // Check if this is the user's first visit
@@ -138,7 +169,50 @@ export function RootLayout() {
               })}
 
               {/* Admin link — always visible, separated by a faint divider */}
-              <div className="ml-auto pl-2 border-l border-slate-200">
+              <div className="ml-auto pl-2 border-l border-slate-200 flex items-center gap-1">
+                {/* Last saved indicator — only shown in dev (auto-save is a no-op in prod) */}
+                {!import.meta.env.PROD && (
+                  <Tooltip.Root>
+                    <Tooltip.Trigger asChild>
+                      <button
+                        onClick={() => saveNow()}
+                        className={`inline-flex items-center gap-1.5 px-2 py-1.5 rounded-md text-xs transition-colors ${
+                          saveStatus === 'saving' ? 'text-blue-500' :
+                          saveStatus === 'error'  ? 'text-red-500 hover:bg-red-50' :
+                          saveStatus === 'saved'  ? 'text-green-600 hover:bg-green-50' :
+                          'text-slate-400 hover:bg-slate-100'
+                        }`}
+                        aria-label="Save now"
+                      >
+                        {saveStatus === 'error' ? (
+                          <CloudOff className="w-3.5 h-3.5" />
+                        ) : (
+                          <Save className="w-3.5 h-3.5" />
+                        )}
+                        <span className="hidden lg:inline">
+                          {saveStatus === 'saving' ? 'Saving…' :
+                           saveStatus === 'error'  ? 'Save failed' :
+                           lastSavedAt            ? `Saved ${formatRelative(lastSavedAt)}` :
+                           'Not saved yet'}
+                        </span>
+                      </button>
+                    </Tooltip.Trigger>
+                    <Tooltip.Portal>
+                      <Tooltip.Content
+                        className="bg-gray-900 text-white px-3 py-2 rounded-lg text-sm shadow-lg"
+                        sideOffset={5}
+                      >
+                        {saveStatus === 'error'
+                          ? 'Could not save to disk — click to retry'
+                          : lastSavedAt
+                          ? `Last saved at ${lastSavedAt.toLocaleTimeString()} — click to save now`
+                          : 'Click to save all data to disk'}
+                        <Tooltip.Arrow className="fill-gray-900" />
+                      </Tooltip.Content>
+                    </Tooltip.Portal>
+                  </Tooltip.Root>
+                )}
+
                 <Tooltip.Root>
                   <Tooltip.Trigger asChild>
                     <Link

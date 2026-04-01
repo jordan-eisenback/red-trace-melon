@@ -1,7 +1,8 @@
-import { createContext, useContext, useCallback, ReactNode } from "react";
+import { createContext, useContext, useCallback, useEffect, ReactNode } from "react";
 import { Framework, Control } from "../types/framework";
 import { initialFrameworks } from "../data/initial-frameworks";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { usePersistToDisk } from "../hooks/usePersistToDisk";
 
 interface FrameworkContextType {
   frameworks: Framework[];
@@ -20,6 +21,11 @@ const FrameworkContext = createContext<FrameworkContextType | undefined>(undefin
 
 export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
   const [frameworks, setFrameworks] = useLocalStorage<Framework[]>("rtm-frameworks", initialFrameworks);
+  const persist = usePersistToDisk();
+
+  useEffect(() => {
+    persist('/api/save-frameworks', { frameworks });
+  }, [frameworks]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addFramework = useCallback((framework: Framework) => {
     setFrameworks((prev) => [...prev, framework]);
