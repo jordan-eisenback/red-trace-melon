@@ -175,6 +175,15 @@ export default defineConfig({
     },
   },
 
+  server: {
+    watch: {
+      // The save-data-middleware writes initial-*.ts files on every context
+      // change. Without this, Vite HMR would detect those writes and trigger
+      // a full-reload loop, breaking E2E tests and disrupting local dev.
+      ignored: ['**/src/app/data/initial-*.ts', '**/scripts/backups/**'],
+    },
+  },
+
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
 
