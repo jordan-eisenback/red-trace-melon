@@ -1,587 +1,2133 @@
-import type { StoryMap } from '../types/storymap';
+import { StoryMap } from "../types/storymap";
 
 export const initialStoryMap: StoryMap = [
   {
-    id: 'outcome-onboard',
-    title: 'Onboard New Team Member',
-    phase: 'joiner',
-    description: 'A new hire goes from offer-accepted to productive contributor with correct access from day one.',
-    order: 1,
-    activities: [
+    "id": "outcome-onboard",
+    "title": "Onboard New Team Member",
+    "phase": "joiner",
+    "description": "A new hire goes from offer-accepted to productive contributor with correct access from day one.",
+    "order": 1,
+    "activities": [
       {
-        id: 'act-ob-preboarding',
-        title: 'Pre-boarding Setup',
-        persona: 'HR',
-        description: 'Trigger provisioning workflows before the first day.',
-        order: 1,
-        steps: [
-          { id: 'step-ob-1-1', title: 'Receive signed offer and start date from HR', order: 1, complianceTags: ['SOC2'] },
-          { id: 'step-ob-1-2', title: 'Create pending identity record in directory', order: 2, slaHours: 24 },
-          { id: 'step-ob-1-3', title: 'Assign role, department, and cost centre', order: 3 },
-          { id: 'step-ob-1-4', title: 'Trigger equipment procurement workflow', order: 4, slaHours: 48 },
-          { id: 'step-ob-1-5', title: 'Send pre-boarding welcome pack to new hire', order: 5 },
-        ],
+        "id": "act-ob-preboarding",
+        "title": "Pre-boarding Setup",
+        "persona": "HR",
+        "description": "Trigger provisioning workflows before the first day.",
+        "order": 1,
+        "steps": [
+          {
+            "id": "step-ob-1-1",
+            "title": "Receive signed offer and start date from HR",
+            "order": 1,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-ob-1-2",
+            "title": "Create pending identity record in directory",
+            "order": 2,
+            "slaHours": 24
+          },
+          {
+            "id": "step-ob-1-3",
+            "title": "Assign role, department, and cost centre",
+            "order": 3
+          },
+          {
+            "id": "step-ob-1-4",
+            "title": "Trigger equipment procurement workflow",
+            "order": 4,
+            "slaHours": 48
+          },
+          {
+            "id": "step-ob-1-5",
+            "title": "Send pre-boarding welcome pack to new hire",
+            "order": 5
+          }
+        ]
       },
       {
-        id: 'act-ob-identity',
-        title: 'Identity & Account Creation',
-        persona: 'IT Admin',
-        description: 'Create canonical identity and provision core accounts.',
-        order: 2,
-        steps: [
-          { id: 'step-ob-2-1', title: 'Create SSO / directory account', order: 1, slaHours: 4, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-ob-2-2', title: 'Provision corporate email address', order: 2, slaHours: 4 },
-          { id: 'step-ob-2-3', title: 'Enrol MFA and issue credentials securely', order: 3, complianceTags: ['NIST', 'SOC2'] },
-          { id: 'step-ob-2-4', title: 'Add to organisational directory and org chart', order: 4 },
-          { id: 'step-ob-2-5', title: 'Confirm identity record integrity across systems', order: 5, complianceTags: ['ISO27001'] },
-        ],
+        "id": "act-ob-identity",
+        "title": "Identity & Account Creation",
+        "persona": "IT Admin",
+        "description": "Create canonical identity and provision core accounts.",
+        "order": 2,
+        "steps": [
+          {
+            "id": "step-ob-2-1",
+            "title": "Create SSO / directory account",
+            "order": 1,
+            "slaHours": 4,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-ob-2-2",
+            "title": "Provision corporate email address",
+            "order": 2,
+            "slaHours": 4
+          },
+          {
+            "id": "step-ob-2-3",
+            "title": "Enrol MFA and issue credentials securely",
+            "order": 3,
+            "complianceTags": [
+              "NIST",
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-ob-2-4",
+            "title": "Add to organisational directory and org chart",
+            "order": 4
+          },
+          {
+            "id": "step-ob-2-5",
+            "title": "Confirm identity record integrity across systems",
+            "order": 5,
+            "complianceTags": [
+              "ISO27001"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-ob-access',
-        title: 'Role-Based Access Provisioning',
-        persona: 'IT Admin',
-        description: 'Grant least-privilege access based on role, department, and location.',
-        order: 3,
-        steps: [
-          { id: 'step-ob-3-1', title: 'Apply RBAC profile for role and department', order: 1, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-ob-3-2', title: 'Provision SaaS tool access (Slack, Jira, etc.)', order: 2, slaHours: 4 },
-          { id: 'step-ob-3-3', title: 'Grant VPN and network access', order: 3, complianceTags: ['NIST'] },
-          { id: 'step-ob-3-4', title: 'Provision repo / codebase access if applicable', order: 4 },
-          { id: 'step-ob-3-5', title: 'Validate access against least-privilege policy', order: 5, complianceTags: ['SOC2', 'ISO27001'], requirementId: 'RBAC-ENT-002', linkedStoryIds: ['US-1.1'] },
-        ],
+        "id": "act-ob-access",
+        "title": "Role-Based Access Provisioning",
+        "persona": "IT Admin",
+        "description": "Grant least-privilege access based on role, department, and location.",
+        "order": 3,
+        "steps": [
+          {
+            "id": "step-ob-3-1",
+            "title": "Apply RBAC profile for role and department",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-ob-3-2",
+            "title": "Provision SaaS tool access (Slack, Jira, etc.)",
+            "order": 2,
+            "slaHours": 4
+          },
+          {
+            "id": "step-ob-3-3",
+            "title": "Grant VPN and network access",
+            "order": 3,
+            "complianceTags": [
+              "NIST"
+            ]
+          },
+          {
+            "id": "step-ob-3-4",
+            "title": "Provision repo / codebase access if applicable",
+            "order": 4
+          },
+          {
+            "id": "step-ob-3-5",
+            "title": "Validate access against least-privilege policy",
+            "order": 5,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-ENT-002",
+            "linkedStoryIds": [
+              "US-1.1"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-ob-compliance',
-        title: 'Compliance & Policy Acknowledgement',
-        persona: 'Employee',
-        description: 'Ensure legal and policy requirements met before access goes live.',
-        order: 4,
-        steps: [
-          { id: 'step-ob-4-1', title: 'Complete security awareness training', order: 1, complianceTags: ['SOC2', 'ISO27001', 'HIPAA'] },
-          { id: 'step-ob-4-2', title: 'Sign acceptable use policy (AUP)', order: 2, complianceTags: ['SOC2'] },
-          { id: 'step-ob-4-3', title: 'Acknowledge data protection and privacy policy', order: 3, complianceTags: ['GDPR'] },
-          { id: 'step-ob-4-4', title: 'Complete role-specific compliance modules', order: 4 },
-          { id: 'step-ob-4-5', title: 'Record acknowledgements in compliance system', order: 5, complianceTags: ['SOC2', 'SOX'] },
-        ],
+        "id": "act-ob-compliance",
+        "title": "Compliance & Policy Acknowledgement",
+        "persona": "Employee",
+        "description": "Ensure legal and policy requirements met before access goes live.",
+        "order": 4,
+        "steps": [
+          {
+            "id": "step-ob-4-1",
+            "title": "Complete security awareness training",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001",
+              "HIPAA"
+            ]
+          },
+          {
+            "id": "step-ob-4-2",
+            "title": "Sign acceptable use policy (AUP)",
+            "order": 2,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-ob-4-3",
+            "title": "Acknowledge data protection and privacy policy",
+            "order": 3,
+            "complianceTags": [
+              "GDPR"
+            ]
+          },
+          {
+            "id": "step-ob-4-4",
+            "title": "Complete role-specific compliance modules",
+            "order": 4
+          },
+          {
+            "id": "step-ob-4-5",
+            "title": "Record acknowledgements in compliance system",
+            "order": 5,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-ob-equipment',
-        title: 'Equipment & Workspace Readiness',
-        persona: 'IT Admin',
-        description: 'Physical and virtual workspace ready on day one.',
-        order: 5,
-        steps: [
-          { id: 'step-ob-5-1', title: 'Prepare and image laptop/device', order: 1, slaHours: 48 },
-          { id: 'step-ob-5-2', title: 'Ship or stage equipment at office location', order: 2 },
-          { id: 'step-ob-5-3', title: 'Assign desk, badge, and building access', order: 3 },
-          { id: 'step-ob-5-4', title: 'Confirm device enrolment in MDM', order: 4, complianceTags: ['SOC2'] },
-        ],
+        "id": "act-ob-equipment",
+        "title": "Equipment & Workspace Readiness",
+        "persona": "IT Admin",
+        "description": "Physical and virtual workspace ready on day one.",
+        "order": 5,
+        "steps": [
+          {
+            "id": "step-ob-5-1",
+            "title": "Prepare and image laptop/device",
+            "order": 1,
+            "slaHours": 48
+          },
+          {
+            "id": "step-ob-5-2",
+            "title": "Ship or stage equipment at office location",
+            "order": 2
+          },
+          {
+            "id": "step-ob-5-3",
+            "title": "Assign desk, badge, and building access",
+            "order": 3
+          },
+          {
+            "id": "step-ob-5-4",
+            "title": "Confirm device enrolment in MDM",
+            "order": 4,
+            "complianceTags": [
+              "SOC2"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-ob-validation',
-        title: '30/60/90 Day Access Validation',
-        persona: 'Manager',
-        description: 'Verify access remains correct as new hire settles in.',
-        order: 6,
-        steps: [
-          { id: 'step-ob-6-1', title: 'Manager reviews access at 30-day mark', order: 1 },
-          { id: 'step-ob-6-2', title: 'Identify and provision any missing access', order: 2 },
-          { id: 'step-ob-6-3', title: 'Remove any over-provisioned access found', order: 3, complianceTags: ['SOC2'] },
-          { id: 'step-ob-6-4', title: 'Confirm completion in HR/IAM system', order: 4, complianceTags: ['SOC2', 'ISO27001'] },
-        ],
-      },
-    ],
+        "id": "act-ob-validation",
+        "title": "30/60/90 Day Access Validation",
+        "persona": "Manager",
+        "description": "Verify access remains correct as new hire settles in.",
+        "order": 6,
+        "steps": [
+          {
+            "id": "step-ob-6-1",
+            "title": "Manager reviews access at 30-day mark",
+            "order": 1
+          },
+          {
+            "id": "step-ob-6-2",
+            "title": "Identify and provision any missing access",
+            "order": 2
+          },
+          {
+            "id": "step-ob-6-3",
+            "title": "Remove any over-provisioned access found",
+            "order": 3,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-ob-6-4",
+            "title": "Confirm completion in HR/IAM system",
+            "order": 4,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    id: 'outcome-mover',
-    title: 'Change Role or Move Teams',
-    phase: 'mover',
-    description: 'Access reflects the new role immediately and old access is revoked promptly.',
-    order: 2,
-    activities: [
+    "id": "outcome-mover",
+    "title": "Change Role or Move Teams",
+    "phase": "mover",
+    "description": "Access reflects the new role immediately and old access is revoked promptly.",
+    "order": 2,
+    "activities": [
       {
-        id: 'act-mv-request',
-        title: 'Change Request & Approval',
-        persona: 'HR',
-        description: 'Initiate and gate the role change through approvals.',
-        order: 1,
-        steps: [
-          { id: 'step-mv-1-1', title: 'HR or manager submits role change request', order: 1 },
-          { id: 'step-mv-1-2', title: 'Define effective date and transition period', order: 2 },
-          { id: 'step-mv-1-3', title: 'Obtain approval from new manager and IT Security', order: 3, complianceTags: ['SOC2'] },
-          { id: 'step-mv-1-4', title: 'Update identity record with new role/department', order: 4 },
-        ],
+        "id": "act-mv-request",
+        "title": "Change Request & Approval",
+        "persona": "HR",
+        "description": "Initiate and gate the role change through approvals.",
+        "order": 1,
+        "steps": [
+          {
+            "id": "step-mv-1-1",
+            "title": "HR or manager submits role change request",
+            "order": 1
+          },
+          {
+            "id": "step-mv-1-2",
+            "title": "Define effective date and transition period",
+            "order": 2
+          },
+          {
+            "id": "step-mv-1-3",
+            "title": "Obtain approval from new manager and IT Security",
+            "order": 3,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-mv-1-4",
+            "title": "Update identity record with new role/department",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-mv-delta',
-        title: 'Access Delta Calculation',
-        persona: 'IT Admin',
-        description: 'Determine exactly what access to add, keep, and remove.',
-        order: 2,
-        steps: [
-          { id: 'step-mv-2-1', title: 'Pull current access inventory for user', order: 1, complianceTags: ['SOC2'] },
-          { id: 'step-mv-2-2', title: 'Compare to new role RBAC profile', order: 2 },
-          { id: 'step-mv-2-3', title: 'Flag access to add, retain, and revoke', order: 3 },
-          { id: 'step-mv-2-4', title: 'Identify SoD conflicts in new role combination', order: 4, complianceTags: ['SOX', 'ISO27001'] },
-          { id: 'step-mv-2-5', title: 'Present delta report for manager sign-off', order: 5 },
-        ],
+        "id": "act-mv-delta",
+        "title": "Access Delta Calculation",
+        "persona": "IT Admin",
+        "description": "Determine exactly what access to add, keep, and remove.",
+        "order": 2,
+        "steps": [
+          {
+            "id": "step-mv-2-1",
+            "title": "Pull current access inventory for user",
+            "order": 1,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-mv-2-2",
+            "title": "Compare to new role RBAC profile",
+            "order": 2
+          },
+          {
+            "id": "step-mv-2-3",
+            "title": "Flag access to add, retain, and revoke",
+            "order": 3
+          },
+          {
+            "id": "step-mv-2-4",
+            "title": "Identify SoD conflicts in new role combination",
+            "order": 4,
+            "complianceTags": [
+              "SOX",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-mv-2-5",
+            "title": "Present delta report for manager sign-off",
+            "order": 5
+          }
+        ]
       },
       {
-        id: 'act-mv-provision',
-        title: 'New Role Access Provisioning',
-        persona: 'IT Admin',
-        description: 'Grant new access before effective date so day-one productivity is assured.',
-        order: 3,
-        steps: [
-          { id: 'step-mv-3-1', title: 'Apply new RBAC profile to identity record', order: 1, slaHours: 4 },
-          { id: 'step-mv-3-2', title: 'Provision new SaaS and system access', order: 2, slaHours: 4 },
-          { id: 'step-mv-3-3', title: 'Grant access to new team collaboration spaces', order: 3 },
-          { id: 'step-mv-3-4', title: 'Validate new access with user before go-live', order: 4 },
-        ],
+        "id": "act-mv-provision",
+        "title": "New Role Access Provisioning",
+        "persona": "IT Admin",
+        "description": "Grant new access before effective date so day-one productivity is assured.",
+        "order": 3,
+        "steps": [
+          {
+            "id": "step-mv-3-1",
+            "title": "Apply new RBAC profile to identity record",
+            "order": 1,
+            "slaHours": 4
+          },
+          {
+            "id": "step-mv-3-2",
+            "title": "Provision new SaaS and system access",
+            "order": 2,
+            "slaHours": 4
+          },
+          {
+            "id": "step-mv-3-3",
+            "title": "Grant access to new team collaboration spaces",
+            "order": 3
+          },
+          {
+            "id": "step-mv-3-4",
+            "title": "Validate new access with user before go-live",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-mv-revoke',
-        title: 'Old Access Revocation',
-        persona: 'IT Admin',
-        description: 'Remove previous-role access promptly.',
-        order: 4,
-        steps: [
-          { id: 'step-mv-4-1', title: 'Revoke SaaS licences no longer needed', order: 1, slaHours: 24, complianceTags: ['SOC2'] },
-          { id: 'step-mv-4-2', title: 'Remove from old team groups and channels', order: 2 },
-          { id: 'step-mv-4-3', title: 'Revoke repository and codebase access from old role', order: 3, complianceTags: ['SOC2'] },
-          { id: 'step-mv-4-4', title: 'Confirm no orphaned permissions remain', order: 4, complianceTags: ['ISO27001', 'SOC2'] },
-        ],
+        "id": "act-mv-revoke",
+        "title": "Old Access Revocation",
+        "persona": "IT Admin",
+        "description": "Remove previous-role access promptly.",
+        "order": 4,
+        "steps": [
+          {
+            "id": "step-mv-4-1",
+            "title": "Revoke SaaS licences no longer needed",
+            "order": 1,
+            "slaHours": 24,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-mv-4-2",
+            "title": "Remove from old team groups and channels",
+            "order": 2
+          },
+          {
+            "id": "step-mv-4-3",
+            "title": "Revoke repository and codebase access from old role",
+            "order": 3,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-mv-4-4",
+            "title": "Confirm no orphaned permissions remain",
+            "order": 4,
+            "complianceTags": [
+              "ISO27001",
+              "SOC2"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-mv-handover',
-        title: 'Knowledge Transfer & Handover',
-        persona: 'Manager',
-        description: 'Ensure continuity of work and institutional knowledge.',
-        order: 5,
-        steps: [
-          { id: 'step-mv-5-1', title: 'Document in-flight work and handover items', order: 1 },
-          { id: 'step-mv-5-2', title: 'Transfer ownership of files and shared resources', order: 2 },
-          { id: 'step-mv-5-3', title: 'Introduce to new team and schedule onboarding', order: 3 },
-          { id: 'step-mv-5-4', title: 'Confirm handover complete with both managers', order: 4 },
-        ],
+        "id": "act-mv-handover",
+        "title": "Knowledge Transfer & Handover",
+        "persona": "Manager",
+        "description": "Ensure continuity of work and institutional knowledge.",
+        "order": 5,
+        "steps": [
+          {
+            "id": "step-mv-5-1",
+            "title": "Document in-flight work and handover items",
+            "order": 1
+          },
+          {
+            "id": "step-mv-5-2",
+            "title": "Transfer ownership of files and shared resources",
+            "order": 2
+          },
+          {
+            "id": "step-mv-5-3",
+            "title": "Introduce to new team and schedule onboarding",
+            "order": 3
+          },
+          {
+            "id": "step-mv-5-4",
+            "title": "Confirm handover complete with both managers",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-mv-validation',
-        title: 'Post-Move Validation',
-        persona: 'IT Admin',
-        description: 'Confirm new access works and no legacy access persists.',
-        order: 6,
-        steps: [
-          { id: 'step-mv-6-1', title: 'Run post-move access audit', order: 1, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-mv-6-2', title: 'Verify SoD conflicts resolved', order: 2, complianceTags: ['SOX'] },
-          { id: 'step-mv-6-3', title: 'Record outcome in IAM audit log', order: 3, complianceTags: ['SOC2'] },
-        ],
-      },
-    ],
+        "id": "act-mv-validation",
+        "title": "Post-Move Validation",
+        "persona": "IT Admin",
+        "description": "Confirm new access works and no legacy access persists.",
+        "order": 6,
+        "steps": [
+          {
+            "id": "step-mv-6-1",
+            "title": "Run post-move access audit",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-mv-6-2",
+            "title": "Verify SoD conflicts resolved",
+            "order": 2,
+            "complianceTags": [
+              "SOX"
+            ]
+          },
+          {
+            "id": "step-mv-6-3",
+            "title": "Record outcome in IAM audit log",
+            "order": 3,
+            "complianceTags": [
+              "SOC2"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    id: 'outcome-leaver',
-    title: 'Offboard or Terminate Employee',
-    phase: 'leaver',
-    description: 'All access revoked promptly, data preserved, and process is fully auditable.',
-    order: 3,
-    activities: [
+    "id": "outcome-leaver",
+    "title": "Offboard or Terminate Employee",
+    "phase": "leaver",
+    "description": "All access revoked promptly, data preserved, and process is fully auditable.",
+    "order": 3,
+    "activities": [
       {
-        id: 'act-off-trigger',
-        title: 'Termination Trigger & Notification',
-        persona: 'HR',
-        description: 'HR notifies IT with type, effective date, and urgency.',
-        order: 1,
-        steps: [
-          { id: 'step-off-1-1', title: 'HR submits termination notice with effective date', order: 1 },
-          { id: 'step-off-1-2', title: 'Classify as voluntary, involuntary, or immediate', order: 2 },
-          { id: 'step-off-1-3', title: 'Notify IT Security, manager, and payroll', order: 3, slaHours: 1 },
-          { id: 'step-off-1-4', title: 'Create offboarding task checklist in IAM system', order: 4 },
-        ],
+        "id": "act-off-trigger",
+        "title": "Termination Trigger & Notification",
+        "persona": "HR",
+        "description": "HR notifies IT with type, effective date, and urgency.",
+        "order": 1,
+        "steps": [
+          {
+            "id": "step-off-1-1",
+            "title": "HR submits termination notice with effective date",
+            "order": 1
+          },
+          {
+            "id": "step-off-1-2",
+            "title": "Classify as voluntary, involuntary, or immediate",
+            "order": 2
+          },
+          {
+            "id": "step-off-1-3",
+            "title": "Notify IT Security, manager, and payroll",
+            "order": 3,
+            "slaHours": 1
+          },
+          {
+            "id": "step-off-1-4",
+            "title": "Create offboarding task checklist in IAM system",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-off-suspend',
-        title: 'Access Suspension',
-        persona: 'IT Admin',
-        description: 'Suspend access immediately for involuntary; schedule for voluntary.',
-        order: 2,
-        steps: [
-          { id: 'step-off-2-1', title: 'Disable SSO account (blocks all federated access)', order: 1, slaHours: 1, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-off-2-2', title: 'Revoke active sessions and tokens', order: 2, slaHours: 1, complianceTags: ['NIST'] },
-          { id: 'step-off-2-3', title: 'Suspend VPN and network access', order: 3, slaHours: 1 },
-          { id: 'step-off-2-4', title: 'Deactivate physical access (badge, building)', order: 4, slaHours: 2 },
-          { id: 'step-off-2-5', title: 'Notify manager that access has been suspended', order: 5 },
-        ],
+        "id": "act-off-suspend",
+        "title": "Access Suspension",
+        "persona": "IT Admin",
+        "description": "Suspend access immediately for involuntary; schedule for voluntary.",
+        "order": 2,
+        "steps": [
+          {
+            "id": "step-off-2-1",
+            "title": "Disable SSO account (blocks all federated access)",
+            "order": 1,
+            "slaHours": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-off-2-2",
+            "title": "Revoke active sessions and tokens",
+            "order": 2,
+            "slaHours": 1,
+            "complianceTags": [
+              "NIST"
+            ]
+          },
+          {
+            "id": "step-off-2-3",
+            "title": "Suspend VPN and network access",
+            "order": 3,
+            "slaHours": 1
+          },
+          {
+            "id": "step-off-2-4",
+            "title": "Deactivate physical access (badge, building)",
+            "order": 4,
+            "slaHours": 2
+          },
+          {
+            "id": "step-off-2-5",
+            "title": "Notify manager that access has been suspended",
+            "order": 5
+          }
+        ]
       },
       {
-        id: 'act-off-data',
-        title: 'Data Preservation & Transfer',
-        persona: 'IT Admin',
-        description: 'Archive email and files; transfer ownership before accounts are deleted.',
-        order: 3,
-        steps: [
-          { id: 'step-off-3-1', title: 'Archive email mailbox per retention policy', order: 1, complianceTags: ['SOX', 'GDPR'] },
-          { id: 'step-off-3-2', title: 'Transfer file ownership to manager or successor', order: 2 },
-          { id: 'step-off-3-3', title: 'Export and archive shared drive contents', order: 3 },
-          { id: 'step-off-3-4', title: 'Revoke personal API keys and service credentials', order: 4, complianceTags: ['SOC2'] },
-          { id: 'step-off-3-5', title: 'Document data transfer completion', order: 5, complianceTags: ['GDPR', 'SOX'] },
-        ],
+        "id": "act-off-data",
+        "title": "Data Preservation & Transfer",
+        "persona": "IT Admin",
+        "description": "Archive email and files; transfer ownership before accounts are deleted.",
+        "order": 3,
+        "steps": [
+          {
+            "id": "step-off-3-1",
+            "title": "Archive email mailbox per retention policy",
+            "order": 1,
+            "complianceTags": [
+              "SOX",
+              "GDPR"
+            ]
+          },
+          {
+            "id": "step-off-3-2",
+            "title": "Transfer file ownership to manager or successor",
+            "order": 2
+          },
+          {
+            "id": "step-off-3-3",
+            "title": "Export and archive shared drive contents",
+            "order": 3
+          },
+          {
+            "id": "step-off-3-4",
+            "title": "Revoke personal API keys and service credentials",
+            "order": 4,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-off-3-5",
+            "title": "Document data transfer completion",
+            "order": 5,
+            "complianceTags": [
+              "GDPR",
+              "SOX"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-off-deprovision',
-        title: 'Full Account Deprovisioning',
-        persona: 'IT Admin',
-        description: 'Remove all accounts, licences, and credentials across every system.',
-        order: 4,
-        steps: [
-          { id: 'step-off-4-1', title: 'Delete or disable all SaaS accounts', order: 1, slaHours: 24, complianceTags: ['SOC2'] },
-          { id: 'step-off-4-2', title: 'Reclaim SaaS licences for reallocation', order: 2 },
-          { id: 'step-off-4-3', title: 'Remove from all directory groups and distribution lists', order: 3 },
-          { id: 'step-off-4-4', title: 'Revoke hardware tokens and certificates', order: 4, complianceTags: ['NIST', 'ISO27001'] },
-          { id: 'step-off-4-5', title: 'Confirm full deprovisioning in IAM audit log', order: 5, complianceTags: ['SOC2', 'ISO27001'] },
-        ],
+        "id": "act-off-deprovision",
+        "title": "Full Account Deprovisioning",
+        "persona": "IT Admin",
+        "description": "Remove all accounts, licences, and credentials across every system.",
+        "order": 4,
+        "steps": [
+          {
+            "id": "step-off-4-1",
+            "title": "Delete or disable all SaaS accounts",
+            "order": 1,
+            "slaHours": 24,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-off-4-2",
+            "title": "Reclaim SaaS licences for reallocation",
+            "order": 2
+          },
+          {
+            "id": "step-off-4-3",
+            "title": "Remove from all directory groups and distribution lists",
+            "order": 3
+          },
+          {
+            "id": "step-off-4-4",
+            "title": "Revoke hardware tokens and certificates",
+            "order": 4,
+            "complianceTags": [
+              "NIST",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-off-4-5",
+            "title": "Confirm full deprovisioning in IAM audit log",
+            "order": 5,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-off-equipment',
-        title: 'Equipment Return',
-        persona: 'Manager',
-        description: 'Track and recover all physical assets.',
-        order: 5,
-        steps: [
-          { id: 'step-off-5-1', title: 'Issue equipment return instructions to employee', order: 1 },
-          { id: 'step-off-5-2', title: 'Wipe and re-image returned devices', order: 2, complianceTags: ['SOC2'] },
-          { id: 'step-off-5-3', title: 'Update asset register to reflect return', order: 3 },
-          { id: 'step-off-5-4', title: 'Escalate unreturned equipment after grace period', order: 4 },
-        ],
+        "id": "act-off-equipment",
+        "title": "Equipment Return",
+        "persona": "Manager",
+        "description": "Track and recover all physical assets.",
+        "order": 5,
+        "steps": [
+          {
+            "id": "step-off-5-1",
+            "title": "Issue equipment return instructions to employee",
+            "order": 1
+          },
+          {
+            "id": "step-off-5-2",
+            "title": "Wipe and re-image returned devices",
+            "order": 2,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-off-5-3",
+            "title": "Update asset register to reflect return",
+            "order": 3
+          },
+          {
+            "id": "step-off-5-4",
+            "title": "Escalate unreturned equipment after grace period",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-off-audit',
-        title: 'Final Compliance & Audit Sign-off',
-        persona: 'IT Admin',
-        description: 'Generate audit record confirming all offboarding steps completed.',
-        order: 6,
-        steps: [
-          { id: 'step-off-6-1', title: 'Verify all checklist items complete', order: 1, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-off-6-2', title: 'Generate offboarding completion report', order: 2, complianceTags: ['SOC2', 'SOX'] },
-          { id: 'step-off-6-3', title: 'Store report in audit evidence repository', order: 3, complianceTags: ['SOC2', 'SOX', 'HIPAA'] },
-          { id: 'step-off-6-4', title: 'Close offboarding ticket and notify HR', order: 4 },
-        ],
-      },
-    ],
+        "id": "act-off-audit",
+        "title": "Final Compliance & Audit Sign-off",
+        "persona": "IT Admin",
+        "description": "Generate audit record confirming all offboarding steps completed.",
+        "order": 6,
+        "steps": [
+          {
+            "id": "step-off-6-1",
+            "title": "Verify all checklist items complete",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-off-6-2",
+            "title": "Generate offboarding completion report",
+            "order": 2,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ]
+          },
+          {
+            "id": "step-off-6-3",
+            "title": "Store report in audit evidence repository",
+            "order": 3,
+            "complianceTags": [
+              "SOC2",
+              "SOX",
+              "HIPAA"
+            ]
+          },
+          {
+            "id": "step-off-6-4",
+            "title": "Close offboarding ticket and notify HR",
+            "order": 4
+          }
+        ]
+      }
+    ]
   },
   {
-    id: 'outcome-access-review',
-    title: 'User Access Review',
-    phase: 'governance',
-    description: 'Periodically certify every user has only the access they need. Required for SOC2, ISO27001, SOX, HIPAA.',
-    order: 4,
-    activities: [
+    "id": "outcome-access-review",
+    "title": "User Access Review",
+    "phase": "governance",
+    "description": "Periodically certify every user has only the access they need. Required for SOC2, ISO27001, SOX, HIPAA.",
+    "order": 4,
+    "activities": [
       {
-        id: 'act-rv-schedule',
-        title: 'Review Schedule & Scope',
-        persona: 'IT Admin',
-        description: 'Define the cadence, scope, and owners for the review cycle.',
-        order: 1,
-        steps: [
-          { id: 'step-rv-1-1', title: 'Define review cadence (quarterly/annual per system)', order: 1, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-rv-1-2', title: 'Identify in-scope systems and roles', order: 2 },
-          { id: 'step-rv-1-3', title: 'Assign review owners per system or department', order: 3 },
-          { id: 'step-rv-1-4', title: 'Notify reviewers and set deadline', order: 4 },
-        ],
+        "id": "act-rv-schedule",
+        "title": "Review Schedule & Scope",
+        "persona": "IT Admin",
+        "description": "Define the cadence, scope, and owners for the review cycle.",
+        "order": 1,
+        "steps": [
+          {
+            "id": "step-rv-1-1",
+            "title": "Define review cadence (quarterly/annual per system)",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-rv-1-2",
+            "title": "Identify in-scope systems and roles",
+            "order": 2
+          },
+          {
+            "id": "step-rv-1-3",
+            "title": "Assign review owners per system or department",
+            "order": 3
+          },
+          {
+            "id": "step-rv-1-4",
+            "title": "Notify reviewers and set deadline",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-rv-report',
-        title: 'Access Report Generation',
-        persona: 'IT Admin',
-        description: 'Pull current access state across all systems into a reviewable snapshot.',
-        order: 2,
-        steps: [
-          { id: 'step-rv-2-1', title: 'Extract access inventory from all connected systems', order: 1, complianceTags: ['SOC2'] },
-          { id: 'step-rv-2-2', title: 'Normalise and deduplicate access records', order: 2 },
-          { id: 'step-rv-2-3', title: 'Flag stale accounts (no login > 90 days)', order: 3, complianceTags: ['ISO27001'] },
-          { id: 'step-rv-2-4', title: 'Distribute access reports to review owners', order: 4 },
-        ],
+        "id": "act-rv-report",
+        "title": "Access Report Generation",
+        "persona": "IT Admin",
+        "description": "Pull current access state across all systems into a reviewable snapshot.",
+        "order": 2,
+        "steps": [
+          {
+            "id": "step-rv-2-1",
+            "title": "Extract access inventory from all connected systems",
+            "order": 1,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-rv-2-2",
+            "title": "Normalise and deduplicate access records",
+            "order": 2
+          },
+          {
+            "id": "step-rv-2-3",
+            "title": "Flag stale accounts (no login > 90 days)",
+            "order": 3,
+            "complianceTags": [
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-rv-2-4",
+            "title": "Distribute access reports to review owners",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-rv-certify',
-        title: 'Manager Certification',
-        persona: 'Manager',
-        description: 'Each manager certifies their team access is appropriate.',
-        order: 3,
-        steps: [
-          { id: 'step-rv-3-1', title: 'Manager reviews access list for each direct report', order: 1, complianceTags: ['SOC2', 'SOX'] },
-          { id: 'step-rv-3-2', title: 'Certify (approve), flag for removal, or escalate', order: 2 },
-          { id: 'step-rv-3-3', title: 'Document decisions with business justification', order: 3, complianceTags: ['SOX'] },
-          { id: 'step-rv-3-4', title: 'Submit completed certification by deadline', order: 4, complianceTags: ['SOC2'] },
-        ],
+        "id": "act-rv-certify",
+        "title": "Manager Certification",
+        "persona": "Manager",
+        "description": "Each manager certifies their team access is appropriate.",
+        "order": 3,
+        "steps": [
+          {
+            "id": "step-rv-3-1",
+            "title": "Manager reviews access list for each direct report",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ]
+          },
+          {
+            "id": "step-rv-3-2",
+            "title": "Certify (approve), flag for removal, or escalate",
+            "order": 2
+          },
+          {
+            "id": "step-rv-3-3",
+            "title": "Document decisions with business justification",
+            "order": 3,
+            "complianceTags": [
+              "SOX"
+            ]
+          },
+          {
+            "id": "step-rv-3-4",
+            "title": "Submit completed certification by deadline",
+            "order": 4,
+            "complianceTags": [
+              "SOC2"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-rv-privileged',
-        title: 'Privileged Access Review',
-        persona: 'IT Admin',
-        description: 'Separate, more rigorous review track for admin and elevated access.',
-        order: 4,
-        steps: [
-          { id: 'step-rv-4-1', title: 'List all privileged and admin accounts', order: 1, complianceTags: ['SOC2', 'ISO27001', 'NIST'] },
-          { id: 'step-rv-4-2', title: 'Validate business justification for each', order: 2, complianceTags: ['SOC2'] },
-          { id: 'step-rv-4-3', title: 'Check for shared or generic admin accounts', order: 3, complianceTags: ['ISO27001'] },
-          { id: 'step-rv-4-4', title: 'Confirm MFA enforced on all privileged accounts', order: 4, complianceTags: ['NIST', 'SOC2'] },
-        ],
+        "id": "act-rv-privileged",
+        "title": "Privileged Access Review",
+        "persona": "IT Admin",
+        "description": "Separate, more rigorous review track for admin and elevated access.",
+        "order": 4,
+        "steps": [
+          {
+            "id": "step-rv-4-1",
+            "title": "List all privileged and admin accounts",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001",
+              "NIST"
+            ]
+          },
+          {
+            "id": "step-rv-4-2",
+            "title": "Validate business justification for each",
+            "order": 2,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-rv-4-3",
+            "title": "Check for shared or generic admin accounts",
+            "order": 3,
+            "complianceTags": [
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-rv-4-4",
+            "title": "Confirm MFA enforced on all privileged accounts",
+            "order": 4,
+            "complianceTags": [
+              "NIST",
+              "SOC2"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-rv-anomaly',
-        title: 'Anomaly & Orphan Detection',
-        persona: 'IT Admin',
-        description: 'Flag stale accounts, role conflicts, and SoD violations.',
-        order: 5,
-        steps: [
-          { id: 'step-rv-5-1', title: 'Identify orphaned accounts (no linked HR record)', order: 1, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-rv-5-2', title: 'Flag separation of duty (SoD) violations', order: 2, complianceTags: ['SOX'] },
-          { id: 'step-rv-5-3', title: 'Detect role conflicts and over-provisioning', order: 3 },
-          { id: 'step-rv-5-4', title: 'Produce anomaly report for remediation', order: 4 },
-        ],
+        "id": "act-rv-anomaly",
+        "title": "Anomaly & Orphan Detection",
+        "persona": "IT Admin",
+        "description": "Flag stale accounts, role conflicts, and SoD violations.",
+        "order": 5,
+        "steps": [
+          {
+            "id": "step-rv-5-1",
+            "title": "Identify orphaned accounts (no linked HR record)",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-rv-5-2",
+            "title": "Flag separation of duty (SoD) violations",
+            "order": 2,
+            "complianceTags": [
+              "SOX"
+            ]
+          },
+          {
+            "id": "step-rv-5-3",
+            "title": "Detect role conflicts and over-provisioning",
+            "order": 3
+          },
+          {
+            "id": "step-rv-5-4",
+            "title": "Produce anomaly report for remediation",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-rv-remediate',
-        title: 'Remediation & Audit Sign-off',
-        persona: 'IT Admin',
-        description: 'Act on findings and generate compliance evidence.',
-        order: 6,
-        steps: [
-          { id: 'step-rv-6-1', title: 'Execute all approved revocations and changes', order: 1, slaHours: 48, complianceTags: ['SOC2'] },
-          { id: 'step-rv-6-2', title: 'Document exceptions with risk acceptance sign-off', order: 2, complianceTags: ['SOX', 'ISO27001'] },
-          { id: 'step-rv-6-3', title: 'Generate final access review report', order: 3, complianceTags: ['SOC2', 'SOX', 'HIPAA'] },
-          { id: 'step-rv-6-4', title: 'Store evidence in audit repository', order: 4, complianceTags: ['SOC2', 'SOX'] },
-          { id: 'step-rv-6-5', title: 'Schedule next review cycle', order: 5 },
-        ],
-      },
-    ],
+        "id": "act-rv-remediate",
+        "title": "Remediation & Audit Sign-off",
+        "persona": "IT Admin",
+        "description": "Act on findings and generate compliance evidence.",
+        "order": 6,
+        "steps": [
+          {
+            "id": "step-rv-6-1",
+            "title": "Execute all approved revocations and changes",
+            "order": 1,
+            "slaHours": 48,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-rv-6-2",
+            "title": "Document exceptions with risk acceptance sign-off",
+            "order": 2,
+            "complianceTags": [
+              "SOX",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-rv-6-3",
+            "title": "Generate final access review report",
+            "order": 3,
+            "complianceTags": [
+              "SOC2",
+              "SOX",
+              "HIPAA"
+            ]
+          },
+          {
+            "id": "step-rv-6-4",
+            "title": "Store evidence in audit repository",
+            "order": 4,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ]
+          },
+          {
+            "id": "step-rv-6-5",
+            "title": "Schedule next review cycle",
+            "order": 5
+          }
+        ]
+      }
+    ]
   },
   {
-    id: 'outcome-contractor',
-    title: 'Manage Contractor Access',
-    phase: 'contractor',
-    description: 'Contractors follow a parallel lifecycle with stricter time-boxing and scope-limited access.',
-    order: 5,
-    activities: [
+    "id": "outcome-contractor",
+    "title": "Manage Contractor Access",
+    "phase": "contractor",
+    "description": "Contractors follow a parallel lifecycle with stricter time-boxing and scope-limited access.",
+    "order": 5,
+    "activities": [
       {
-        id: 'act-cn-engage',
-        title: 'Contractor Engagement & Vetting',
-        persona: 'HR',
-        description: 'Validate identity, background, and contract scope before any access is granted.',
-        order: 1,
-        steps: [
-          { id: 'step-cn-1-1', title: 'Verify contractor identity and background check', order: 1, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-cn-1-2', title: 'Confirm signed NDA and contract scope', order: 2, complianceTags: ['GDPR'] },
-          { id: 'step-cn-1-3', title: 'Define access scope, start date, and end date', order: 3 },
-          { id: 'step-cn-1-4', title: 'Assign internal sponsor responsible for contractor', order: 4 },
-        ],
+        "id": "act-cn-engage",
+        "title": "Contractor Engagement & Vetting",
+        "persona": "HR",
+        "description": "Validate identity, background, and contract scope before any access is granted.",
+        "order": 1,
+        "steps": [
+          {
+            "id": "step-cn-1-1",
+            "title": "Verify contractor identity and background check",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-cn-1-2",
+            "title": "Confirm signed NDA and contract scope",
+            "order": 2,
+            "complianceTags": [
+              "GDPR"
+            ]
+          },
+          {
+            "id": "step-cn-1-3",
+            "title": "Define access scope, start date, and end date",
+            "order": 3
+          },
+          {
+            "id": "step-cn-1-4",
+            "title": "Assign internal sponsor responsible for contractor",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-cn-provision',
-        title: 'Time-Boxed Access Provisioning',
-        persona: 'IT Admin',
-        description: 'Grant scoped access with a hard expiry tied to contract end date.',
-        order: 2,
-        steps: [
-          { id: 'step-cn-2-1', title: 'Create contractor identity record (separate from FTEs)', order: 1, complianceTags: ['ISO27001'] },
-          { id: 'step-cn-2-2', title: 'Apply contractor RBAC profile (scope-limited)', order: 2, complianceTags: ['SOC2', 'NIST'] },
-          { id: 'step-cn-2-3', title: 'Set automatic access expiry to contract end date', order: 3, slaHours: 4 },
-          { id: 'step-cn-2-4', title: 'Provision only systems explicitly listed in contract', order: 4, complianceTags: ['SOC2'] },
-          { id: 'step-cn-2-5', title: 'Send access details and acceptable use policy', order: 5 },
-        ],
+        "id": "act-cn-provision",
+        "title": "Time-Boxed Access Provisioning",
+        "persona": "IT Admin",
+        "description": "Grant scoped access with a hard expiry tied to contract end date.",
+        "order": 2,
+        "steps": [
+          {
+            "id": "step-cn-2-1",
+            "title": "Create contractor identity record (separate from FTEs)",
+            "order": 1,
+            "complianceTags": [
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-cn-2-2",
+            "title": "Apply contractor RBAC profile (scope-limited)",
+            "order": 2,
+            "complianceTags": [
+              "SOC2",
+              "NIST"
+            ]
+          },
+          {
+            "id": "step-cn-2-3",
+            "title": "Set automatic access expiry to contract end date",
+            "order": 3,
+            "slaHours": 4
+          },
+          {
+            "id": "step-cn-2-4",
+            "title": "Provision only systems explicitly listed in contract",
+            "order": 4,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-cn-2-5",
+            "title": "Send access details and acceptable use policy",
+            "order": 5
+          }
+        ]
       },
       {
-        id: 'act-cn-monitor',
-        title: 'Active Contract Monitoring',
-        persona: 'IT Admin',
-        description: 'Monitor activity and manage renewals proactively.',
-        order: 3,
-        steps: [
-          { id: 'step-cn-3-1', title: 'Alert sponsor 30 days before contract expiry', order: 1 },
-          { id: 'step-cn-3-2', title: 'Review activity logs for anomalous behaviour', order: 2, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-cn-3-3', title: 'Confirm scope has not expanded beyond contract', order: 3, complianceTags: ['SOC2'] },
-        ],
+        "id": "act-cn-monitor",
+        "title": "Active Contract Monitoring",
+        "persona": "IT Admin",
+        "description": "Monitor activity and manage renewals proactively.",
+        "order": 3,
+        "steps": [
+          {
+            "id": "step-cn-3-1",
+            "title": "Alert sponsor 30 days before contract expiry",
+            "order": 1
+          },
+          {
+            "id": "step-cn-3-2",
+            "title": "Review activity logs for anomalous behaviour",
+            "order": 2,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-cn-3-3",
+            "title": "Confirm scope has not expanded beyond contract",
+            "order": 3,
+            "complianceTags": [
+              "SOC2"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-cn-renew',
-        title: 'Contract Renewal or Extension',
-        persona: 'HR',
-        description: 'Re-approve access explicitly — no silent or automatic extensions.',
-        order: 4,
-        steps: [
-          { id: 'step-cn-4-1', title: 'Sponsor submits renewal request with justification', order: 1 },
-          { id: 'step-cn-4-2', title: 'Re-validate access scope against new contract', order: 2, complianceTags: ['SOC2'] },
-          { id: 'step-cn-4-3', title: 'Update access expiry to new contract end date', order: 3, slaHours: 4 },
-          { id: 'step-cn-4-4', title: 'Re-issue acceptable use policy acknowledgement', order: 4 },
-        ],
+        "id": "act-cn-renew",
+        "title": "Contract Renewal or Extension",
+        "persona": "HR",
+        "description": "Re-approve access explicitly — no silent or automatic extensions.",
+        "order": 4,
+        "steps": [
+          {
+            "id": "step-cn-4-1",
+            "title": "Sponsor submits renewal request with justification",
+            "order": 1
+          },
+          {
+            "id": "step-cn-4-2",
+            "title": "Re-validate access scope against new contract",
+            "order": 2,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-cn-4-3",
+            "title": "Update access expiry to new contract end date",
+            "order": 3,
+            "slaHours": 4
+          },
+          {
+            "id": "step-cn-4-4",
+            "title": "Re-issue acceptable use policy acknowledgement",
+            "order": 4
+          }
+        ]
       },
       {
-        id: 'act-cn-offboard',
-        title: 'Contractor Offboarding',
-        persona: 'IT Admin',
-        description: 'Same rigour as employee offboarding.',
-        order: 5,
-        steps: [
-          { id: 'step-cn-5-1', title: 'Disable contractor SSO account on contract end', order: 1, slaHours: 1, complianceTags: ['SOC2', 'ISO27001'] },
-          { id: 'step-cn-5-2', title: 'Revoke all system and SaaS access', order: 2, slaHours: 4, complianceTags: ['SOC2'] },
-          { id: 'step-cn-5-3', title: 'Archive or delete contractor data per retention policy', order: 3, complianceTags: ['GDPR'] },
-          { id: 'step-cn-5-4', title: 'Reclaim licences and equipment if applicable', order: 4 },
-          { id: 'step-cn-5-5', title: 'Generate offboarding audit record', order: 5, complianceTags: ['SOC2', 'ISO27001'] },
-        ],
-      },
-    ],
+        "id": "act-cn-offboard",
+        "title": "Contractor Offboarding",
+        "persona": "IT Admin",
+        "description": "Same rigour as employee offboarding.",
+        "order": 5,
+        "steps": [
+          {
+            "id": "step-cn-5-1",
+            "title": "Disable contractor SSO account on contract end",
+            "order": 1,
+            "slaHours": 1,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          },
+          {
+            "id": "step-cn-5-2",
+            "title": "Revoke all system and SaaS access",
+            "order": 2,
+            "slaHours": 4,
+            "complianceTags": [
+              "SOC2"
+            ]
+          },
+          {
+            "id": "step-cn-5-3",
+            "title": "Archive or delete contractor data per retention policy",
+            "order": 3,
+            "complianceTags": [
+              "GDPR"
+            ]
+          },
+          {
+            "id": "step-cn-5-4",
+            "title": "Reclaim licences and equipment if applicable",
+            "order": 4
+          },
+          {
+            "id": "step-cn-5-5",
+            "title": "Generate offboarding audit record",
+            "order": 5,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    id: 'outcome-platform',
-    title: 'Build & Operate the IAM Platform',
-    phase: 'platform',
-    description: 'The capability work that makes all lifecycle outcomes possible — integrations, role catalogue, certifications, and platform reliability.',
-    order: 6,
-    activities: [
+    "id": "outcome-platform",
+    "title": "Build & Operate the IAM Platform",
+    "phase": "platform",
+    "description": "The capability work that makes all lifecycle outcomes possible — integrations, role catalogue, certifications, and platform reliability.",
+    "order": 6,
+    "activities": [
       {
-        id: 'act-pl-architecture',
-        title: 'IGA Architecture & Policy',
-        persona: 'IT Admin',
-        description: 'Define the governance boundary between RBAC policy and IGA execution.',
-        order: 1,
-        steps: [
-          { id: 'step-pl-1-1', title: 'Define access intent and governance policy', order: 1, complianceTags: ['ISO27001', 'NIST'], requirementId: 'RBAC-ENT-001', linkedStoryIds: ['US-7.1', 'US-2.1'] },
-          { id: 'step-pl-1-2', title: 'Delegate provisioning and certification execution to IGA', order: 2, requirementId: 'RBAC-CAP-802', linkedStoryIds: ['US-7.2', 'US-7.3', 'US-2.18'] },
-          { id: 'step-pl-1-3', title: 'Configure IGA as audit evidence system of record', order: 3, complianceTags: ['SOC2', 'SOX'], linkedStoryIds: ['US-7.4'] },
-          { id: 'step-pl-1-4', title: 'Define hybrid on-premises and SaaS topology', order: 4, complianceTags: ['ISO27001'], requirementId: 'RBAC-IGA-020', linkedStoryIds: ['US-7.5', 'US-7.6', 'US-7.23', 'US-7.24'] },
-          { id: 'step-pl-1-5', title: 'Plan phased migration from legacy IAM systems', order: 5, linkedStoryIds: ['US-7.7', 'US-7.25'] },
-          { id: 'step-pl-1-6', title: 'Enforce governance of connected and non-connected applications', order: 6, complianceTags: ['ISO27001'], requirementId: 'RBAC-IGA-004', linkedStoryIds: ['US-7.8', 'US-7.9', 'US-7.26'] },
-          { id: 'step-pl-1-7', title: 'Support standard enterprise integration patterns', order: 7, requirementId: 'RBAC-IGA-006', linkedStoryIds: ['US-7.10'] },
-        ],
+        "id": "act-pl-architecture",
+        "title": "IGA Architecture & Policy",
+        "persona": "IT Admin",
+        "description": "Define the governance boundary between RBAC policy and IGA execution.",
+        "order": 1,
+        "steps": [
+          {
+            "id": "step-pl-1-1",
+            "title": "Define access intent and governance policy",
+            "order": 1,
+            "complianceTags": [
+              "ISO27001",
+              "NIST"
+            ],
+            "requirementId": "RBAC-ENT-001",
+            "linkedStoryIds": [
+              "US-7.1",
+              "US-2.1"
+            ]
+          },
+          {
+            "id": "step-pl-1-2",
+            "title": "Delegate provisioning and certification execution to IGA",
+            "order": 2,
+            "requirementId": "RBAC-CAP-802",
+            "linkedStoryIds": [
+              "US-7.2",
+              "US-7.3",
+              "US-2.18"
+            ]
+          },
+          {
+            "id": "step-pl-1-3",
+            "title": "Configure IGA as audit evidence system of record",
+            "order": 3,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "linkedStoryIds": [
+              "US-7.4"
+            ]
+          },
+          {
+            "id": "step-pl-1-4",
+            "title": "Define hybrid on-premises and SaaS topology",
+            "order": 4,
+            "complianceTags": [
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-IGA-020",
+            "linkedStoryIds": [
+              "US-7.5",
+              "US-7.6",
+              "US-7.23",
+              "US-7.24"
+            ]
+          },
+          {
+            "id": "step-pl-1-5",
+            "title": "Plan phased migration from legacy IAM systems",
+            "order": 5,
+            "linkedStoryIds": [
+              "US-7.7",
+              "US-7.25"
+            ]
+          },
+          {
+            "id": "step-pl-1-6",
+            "title": "Enforce governance of connected and non-connected applications",
+            "order": 6,
+            "complianceTags": [
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-IGA-004",
+            "linkedStoryIds": [
+              "US-7.8",
+              "US-7.9",
+              "US-7.26"
+            ]
+          },
+          {
+            "id": "step-pl-1-7",
+            "title": "Support standard enterprise integration patterns",
+            "order": 7,
+            "requirementId": "RBAC-IGA-006",
+            "linkedStoryIds": [
+              "US-7.10"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-pl-onboarding',
-        title: 'Application & Directory Onboarding',
-        persona: 'IT Admin',
-        description: 'Onboard applications and directory systems so their access is governed.',
-        order: 2,
-        steps: [
-          { id: 'step-pl-2-1', title: 'Run application RBAC discovery model', order: 1, complianceTags: ['SOC2'], requirementId: 'RBAC-CAP-101', linkedStoryIds: ['US-1.2', 'US-1.3'] },
-          { id: 'step-pl-2-2', title: 'Identify business and technical owners', order: 2, requirementId: 'RBAC-CAP-102', linkedStoryIds: ['US-1.4'] },
-          { id: 'step-pl-2-3', title: 'Capture permission inventory and privilege paths', order: 3, complianceTags: ['SOC2', 'ISO27001'], requirementId: 'RBAC-CAP-105', linkedStoryIds: ['US-1.5', 'US-1.6'] },
-          { id: 'step-pl-2-4', title: 'Capture SoD considerations during onboarding', order: 4, complianceTags: ['SOX'], requirementId: 'RBAC-CAP-107', linkedStoryIds: ['US-1.7'] },
-          { id: 'step-pl-2-5', title: 'Track discovery lifecycle status end-to-end', order: 5, requirementId: 'RBAC-CAP-108', linkedStoryIds: ['US-1.8'] },
-          { id: 'step-pl-2-6', title: 'Govern RBAC for non-human identities and service accounts', order: 6, complianceTags: ['SOC2', 'ISO27001'], requirementId: 'RBAC-CAP-110', linkedStoryIds: ['US-1.9'] },
-          { id: 'step-pl-2-7', title: 'Retain discovery artefacts as audit evidence', order: 7, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-109', linkedStoryIds: ['US-6.3'] },
-          { id: 'step-pl-2-8', title: 'Ingest directory accounts and group memberships', order: 8, complianceTags: ['ISO27001'], linkedStoryIds: ['US-8.2', 'US-8.3'] },
-          { id: 'step-pl-2-9', title: 'Flag privileged directory groups and detect out-of-band changes', order: 9, complianceTags: ['SOC2', 'NIST'], requirementId: 'RBAC-IGA-012', linkedStoryIds: ['US-8.4', 'US-8.1'] },
-          { id: 'step-pl-2-10', title: 'Support scalable onboarding without bespoke redesign', order: 10, linkedStoryIds: ['US-10.1'] },
-        ],
+        "id": "act-pl-onboarding",
+        "title": "Application & Directory Onboarding",
+        "persona": "IT Admin",
+        "description": "Onboard applications and directory systems so their access is governed.",
+        "order": 2,
+        "steps": [
+          {
+            "id": "step-pl-2-1",
+            "title": "Run application RBAC discovery model",
+            "order": 1,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-CAP-101",
+            "linkedStoryIds": [
+              "US-1.2",
+              "US-1.3"
+            ]
+          },
+          {
+            "id": "step-pl-2-2",
+            "title": "Identify business and technical owners",
+            "order": 2,
+            "requirementId": "RBAC-CAP-102",
+            "linkedStoryIds": [
+              "US-1.4"
+            ]
+          },
+          {
+            "id": "step-pl-2-3",
+            "title": "Capture permission inventory and privilege paths",
+            "order": 3,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-CAP-105",
+            "linkedStoryIds": [
+              "US-1.5",
+              "US-1.6"
+            ]
+          },
+          {
+            "id": "step-pl-2-4",
+            "title": "Capture SoD considerations during onboarding",
+            "order": 4,
+            "complianceTags": [
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-107",
+            "linkedStoryIds": [
+              "US-1.7"
+            ]
+          },
+          {
+            "id": "step-pl-2-5",
+            "title": "Track discovery lifecycle status end-to-end",
+            "order": 5,
+            "requirementId": "RBAC-CAP-108",
+            "linkedStoryIds": [
+              "US-1.8"
+            ]
+          },
+          {
+            "id": "step-pl-2-6",
+            "title": "Govern RBAC for non-human identities and service accounts",
+            "order": 6,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-CAP-110",
+            "linkedStoryIds": [
+              "US-1.9"
+            ]
+          },
+          {
+            "id": "step-pl-2-7",
+            "title": "Retain discovery artefacts as audit evidence",
+            "order": 7,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-109",
+            "linkedStoryIds": [
+              "US-6.3"
+            ]
+          },
+          {
+            "id": "step-pl-2-8",
+            "title": "Ingest directory accounts and group memberships",
+            "order": 8,
+            "complianceTags": [
+              "ISO27001"
+            ],
+            "linkedStoryIds": [
+              "US-8.2",
+              "US-8.3"
+            ]
+          },
+          {
+            "id": "step-pl-2-9",
+            "title": "Flag privileged directory groups and detect out-of-band changes",
+            "order": 9,
+            "complianceTags": [
+              "SOC2",
+              "NIST"
+            ],
+            "requirementId": "RBAC-IGA-012",
+            "linkedStoryIds": [
+              "US-8.4",
+              "US-8.1"
+            ]
+          },
+          {
+            "id": "step-pl-2-10",
+            "title": "Support scalable onboarding without bespoke redesign",
+            "order": 10,
+            "linkedStoryIds": [
+              "US-10.1"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-pl-roles',
-        title: 'Role Catalogue Management',
-        persona: 'IT Admin',
-        description: 'Build and maintain the enterprise role catalogue that drives all access decisions.',
-        order: 3,
-        steps: [
-          { id: 'step-pl-3-1', title: 'Document role constructs or confirm none exist', order: 1, requirementId: 'RBAC-CAP-104', linkedStoryIds: ['US-2.2', 'US-2.3', 'US-2.5'] },
-          { id: 'step-pl-3-2', title: 'Enforce role eligibility criteria via identity attributes', order: 2, requirementId: 'RBAC-CAP-201', linkedStoryIds: ['US-2.4', 'US-2.21'] },
-          { id: 'step-pl-3-3', title: 'Support role lifecycle states (draft, active, retired)', order: 3, complianceTags: ['ISO27001'], requirementId: 'RBAC-CAP-204', linkedStoryIds: ['US-2.6'] },
-          { id: 'step-pl-3-4', title: 'Enforce access inheritance only through roles', order: 4, complianceTags: ['SOC2', 'ISO27001'], requirementId: 'RBAC-CAP-205', linkedStoryIds: ['US-2.7', 'US-2.20'] },
-          { id: 'step-pl-3-5', title: 'Map roles to permissions with required justification', order: 5, complianceTags: ['SOC2'], requirementId: 'RBAC-CAP-301', linkedStoryIds: ['US-2.12', 'US-2.13'] },
-          { id: 'step-pl-3-6', title: 'Support role composition and hierarchy', order: 6, requirementId: 'RBAC-CAP-208', linkedStoryIds: ['US-2.9'] },
-          { id: 'step-pl-3-7', title: 'Gate material role changes behind approval workflow', order: 7, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-209', linkedStoryIds: ['US-2.11', 'US-2.14'] },
-          { id: 'step-pl-3-8', title: 'Correlate accounts and entitlements back to roles', order: 8, requirementId: 'RBAC-IGA-025', linkedStoryIds: ['US-2.19'] },
-          { id: 'step-pl-3-9', title: 'Support role-based access requests', order: 9, requirementId: 'RBAC-CAP-401', linkedStoryIds: ['US-2.15'] },
-          { id: 'step-pl-3-10', title: 'Support time-bound and JIT role activation', order: 10, complianceTags: ['NIST'], requirementId: 'RBAC-CAP-405', linkedStoryIds: ['US-2.16', 'US-7.34'] },
-          { id: 'step-pl-3-11', title: 'Trigger role review automatically from repeated exceptions', order: 11, requirementId: 'RBAC-CAP-605', linkedStoryIds: ['US-2.17'] },
-          { id: 'step-pl-3-12', title: 'Run periodic role reviews and retire unused roles', order: 12, complianceTags: ['ISO27001'], requirementId: 'RBAC-CAP-207', linkedStoryIds: ['US-2.10'] },
-          { id: 'step-pl-3-13', title: 'Auto-revoke access when role is removed from user', order: 13, complianceTags: ['SOC2'], requirementId: 'RBAC-CAP-206', linkedStoryIds: ['US-2.8', 'US-2.23'] },
-        ],
+        "id": "act-pl-roles",
+        "title": "Role Catalogue Management",
+        "persona": "IT Admin",
+        "description": "Build and maintain the enterprise role catalogue that drives all access decisions.",
+        "order": 3,
+        "steps": [
+          {
+            "id": "step-pl-3-1",
+            "title": "Document role constructs or confirm none exist",
+            "order": 1,
+            "requirementId": "RBAC-CAP-104",
+            "linkedStoryIds": [
+              "US-2.2",
+              "US-2.3",
+              "US-2.5"
+            ]
+          },
+          {
+            "id": "step-pl-3-2",
+            "title": "Enforce role eligibility criteria via identity attributes",
+            "order": 2,
+            "requirementId": "RBAC-CAP-201",
+            "linkedStoryIds": [
+              "US-2.4",
+              "US-2.21"
+            ]
+          },
+          {
+            "id": "step-pl-3-3",
+            "title": "Support role lifecycle states (draft, active, retired)",
+            "order": 3,
+            "complianceTags": [
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-CAP-204",
+            "linkedStoryIds": [
+              "US-2.6"
+            ]
+          },
+          {
+            "id": "step-pl-3-4",
+            "title": "Enforce access inheritance only through roles",
+            "order": 4,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-CAP-205",
+            "linkedStoryIds": [
+              "US-2.7",
+              "US-2.20"
+            ]
+          },
+          {
+            "id": "step-pl-3-5",
+            "title": "Map roles to permissions with required justification",
+            "order": 5,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-CAP-301",
+            "linkedStoryIds": [
+              "US-2.12",
+              "US-2.13"
+            ]
+          },
+          {
+            "id": "step-pl-3-6",
+            "title": "Support role composition and hierarchy",
+            "order": 6,
+            "requirementId": "RBAC-CAP-208",
+            "linkedStoryIds": [
+              "US-2.9"
+            ]
+          },
+          {
+            "id": "step-pl-3-7",
+            "title": "Gate material role changes behind approval workflow",
+            "order": 7,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-209",
+            "linkedStoryIds": [
+              "US-2.11",
+              "US-2.14"
+            ]
+          },
+          {
+            "id": "step-pl-3-8",
+            "title": "Correlate accounts and entitlements back to roles",
+            "order": 8,
+            "requirementId": "RBAC-IGA-025",
+            "linkedStoryIds": [
+              "US-2.19"
+            ]
+          },
+          {
+            "id": "step-pl-3-9",
+            "title": "Support role-based access requests",
+            "order": 9,
+            "requirementId": "RBAC-CAP-401",
+            "linkedStoryIds": [
+              "US-2.15"
+            ]
+          },
+          {
+            "id": "step-pl-3-10",
+            "title": "Support time-bound and JIT role activation",
+            "order": 10,
+            "complianceTags": [
+              "NIST"
+            ],
+            "requirementId": "RBAC-CAP-405",
+            "linkedStoryIds": [
+              "US-2.16",
+              "US-7.34"
+            ]
+          },
+          {
+            "id": "step-pl-3-11",
+            "title": "Trigger role review automatically from repeated exceptions",
+            "order": 11,
+            "requirementId": "RBAC-CAP-605",
+            "linkedStoryIds": [
+              "US-2.17"
+            ]
+          },
+          {
+            "id": "step-pl-3-12",
+            "title": "Run periodic role reviews and retire unused roles",
+            "order": 12,
+            "complianceTags": [
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-CAP-207",
+            "linkedStoryIds": [
+              "US-2.10"
+            ]
+          },
+          {
+            "id": "step-pl-3-13",
+            "title": "Auto-revoke access when role is removed from user",
+            "order": 13,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-CAP-206",
+            "linkedStoryIds": [
+              "US-2.8",
+              "US-2.23"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-pl-provisioning',
-        title: 'Provisioning & System Integration',
-        persona: 'IT Admin',
-        description: 'Connect IGA to all target systems and HR data sources for automated provisioning.',
-        order: 4,
-        steps: [
-          { id: 'step-pl-4-1', title: 'Deploy prebuilt connectors for enterprise SaaS systems', order: 1, complianceTags: ['SOC2'], linkedStoryIds: ['US-7.11', 'US-7.47'] },
-          { id: 'step-pl-4-2', title: 'Build extensibility connectors where prebuilt unavailable', order: 2, linkedStoryIds: ['US-7.12', 'US-7.48', 'US-7.49'] },
-          { id: 'step-pl-4-3', title: 'Support governed scripting and auditable script execution', order: 3, complianceTags: ['SOC2'], requirementId: 'RBAC-INT-018', linkedStoryIds: ['US-7.50', 'US-7.51'] },
-          { id: 'step-pl-4-4', title: 'Consume JML lifecycle events from Workday HR', order: 4, complianceTags: ['ISO27001'], linkedStoryIds: ['US-9.1', 'US-9.2'] },
-          { id: 'step-pl-4-5', title: 'Retain audit evidence of Workday attribute changes', order: 5, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-INT-004', linkedStoryIds: ['US-7.43'] },
-          { id: 'step-pl-4-6', title: 'Integrate ServiceNow ITSM for access request intake', order: 6, linkedStoryIds: ['US-7.44', 'US-7.45', 'US-7.46'] },
-          { id: 'step-pl-4-7', title: 'Prevent direct entitlement bypass and execute provisioning independently', order: 7, complianceTags: ['SOC2', 'ISO27001'], requirementId: 'RBAC-IGA-030', linkedStoryIds: ['US-7.30', 'US-7.31'] },
-          { id: 'step-pl-4-8', title: 'Support cross-system orchestration for provisioning', order: 8, requirementId: 'RBAC-IGA-032', linkedStoryIds: ['US-7.32'] },
-          { id: 'step-pl-4-9', title: 'Support ABAC eligibility enforcement', order: 9, requirementId: 'RBAC-IGA-028', linkedStoryIds: ['US-7.28'] },
-          { id: 'step-pl-4-10', title: 'Detect and remediate out-of-band access grants', order: 10, complianceTags: ['SOC2', 'ISO27001'], linkedStoryIds: ['US-7.16', 'US-7.41', 'US-8.6'] },
-          { id: 'step-pl-4-11', title: 'Retain reconciliation history and remediation outcomes', order: 11, complianceTags: ['SOC2', 'ISO27001'], requirementId: 'RBAC-IGA-042', linkedStoryIds: ['US-7.17', 'US-7.42', 'US-8.7'] },
-          { id: 'step-pl-4-12', title: 'Provision and deprovision directory memberships', order: 12, linkedStoryIds: ['US-8.5', 'US-2.22'] },
-          { id: 'step-pl-4-13', title: 'Flag privileged access during ingestion', order: 13, complianceTags: ['SOC2', 'NIST'], requirementId: 'RBAC-IGA-026', linkedStoryIds: ['US-7.27'] },
-          { id: 'step-pl-4-14', title: 'Auto-revoke access on attribute or role change', order: 14, complianceTags: ['SOC2'], linkedStoryIds: ['US-7.29', 'US-2.8'] },
-        ],
+        "id": "act-pl-provisioning",
+        "title": "Provisioning & System Integration",
+        "persona": "IT Admin",
+        "description": "Connect IGA to all target systems and HR data sources for automated provisioning.",
+        "order": 4,
+        "steps": [
+          {
+            "id": "step-pl-4-1",
+            "title": "Deploy prebuilt connectors for enterprise SaaS systems",
+            "order": 1,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "linkedStoryIds": [
+              "US-7.11",
+              "US-7.47"
+            ]
+          },
+          {
+            "id": "step-pl-4-2",
+            "title": "Build extensibility connectors where prebuilt unavailable",
+            "order": 2,
+            "linkedStoryIds": [
+              "US-7.12",
+              "US-7.48",
+              "US-7.49"
+            ]
+          },
+          {
+            "id": "step-pl-4-3",
+            "title": "Support governed scripting and auditable script execution",
+            "order": 3,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-INT-018",
+            "linkedStoryIds": [
+              "US-7.50",
+              "US-7.51"
+            ]
+          },
+          {
+            "id": "step-pl-4-4",
+            "title": "Consume JML lifecycle events from Workday HR",
+            "order": 4,
+            "complianceTags": [
+              "ISO27001"
+            ],
+            "linkedStoryIds": [
+              "US-9.1",
+              "US-9.2"
+            ]
+          },
+          {
+            "id": "step-pl-4-5",
+            "title": "Retain audit evidence of Workday attribute changes",
+            "order": 5,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-INT-004",
+            "linkedStoryIds": [
+              "US-7.43"
+            ]
+          },
+          {
+            "id": "step-pl-4-6",
+            "title": "Integrate ServiceNow ITSM for access request intake",
+            "order": 6,
+            "linkedStoryIds": [
+              "US-7.44",
+              "US-7.45",
+              "US-7.46"
+            ]
+          },
+          {
+            "id": "step-pl-4-7",
+            "title": "Prevent direct entitlement bypass and execute provisioning independently",
+            "order": 7,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-IGA-030",
+            "linkedStoryIds": [
+              "US-7.30",
+              "US-7.31"
+            ]
+          },
+          {
+            "id": "step-pl-4-8",
+            "title": "Support cross-system orchestration for provisioning",
+            "order": 8,
+            "requirementId": "RBAC-IGA-032",
+            "linkedStoryIds": [
+              "US-7.32"
+            ]
+          },
+          {
+            "id": "step-pl-4-9",
+            "title": "Support ABAC eligibility enforcement",
+            "order": 9,
+            "requirementId": "RBAC-IGA-028",
+            "linkedStoryIds": [
+              "US-7.28"
+            ]
+          },
+          {
+            "id": "step-pl-4-10",
+            "title": "Detect and remediate out-of-band access grants",
+            "order": 10,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "linkedStoryIds": [
+              "US-7.16",
+              "US-7.41",
+              "US-8.6"
+            ]
+          },
+          {
+            "id": "step-pl-4-11",
+            "title": "Retain reconciliation history and remediation outcomes",
+            "order": 11,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-IGA-042",
+            "linkedStoryIds": [
+              "US-7.17",
+              "US-7.42",
+              "US-8.7"
+            ]
+          },
+          {
+            "id": "step-pl-4-12",
+            "title": "Provision and deprovision directory memberships",
+            "order": 12,
+            "linkedStoryIds": [
+              "US-8.5",
+              "US-2.22"
+            ]
+          },
+          {
+            "id": "step-pl-4-13",
+            "title": "Flag privileged access during ingestion",
+            "order": 13,
+            "complianceTags": [
+              "SOC2",
+              "NIST"
+            ],
+            "requirementId": "RBAC-IGA-026",
+            "linkedStoryIds": [
+              "US-7.27"
+            ]
+          },
+          {
+            "id": "step-pl-4-14",
+            "title": "Auto-revoke access on attribute or role change",
+            "order": 14,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "linkedStoryIds": [
+              "US-7.29",
+              "US-2.8"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-pl-certification',
-        title: 'Access Certification Operations',
-        persona: 'IT Admin',
-        description: 'Run ongoing access certification campaigns with full auditability.',
-        order: 5,
-        steps: [
-          { id: 'step-pl-5-1', title: 'Configure periodic certification campaigns by role/entitlement', order: 1, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-501', linkedStoryIds: ['US-7.18', 'US-7.37', 'US-5.1'] },
-          { id: 'step-pl-5-2', title: 'Assign certifiers by governance rules and set cadence by risk tier', order: 2, complianceTags: ['SOC2'], requirementId: 'RBAC-CAP-502', linkedStoryIds: ['US-5.2', 'US-5.5'] },
-          { id: 'step-pl-5-3', title: 'Support role-level and entitlement-level certification tracks', order: 3, complianceTags: ['SOC2'], linkedStoryIds: ['US-7.20', 'US-7.38'] },
-          { id: 'step-pl-5-4', title: 'Record certification decisions with reviewer and timestamp', order: 4, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-503', linkedStoryIds: ['US-7.19', 'US-5.3'] },
-          { id: 'step-pl-5-5', title: 'Auto-trigger access changes from certification outcomes', order: 5, complianceTags: ['SOC2', 'ISO27001'], requirementId: 'RBAC-CAP-504', linkedStoryIds: ['US-7.21', 'US-7.33', 'US-5.4'] },
-          { id: 'step-pl-5-6', title: 'Support delegation, escalation, and overdue tracking', order: 6, complianceTags: ['SOC2'], linkedStoryIds: ['US-7.22', 'US-7.39'] },
-          { id: 'step-pl-5-7', title: 'Support JIT privileged access with auto-expiry', order: 7, complianceTags: ['NIST'], requirementId: 'RBAC-CAP-406', linkedStoryIds: ['US-7.34', 'US-7.35', 'US-7.36', 'US-1.15'] },
-        ],
+        "id": "act-pl-certification",
+        "title": "Access Certification Operations",
+        "persona": "IT Admin",
+        "description": "Run ongoing access certification campaigns with full auditability.",
+        "order": 5,
+        "steps": [
+          {
+            "id": "step-pl-5-1",
+            "title": "Configure periodic certification campaigns by role/entitlement",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-501",
+            "linkedStoryIds": [
+              "US-7.18",
+              "US-7.37",
+              "US-5.1"
+            ]
+          },
+          {
+            "id": "step-pl-5-2",
+            "title": "Assign certifiers by governance rules and set cadence by risk tier",
+            "order": 2,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-CAP-502",
+            "linkedStoryIds": [
+              "US-5.2",
+              "US-5.5"
+            ]
+          },
+          {
+            "id": "step-pl-5-3",
+            "title": "Support role-level and entitlement-level certification tracks",
+            "order": 3,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "linkedStoryIds": [
+              "US-7.20",
+              "US-7.38"
+            ]
+          },
+          {
+            "id": "step-pl-5-4",
+            "title": "Record certification decisions with reviewer and timestamp",
+            "order": 4,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-503",
+            "linkedStoryIds": [
+              "US-7.19",
+              "US-5.3"
+            ]
+          },
+          {
+            "id": "step-pl-5-5",
+            "title": "Auto-trigger access changes from certification outcomes",
+            "order": 5,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-CAP-504",
+            "linkedStoryIds": [
+              "US-7.21",
+              "US-7.33",
+              "US-5.4"
+            ]
+          },
+          {
+            "id": "step-pl-5-6",
+            "title": "Support delegation, escalation, and overdue tracking",
+            "order": 6,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "linkedStoryIds": [
+              "US-7.22",
+              "US-7.39"
+            ]
+          },
+          {
+            "id": "step-pl-5-7",
+            "title": "Support JIT privileged access with auto-expiry",
+            "order": 7,
+            "complianceTags": [
+              "NIST"
+            ],
+            "requirementId": "RBAC-CAP-406",
+            "linkedStoryIds": [
+              "US-7.34",
+              "US-7.35",
+              "US-7.36",
+              "US-1.15"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-pl-governance',
-        title: 'Access Governance & Exception Handling',
-        persona: 'IT Admin',
-        description: 'Govern the full access lifecycle end-to-end, including approvals, exceptions, and break-glass.',
-        order: 6,
-        steps: [
-          { id: 'step-pl-6-1', title: 'Route access approvals based on governance rules', order: 1, complianceTags: ['SOC2'], requirementId: 'RBAC-CAP-402', linkedStoryIds: ['US-1.12', 'US-6.1'] },
-          { id: 'step-pl-6-2', title: 'Record approval decisions as auditable evidence', order: 2, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-403', linkedStoryIds: ['US-1.13'] },
-          { id: 'step-pl-6-3', title: 'Prevent fulfillment without recorded approvals', order: 3, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-404', linkedStoryIds: ['US-1.14'] },
-          { id: 'step-pl-6-4', title: 'Flag and govern privileged entitlements during mapping', order: 4, complianceTags: ['SOC2', 'ISO27001', 'NIST'], requirementId: 'RBAC-CAP-303', linkedStoryIds: ['US-1.10', 'US-1.11'] },
-          { id: 'step-pl-6-5', title: 'Document and enforce access exceptions with expiry', order: 5, complianceTags: ['SOC2'], requirementId: 'RBAC-CAP-601', linkedStoryIds: ['US-1.16', 'US-1.17'] },
-          { id: 'step-pl-6-6', title: 'Support emergency (break-glass) access with mandatory review', order: 6, complianceTags: ['SOC2', 'NIST'], requirementId: 'RBAC-CAP-603', linkedStoryIds: ['US-1.18', 'US-1.19'] },
-          { id: 'step-pl-6-7', title: 'Record JIT activation and expiry events as audit evidence', order: 7, complianceTags: ['SOC2'], requirementId: 'RBAC-CAP-407', linkedStoryIds: ['US-6.4'] },
-          { id: 'step-pl-6-8', title: 'Govern full access lifecycle end-to-end', order: 8, complianceTags: ['SOC2', 'ISO27001'], requirementId: 'RBAC-ENT-003', linkedStoryIds: ['US-6.1'] },
-        ],
+        "id": "act-pl-governance",
+        "title": "Access Governance & Exception Handling",
+        "persona": "IT Admin",
+        "description": "Govern the full access lifecycle end-to-end, including approvals, exceptions, and break-glass.",
+        "order": 6,
+        "steps": [
+          {
+            "id": "step-pl-6-1",
+            "title": "Route access approvals based on governance rules",
+            "order": 1,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-CAP-402",
+            "linkedStoryIds": [
+              "US-1.12",
+              "US-6.1"
+            ]
+          },
+          {
+            "id": "step-pl-6-2",
+            "title": "Record approval decisions as auditable evidence",
+            "order": 2,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-403",
+            "linkedStoryIds": [
+              "US-1.13"
+            ]
+          },
+          {
+            "id": "step-pl-6-3",
+            "title": "Prevent fulfillment without recorded approvals",
+            "order": 3,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-404",
+            "linkedStoryIds": [
+              "US-1.14"
+            ]
+          },
+          {
+            "id": "step-pl-6-4",
+            "title": "Flag and govern privileged entitlements during mapping",
+            "order": 4,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001",
+              "NIST"
+            ],
+            "requirementId": "RBAC-CAP-303",
+            "linkedStoryIds": [
+              "US-1.10",
+              "US-1.11"
+            ]
+          },
+          {
+            "id": "step-pl-6-5",
+            "title": "Document and enforce access exceptions with expiry",
+            "order": 5,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-CAP-601",
+            "linkedStoryIds": [
+              "US-1.16",
+              "US-1.17"
+            ]
+          },
+          {
+            "id": "step-pl-6-6",
+            "title": "Support emergency (break-glass) access with mandatory review",
+            "order": 6,
+            "complianceTags": [
+              "SOC2",
+              "NIST"
+            ],
+            "requirementId": "RBAC-CAP-603",
+            "linkedStoryIds": [
+              "US-1.18",
+              "US-1.19"
+            ]
+          },
+          {
+            "id": "step-pl-6-7",
+            "title": "Record JIT activation and expiry events as audit evidence",
+            "order": 7,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-CAP-407",
+            "linkedStoryIds": [
+              "US-6.4"
+            ]
+          },
+          {
+            "id": "step-pl-6-8",
+            "title": "Govern full access lifecycle end-to-end",
+            "order": 8,
+            "complianceTags": [
+              "SOC2",
+              "ISO27001"
+            ],
+            "requirementId": "RBAC-ENT-003",
+            "linkedStoryIds": [
+              "US-6.1"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-pl-reporting',
-        title: 'Access Reporting & Audit Evidence',
-        persona: 'IT Admin',
-        description: 'Provide complete, attributable, on-demand evidence for regulators and auditors.',
-        order: 7,
-        steps: [
-          { id: 'step-pl-7-1', title: 'Report who has access and why across all systems', order: 1, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-701', linkedStoryIds: ['US-1.20'] },
-          { id: 'step-pl-7-2', title: 'Retain complete historical access records', order: 2, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-702', linkedStoryIds: ['US-1.21', 'US-6.5'] },
-          { id: 'step-pl-7-3', title: 'Ensure audit evidence is complete and attributable', order: 3, complianceTags: ['SOC2', 'SOX', 'HIPAA'], requirementId: 'RBAC-CAP-704', linkedStoryIds: ['US-1.22', 'US-6.2'] },
-          { id: 'step-pl-7-4', title: 'Provide on-demand audit evidence export', order: 4, complianceTags: ['SOC2'], requirementId: 'RBAC-CAP-703', linkedStoryIds: ['US-6.5'] },
-          { id: 'step-pl-7-5', title: 'Retain discovery and onboarding artefacts as evidence', order: 5, complianceTags: ['SOC2', 'SOX'], requirementId: 'RBAC-CAP-109', linkedStoryIds: ['US-6.3'] },
-        ],
+        "id": "act-pl-reporting",
+        "title": "Access Reporting & Audit Evidence",
+        "persona": "IT Admin",
+        "description": "Provide complete, attributable, on-demand evidence for regulators and auditors.",
+        "order": 7,
+        "steps": [
+          {
+            "id": "step-pl-7-1",
+            "title": "Report who has access and why across all systems",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-701",
+            "linkedStoryIds": [
+              "US-1.20"
+            ]
+          },
+          {
+            "id": "step-pl-7-2",
+            "title": "Retain complete historical access records",
+            "order": 2,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-702",
+            "linkedStoryIds": [
+              "US-1.21",
+              "US-6.5"
+            ]
+          },
+          {
+            "id": "step-pl-7-3",
+            "title": "Ensure audit evidence is complete and attributable",
+            "order": 3,
+            "complianceTags": [
+              "SOC2",
+              "SOX",
+              "HIPAA"
+            ],
+            "requirementId": "RBAC-CAP-704",
+            "linkedStoryIds": [
+              "US-1.22",
+              "US-6.2"
+            ]
+          },
+          {
+            "id": "step-pl-7-4",
+            "title": "Provide on-demand audit evidence export",
+            "order": 4,
+            "complianceTags": [
+              "SOC2"
+            ],
+            "requirementId": "RBAC-CAP-703",
+            "linkedStoryIds": [
+              "US-6.5"
+            ]
+          },
+          {
+            "id": "step-pl-7-5",
+            "title": "Retain discovery and onboarding artefacts as evidence",
+            "order": 5,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "requirementId": "RBAC-CAP-109",
+            "linkedStoryIds": [
+              "US-6.3"
+            ]
+          }
+        ]
       },
       {
-        id: 'act-pl-reliability',
-        title: 'Platform Reliability & Audit Integrity',
-        persona: 'IT Admin',
-        description: 'Ensure the platform is secure, scalable, and its audit evidence is tamper-proof.',
-        order: 8,
-        steps: [
-          { id: 'step-pl-8-1', title: 'Provide comprehensive immutable audit logging', order: 1, complianceTags: ['SOC2', 'SOX', 'ISO27001'], linkedStoryIds: ['US-7.13', 'US-7.40', 'US-7.59'] },
-          { id: 'step-pl-8-2', title: 'Capture approver identity, timestamps, and state changes', order: 2, complianceTags: ['SOC2', 'SOX'], linkedStoryIds: ['US-7.14'] },
-          { id: 'step-pl-8-3', title: 'Configure log retention policies per compliance requirement', order: 3, complianceTags: ['SOC2', 'HIPAA'], linkedStoryIds: ['US-7.15'] },
-          { id: 'step-pl-8-4', title: 'Scale ingestion and provisioning to enterprise volumes', order: 4, linkedStoryIds: ['US-7.55', 'US-7.56', 'US-7.57'] },
-          { id: 'step-pl-8-5', title: 'Define and enforce 24x7 SLA for critical failures', order: 5, linkedStoryIds: ['US-7.52', 'US-7.53', 'US-7.54'] },
-          { id: 'step-pl-8-6', title: 'Govern IGA admin access and prevent unauthorized provisioning', order: 6, complianceTags: ['SOC2', 'NIST'], linkedStoryIds: ['US-7.58', 'US-7.60'] },
-          { id: 'step-pl-8-7', title: 'Preserve audit evidence integrity across platform upgrades', order: 7, complianceTags: ['SOC2', 'SOX'], linkedStoryIds: ['US-7.61', 'US-7.62', 'US-7.63'] },
-        ],
-      },
-    ],
-  },
+        "id": "act-pl-reliability",
+        "title": "Platform Reliability & Audit Integrity",
+        "persona": "IT Admin",
+        "description": "Ensure the platform is secure, scalable, and its audit evidence is tamper-proof.",
+        "order": 8,
+        "steps": [
+          {
+            "id": "step-pl-8-1",
+            "title": "Provide comprehensive immutable audit logging",
+            "order": 1,
+            "complianceTags": [
+              "SOC2",
+              "SOX",
+              "ISO27001"
+            ],
+            "linkedStoryIds": [
+              "US-7.13",
+              "US-7.40",
+              "US-7.59"
+            ]
+          },
+          {
+            "id": "step-pl-8-2",
+            "title": "Capture approver identity, timestamps, and state changes",
+            "order": 2,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "linkedStoryIds": [
+              "US-7.14"
+            ]
+          },
+          {
+            "id": "step-pl-8-3",
+            "title": "Configure log retention policies per compliance requirement",
+            "order": 3,
+            "complianceTags": [
+              "SOC2",
+              "HIPAA"
+            ],
+            "linkedStoryIds": [
+              "US-7.15"
+            ]
+          },
+          {
+            "id": "step-pl-8-4",
+            "title": "Scale ingestion and provisioning to enterprise volumes",
+            "order": 4,
+            "linkedStoryIds": [
+              "US-7.55",
+              "US-7.56",
+              "US-7.57"
+            ]
+          },
+          {
+            "id": "step-pl-8-5",
+            "title": "Define and enforce 24x7 SLA for critical failures",
+            "order": 5,
+            "linkedStoryIds": [
+              "US-7.52",
+              "US-7.53",
+              "US-7.54"
+            ]
+          },
+          {
+            "id": "step-pl-8-6",
+            "title": "Govern IGA admin access and prevent unauthorized provisioning",
+            "order": 6,
+            "complianceTags": [
+              "SOC2",
+              "NIST"
+            ],
+            "linkedStoryIds": [
+              "US-7.58",
+              "US-7.60"
+            ]
+          },
+          {
+            "id": "step-pl-8-7",
+            "title": "Preserve audit evidence integrity across platform upgrades",
+            "order": 7,
+            "complianceTags": [
+              "SOC2",
+              "SOX"
+            ],
+            "linkedStoryIds": [
+              "US-7.61",
+              "US-7.62",
+              "US-7.63"
+            ]
+          }
+        ]
+      }
+    ]
+  }
 ];

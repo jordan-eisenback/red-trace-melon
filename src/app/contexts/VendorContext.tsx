@@ -12,6 +12,7 @@ import {
 } from "../types/vendor";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { usePersistToDisk } from "../hooks/usePersistToDisk";
+import { logger } from "../utils/logger";
 import {
   parseCriteriaFromCSV,
   parseCriteriaFromCSVContent,
@@ -140,6 +141,7 @@ export function VendorProvider({ children }: { children: ReactNode }) {
   // ---- Vendors ------------------------------------------------------------
 
   const addVendor = useCallback((vendor: Omit<Vendor, "id" | "createdAt">) => {
+    logger.debug('VendorContext', 'addVendor', vendor.name);
     setData((prev) => ({
       ...prev,
       vendors: [...prev.vendors, { ...vendor, id: `vendor-${Date.now()}`, createdAt: new Date().toISOString() }],
@@ -147,6 +149,7 @@ export function VendorProvider({ children }: { children: ReactNode }) {
   }, [setData]);
 
   const updateVendor = useCallback((id: string, updates: Partial<Vendor>) => {
+    logger.debug('VendorContext', 'updateVendor', id);
     setData((prev) => ({
       ...prev,
       vendors: prev.vendors.map((v) => (v.id === id ? { ...v, ...updates } : v)),
@@ -154,6 +157,7 @@ export function VendorProvider({ children }: { children: ReactNode }) {
   }, [setData]);
 
   const deleteVendor = useCallback((id: string) => {
+    logger.debug('VendorContext', 'deleteVendor', id);
     setData((prev) => ({
       ...prev,
       vendors: prev.vendors.filter((v) => v.id !== id),
@@ -164,6 +168,7 @@ export function VendorProvider({ children }: { children: ReactNode }) {
   // ---- Evaluators ---------------------------------------------------------
 
   const addEvaluator = useCallback((evaluator: Omit<Evaluator, "id" | "createdAt">) => {
+    logger.debug('VendorContext', 'addEvaluator', evaluator.name);
     setData((prev) => ({
       ...prev,
       evaluators: [
@@ -174,6 +179,7 @@ export function VendorProvider({ children }: { children: ReactNode }) {
   }, [setData]);
 
   const updateEvaluator = useCallback((id: string, updates: Partial<Evaluator>) => {
+    logger.debug('VendorContext', 'updateEvaluator', id);
     setData((prev) => ({
       ...prev,
       evaluators: prev.evaluators.map((e) => (e.id === id ? { ...e, ...updates } : e)),
@@ -181,6 +187,7 @@ export function VendorProvider({ children }: { children: ReactNode }) {
   }, [setData]);
 
   const deleteEvaluator = useCallback((id: string) => {
+    logger.debug('VendorContext', 'deleteEvaluator', id);
     setData((prev) => ({
       ...prev,
       evaluators: prev.evaluators.filter((e) => e.id !== id),
@@ -341,6 +348,7 @@ export function VendorProvider({ children }: { children: ReactNode }) {
   }, [setData]);
 
   const setActiveProfile = useCallback((id: string) => {
+    logger.debug('VendorContext', 'setActiveProfile', id);
     setData((prev) => ({ ...prev, activeProfileId: id }));
   }, [setData]);
 
@@ -351,6 +359,7 @@ export function VendorProvider({ children }: { children: ReactNode }) {
   // ---- Scores -------------------------------------------------------------
 
   const updateScore = useCallback((score: Omit<Score, "updatedAt">) => {
+    logger.debug('VendorContext', 'updateScore', score.vendorId, score.criterionId);
     setData((prev) => {
       const idx = prev.scores.findIndex(
         (s) =>

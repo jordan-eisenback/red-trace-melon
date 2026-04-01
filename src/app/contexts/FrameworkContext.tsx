@@ -3,6 +3,7 @@ import { Framework, Control } from "../types/framework";
 import { initialFrameworks } from "../data/initial-frameworks";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { usePersistToDisk } from "../hooks/usePersistToDisk";
+import { logger } from "../utils/logger";
 
 interface FrameworkContextType {
   frameworks: Framework[];
@@ -28,24 +29,29 @@ export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
   }, [frameworks]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addFramework = useCallback((framework: Framework) => {
+    logger.debug('FrameworkContext', 'addFramework', framework.id);
     setFrameworks((prev) => [...prev, framework]);
   }, []);
 
   const updateFramework = useCallback((id: string, framework: Framework) => {
+    logger.debug('FrameworkContext', 'updateFramework', id);
     setFrameworks((prev) => prev.map((f) => (f.id === id ? framework : f)));
   }, []);
 
   const deleteFramework = useCallback((id: string) => {
+    logger.debug('FrameworkContext', 'deleteFramework', id);
     setFrameworks((prev) => prev.filter((f) => f.id !== id));
   }, []);
 
   const addControl = useCallback((frameworkId: string, control: Control) => {
+    logger.debug('FrameworkContext', 'addControl', frameworkId, control.id);
     setFrameworks((prev) =>
       prev.map((f) => (f.id === frameworkId ? { ...f, controls: [...f.controls, control] } : f))
     );
   }, []);
 
   const updateControl = useCallback((frameworkId: string, controlId: string, control: Control) => {
+    logger.debug('FrameworkContext', 'updateControl', frameworkId, controlId);
     setFrameworks((prev) =>
       prev.map((f) =>
         f.id === frameworkId
@@ -56,6 +62,7 @@ export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const deleteControl = useCallback((frameworkId: string, controlId: string) => {
+    logger.debug('FrameworkContext', 'deleteControl', frameworkId, controlId);
     setFrameworks((prev) =>
       prev.map((f) =>
         f.id === frameworkId ? { ...f, controls: f.controls.filter((c) => c.id !== controlId) } : f
@@ -68,6 +75,7 @@ export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
     controlId: string,
     requirementId: string
   ) => {
+    logger.debug('FrameworkContext', 'addRequirementToControl', frameworkId, controlId, requirementId);
     setFrameworks((prev) =>
       prev.map((f) =>
         f.id === frameworkId
@@ -89,6 +97,7 @@ export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
     controlId: string,
     requirementId: string
   ) => {
+    logger.debug('FrameworkContext', 'removeRequirementFromControl', frameworkId, controlId, requirementId);
     setFrameworks((prev) =>
       prev.map((f) =>
         f.id === frameworkId

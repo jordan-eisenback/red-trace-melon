@@ -7,6 +7,7 @@ import { StoryJam, StoryJamNode, StoryJamEdge } from "../types/storyjam";
 import { initialStoryJam } from "../data/initial-storyjam";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { usePersistToDisk } from "../hooks/usePersistToDisk";
+import { logger } from "../utils/logger";
 
 /** Build the seeded UserStory list with linkedStepIds populated from the initial story map. */
 function buildInitialUserStories(): UserStory[] {
@@ -77,28 +78,34 @@ export const EpicProvider = ({ children }: { children: ReactNode }) => {
   }, [epics, userStories, storyMap, storyJam]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addEpic = (epic: Epic) => {
+    logger.debug('EpicContext', 'addEpic', epic.id);
     setEpics((prev) => [...prev, epic]);
   };
 
   const updateEpic = (id: string, epic: Epic) => {
+    logger.debug('EpicContext', 'updateEpic', id);
     setEpics((prev) => prev.map((e) => (e.id === id ? epic : e)));
   };
 
   const deleteEpic = (id: string) => {
+    logger.debug('EpicContext', 'deleteEpic', id);
     setEpics((prev) => prev.filter((e) => e.id !== id));
     // Also delete associated user stories
     setUserStories((prev) => prev.filter((s) => s.epicId !== id));
   };
 
   const addUserStory = (story: UserStory) => {
+    logger.debug('EpicContext', 'addUserStory', story.id);
     setUserStories((prev) => [...prev, story]);
   };
 
   const updateUserStory = (id: string, story: UserStory) => {
+    logger.debug('EpicContext', 'updateUserStory', id);
     setUserStories((prev) => prev.map((s) => (s.id === id ? story : s)));
   };
 
   const deleteUserStory = (id: string) => {
+    logger.debug('EpicContext', 'deleteUserStory', id);
     setUserStories((prev) => prev.filter((s) => s.id !== id));
   };
 

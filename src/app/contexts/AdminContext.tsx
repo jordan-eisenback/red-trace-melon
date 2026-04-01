@@ -1,5 +1,6 @@
 import { createContext, useContext, ReactNode } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { logger } from "../utils/logger";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -91,15 +92,23 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const isVisible = (key: VisibilityKey) => merged[key] ?? true;
 
-  const toggle = (key: VisibilityKey) =>
+  const toggle = (key: VisibilityKey) => {
+    logger.debug('AdminContext', 'toggle', key);
     setVisibility((prev) => ({ ...DEFAULT_VISIBILITY, ...prev, [key]: !(prev[key] ?? true) }));
+  };
 
-  const set = (key: VisibilityKey, value: boolean) =>
+  const set = (key: VisibilityKey, value: boolean) => {
+    logger.debug('AdminContext', 'set', key, value);
     setVisibility((prev) => ({ ...DEFAULT_VISIBILITY, ...prev, [key]: value }));
+  };
 
-  const resetAll = () => setVisibility(DEFAULT_VISIBILITY);
+  const resetAll = () => {
+    logger.info('AdminContext', 'resetAll');
+    setVisibility(DEFAULT_VISIBILITY);
+  };
 
-  const showAll = (category: "page" | "feature") =>
+  const showAll = (category: "page" | "feature") => {
+    logger.debug('AdminContext', 'showAll', category);
     setVisibility((prev) => {
       const next = { ...DEFAULT_VISIBILITY, ...prev };
       (Object.keys(next) as VisibilityKey[]).forEach((k) => {
@@ -107,8 +116,10 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       });
       return next;
     });
+  };
 
-  const hideAll = (category: "page" | "feature") =>
+  const hideAll = (category: "page" | "feature") => {
+    logger.debug('AdminContext', 'hideAll', category);
     setVisibility((prev) => {
       const next = { ...DEFAULT_VISIBILITY, ...prev };
       (Object.keys(next) as VisibilityKey[]).forEach((k) => {
@@ -117,6 +128,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       });
       return next;
     });
+  };
 
   return (
     <AdminContext.Provider value={{ visibility: merged, isVisible, toggle, set, resetAll, showAll, hideAll }}>
