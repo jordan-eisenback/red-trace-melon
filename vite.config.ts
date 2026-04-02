@@ -192,5 +192,26 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['src/__tests__/setup.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov', 'html'],
+      reportsDirectory: './coverage',
+      // Only measure coverage over files that have actual logic (not pure type defs or seed data)
+      include: ['src/app/utils/**', 'src/app/hooks/**'],
+      exclude: [
+        'src/app/components/ui/**',  // shadcn-generated primitives
+        'src/app/data/**',           // static seed data files
+        'e2e/**',
+        'src/__tests__/**',
+      ],
+      thresholds: {
+        // Baseline thresholds — CI fails if coverage regresses below these.
+        // Raise to 80/70/80 once issues #41–#43 (context + utility tests) land.
+        lines:      45,
+        branches:   50,
+        functions:  30,
+        statements: 45,
+      },
+    },
   },
 })
