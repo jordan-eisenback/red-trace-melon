@@ -1,6 +1,6 @@
 import { useState, useEffect, type FormEvent } from "react";
 import { useRequirements } from "../contexts/RequirementsContext";
-import { Requirement, RequirementType } from "../types/requirement";
+import { Requirement, RequirementType, RequirementStatus, RequirementPriority } from "../types/requirement";
 import { X } from "lucide-react";
 import { HelpTooltip } from "./HelpTooltip";
 
@@ -197,6 +197,52 @@ export function RequirementFormDialog({
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Additional notes"
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm text-slate-700 mb-1 flex items-center gap-2">
+                  Status
+                  <HelpTooltip content="Whether this requirement has been formally validated and signed off." />
+                </label>
+                <select
+                  value={formData.status ?? ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      status: (e.target.value as RequirementStatus) || undefined,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">— Not set —</option>
+                  <option value="Validated">Validated</option>
+                  <option value="Not Validated">Not Validated</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm text-slate-700 mb-1 flex items-center gap-2">
+                  Priority
+                  <HelpTooltip content="MoSCoW priority: Must have (critical for launch), Should have (important but not vital), Could have (nice to have), Would have (deferred to a future release)." />
+                </label>
+                <select
+                  value={formData.priority ?? ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      priority: (e.target.value as RequirementPriority) || undefined,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">— Not set —</option>
+                  <option value="Must">Must</option>
+                  <option value="Should">Should</option>
+                  <option value="Could">Could</option>
+                  <option value="Would">Would</option>
+                </select>
+              </div>
             </div>
           </div>
 

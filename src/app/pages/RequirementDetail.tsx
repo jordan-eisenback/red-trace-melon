@@ -9,6 +9,7 @@ import { useState, useMemo } from "react";
 import { RequirementFormDialog } from "../components/RequirementFormDialog";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { Tip } from "../components/Tip";
+import { PriorityBadge, StatusBadge } from "./RequirementsList";
 
 export function RequirementDetail() {
   const { id } = useParams<{ id: string }>();
@@ -55,7 +56,7 @@ export function RequirementDetail() {
   // Vendor coverage data — memoized to avoid recomputing on every render
   const activeCriteriaProfile = useMemo(
     () => getActiveCriteriaProfile(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [getActiveCriteriaProfile]
   );
   const linkedVendorCriteria = useMemo(
@@ -150,6 +151,16 @@ export function RequirementDetail() {
               ) : (
                 <p className="text-slate-400">None</p>
               )}
+            </div>
+
+            <div>
+              <h3 className="text-sm text-slate-500 mb-2">Priority</h3>
+              <PriorityBadge priority={requirement.priority} />
+            </div>
+
+            <div>
+              <h3 className="text-sm text-slate-500 mb-2">Status</h3>
+              <StatusBadge status={requirement.status} />
             </div>
           </div>
 

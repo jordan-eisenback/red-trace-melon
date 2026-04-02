@@ -368,7 +368,7 @@ export const initialFrameworks: Framework[] = [
           "RBAC-NFR-004",
           "RBAC-NFR-010",
           "RBAC-NFR-011"
-        ],
+        ]
       },
       {
         "id": "COBIT-FRAMEWORK-C-2",

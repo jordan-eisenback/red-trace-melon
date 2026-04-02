@@ -14,6 +14,10 @@ export type RequirementType =
   | "Capability (Optional)"
   | "Other";
 
+export type RequirementStatus = "Validated" | "Not Validated";
+
+export type RequirementPriority = "Must" | "Should" | "Could" | "Would";
+
 export interface Requirement {
   id: string;
   req: string;
@@ -22,8 +26,8 @@ export interface Requirement {
   parent: string | null;
   outcome: string;
   notes: string;
-  status?: string;
-  priority?: string;
+  status?: RequirementStatus;
+  priority?: RequirementPriority;
   testCaseId?: string;
   acceptanceCriteria?: string;
   version?: string;

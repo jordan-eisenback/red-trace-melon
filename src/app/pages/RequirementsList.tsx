@@ -9,10 +9,43 @@ import { ConfirmDialog } from "../components/ConfirmDialog";
 import { EmptyState } from "../components/EmptyState";
 import { RequirementValidationPanel } from "../components/RequirementValidationPanel";
 import { Tip } from "../components/Tip";
-import { Requirement } from "../types/requirement";
+import { Requirement, RequirementPriority, RequirementStatus } from "../types/requirement";
 import { exportToExcel } from "../utils/excelExport";
+import { logger } from "../utils/logger";
 import { toast } from "sonner";
 import { UpdateBanner } from "../components/UpdateBanner";
+
+// ── Shared badge helpers ───────────────────────────────────────────────────
+
+const PRIORITY_STYLES: Record<RequirementPriority, string> = {
+  Must:   "bg-red-100 text-red-700",
+  Should: "bg-amber-100 text-amber-700",
+  Could:  "bg-blue-100 text-blue-700",
+  Would:  "bg-slate-100 text-slate-500",
+};
+
+const STATUS_STYLES: Record<RequirementStatus, string> = {
+  Validated:     "bg-green-100 text-green-700",
+  "Not Validated": "bg-slate-100 text-slate-500",
+};
+
+export function PriorityBadge({ priority }: { priority?: RequirementPriority }) {
+  if (!priority) return <span className="text-xs text-slate-300">—</span>;
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 text-xs rounded-full font-medium ${PRIORITY_STYLES[priority]}`}>
+      {priority}
+    </span>
+  );
+}
+
+export function StatusBadge({ status }: { status?: RequirementStatus }) {
+  if (!status) return <span className="text-xs text-slate-300">—</span>;
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 text-xs rounded-full font-medium ${STATUS_STYLES[status]}`}>
+      {status}
+    </span>
+  );
+}
 
 export function RequirementsList() {
   const { requirements, deleteRequirement } = useRequirements();
@@ -21,6 +54,7 @@ export function RequirementsList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("");
   const [editingRequirement, setEditingRequirement] = useState<Requirement | undefined>();
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
   const [showValidation, setShowValidation] = useState(true);
@@ -57,10 +91,11 @@ export function RequirementsList() {
 
       const matchesType = typeFilter === "" || req.type === typeFilter;
       const matchesStatus = statusFilter === "" || (req.status ?? "") === statusFilter;
+      const matchesPriority = priorityFilter === "" || (req.priority ?? "") === priorityFilter;
 
-      return matchesSearch && matchesType && matchesStatus;
+      return matchesSearch && matchesType && matchesStatus && matchesPriority;
     });
-  }, [requirements, searchTerm, typeFilter, statusFilter]);
+  }, [requirements, searchTerm, typeFilter, statusFilter, priorityFilter]);
 
   const handleDelete = (id: string) => {
     const req = requirements.find((r) => r.id === id);
@@ -97,7 +132,7 @@ export function RequirementsList() {
       toast.success(`RTM exported successfully as ${fileName}`);
     } catch (error) {
       toast.error("Failed to export RTM");
-      console.error("Export error:", error);
+      logger.error('RequirementsList', 'Export failed', error);
     }
   };
 
@@ -171,14 +206,23 @@ export function RequirementsList() {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            title="Filter requirements by status"
+            title="Filter requirements by validation status"
           >
             <option value="">All Statuses</option>
-            <option value="Draft">Draft</option>
-            <option value="Active">Active</option>
-            <option value="Deprecated">Deprecated</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Done">Done</option>
+            <option value="Validated">Validated</option>
+            <option value="Not Validated">Not Validated</option>
+          </select>
+          <select
+            value={priorityFilter}
+            onChange={(e) => setPriorityFilter(e.target.value)}
+            className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            title="Filter requirements by MoSCoW priority"
+          >
+            <option value="">All Priorities</option>
+            <option value="Must">Must</option>
+            <option value="Should">Should</option>
+            <option value="Could">Could</option>
+            <option value="Would">Would</option>
           </select>
         </div>
       </div>
@@ -199,6 +243,12 @@ export function RequirementsList() {
                 </th>
                 <th className="px-4 py-3 text-left text-xs uppercase tracking-wider text-slate-600" title="Team or individual responsible for this requirement">
                   Owner
+                </th>
+                <th className="px-4 py-3 text-left text-xs uppercase tracking-wider text-slate-600" title="MoSCoW priority">
+                  Priority
+                </th>
+                <th className="px-4 py-3 text-left text-xs uppercase tracking-wider text-slate-600" title="Validation status">
+                  Status
                 </th>
                 <th className="px-4 py-3 text-left text-xs uppercase tracking-wider text-slate-600" title="Parent requirement in the hierarchy">
                   Parent
@@ -241,6 +291,12 @@ export function RequirementsList() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm text-slate-700">{req.owner}</td>
+                  <td className="px-4 py-3">
+                    <PriorityBadge priority={req.priority} />
+                  </td>
+                  <td className="px-4 py-3">
+                    <StatusBadge status={req.status} />
+                  </td>
                   <td className="px-4 py-3">
                     {req.parent ? (
                       <Link
@@ -299,10 +355,10 @@ export function RequirementsList() {
             <EmptyState
               icon={FileText}
               title="No requirements found"
-              description={searchTerm || typeFilter || statusFilter ? "Try adjusting your search or filters." : "Add your first requirement to get started."}
-              action={searchTerm || typeFilter || statusFilter ? {
+              description={searchTerm || typeFilter || statusFilter || priorityFilter ? "Try adjusting your search or filters." : "Add your first requirement to get started."}
+              action={searchTerm || typeFilter || statusFilter || priorityFilter ? {
                 label: "Clear filters",
-                onClick: () => { setSearchTerm(""); setTypeFilter(""); setStatusFilter(""); },
+                onClick: () => { setSearchTerm(""); setTypeFilter(""); setStatusFilter(""); setPriorityFilter(""); },
               } : undefined}
             />
           )}

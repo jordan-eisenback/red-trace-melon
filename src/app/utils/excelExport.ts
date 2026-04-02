@@ -30,6 +30,8 @@ export async function exportToExcel(data: ExportData): Promise<string> {
     Description: req.req,
     Owner: req.owner,
     Parent: req.parent || "",
+    Priority: req.priority ?? "",
+    Status: req.status ?? "",
     Outcome: req.outcome,
     Notes: req.notes || "",
   }));
@@ -42,6 +44,8 @@ export async function exportToExcel(data: ExportData): Promise<string> {
       { header: "Description", key: "Description", width: 60 },
       { header: "Owner", key: "Owner", width: 20 },
       { header: "Parent", key: "Parent", width: 15 },
+      { header: "Priority", key: "Priority", width: 12 },
+      { header: "Status", key: "Status", width: 15 },
       { header: "Outcome", key: "Outcome", width: 40 },
       { header: "Notes", key: "Notes", width: 40 },
     ],

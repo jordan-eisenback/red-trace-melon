@@ -3,6 +3,7 @@ import { Requirement } from "../types/requirement";
 import { initialRequirements } from "../data/initial-requirements";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { usePersistToDisk } from "../hooks/usePersistToDisk";
+import { logger } from "../utils/logger";
 
 interface RequirementsContextType {
   requirements: Requirement[];
@@ -26,16 +27,19 @@ export function RequirementsProvider({ children }: { children: React.ReactNode }
   }, [requirements]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addRequirement = useCallback((requirement: Requirement) => {
+    logger.debug('RequirementsContext', 'addRequirement', requirement.id);
     setRequirements((prev) => [...prev, requirement]);
   }, []);
 
   const updateRequirement = useCallback((id: string, requirement: Requirement) => {
+    logger.debug('RequirementsContext', 'updateRequirement', id);
     setRequirements((prev) =>
       prev.map((req) => (req.id === id ? requirement : req))
     );
   }, []);
 
   const deleteRequirement = useCallback((id: string) => {
+    logger.debug('RequirementsContext', 'deleteRequirement', id);
     setRequirements((prev) => prev.filter((req) => req.id !== id));
   }, []);
 
