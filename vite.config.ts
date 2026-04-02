@@ -197,7 +197,7 @@ export default defineConfig({
       reporter: ['text', 'lcov', 'html'],
       reportsDirectory: './coverage',
       // Only measure coverage over files that have actual logic (not pure type defs or seed data)
-      include: ['src/app/utils/**', 'src/app/hooks/**'],
+      include: ['src/app/utils/**', 'src/app/hooks/**', 'src/app/contexts/**'],
       exclude: [
         'src/app/components/ui/**',  // shadcn-generated primitives
         'src/app/data/**',           // static seed data files
@@ -207,10 +207,10 @@ export default defineConfig({
       thresholds: {
         // Baseline thresholds — CI fails if coverage regresses below these.
         // Raise to 80/70/80 once issues #41–#43 (context + utility tests) land.
-        lines:      45,
-        branches:   50,
-        functions:  30,
-        statements: 45,
+        lines:      55,
+        branches:   38,
+        functions:  40,
+        statements: 52,
       },
     },
   },
