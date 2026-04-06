@@ -77,18 +77,19 @@ test.describe("Workstreams", () => {
     await expect(modal).toBeVisible();
 
     // WorkstreamModal uses plain <label> without htmlFor — use placeholder
-    await modal.getByPlaceholder("Workstream name").fill("E2E Workstream Test");
+    const uniqueTitle = `E2E-WS-${Date.now()}`;
+    await modal.getByPlaceholder("Workstream name").fill(uniqueTitle);
     await modal.getByRole("button", { name: /add workstream/i }).click();
     await expect(page.locator(".fixed.inset-0")).not.toBeVisible();
-    await expect(page.getByText("E2E Workstream Test")).toBeVisible();
+    await expect(page.getByText(uniqueTitle).first()).toBeVisible();
 
-    // Find and click the delete button on that workstream row
-    const wsRow = page.locator(".flex.items-start.gap-3", { hasText: "E2E Workstream Test" }).first();
+    // Find and click the delete button on that specific workstream row
+    const wsRow = page.locator(".flex.items-start.gap-3", { hasText: uniqueTitle }).first();
     await wsRow.hover();
     const deleteBtn = wsRow.getByRole("button").last(); // edit is first, delete is last
     await deleteBtn.click();
     // ConfirmDialog (Radix AlertDialog) appears
     await page.getByRole("button", { name: /delete/i }).last().click();
-    await expect(page.getByText("E2E Workstream Test")).not.toBeVisible();
+    await expect(page.getByText(uniqueTitle).first()).not.toBeVisible();
   });
 });

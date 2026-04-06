@@ -205,12 +205,11 @@ export default defineConfig({
         'src/__tests__/**',
       ],
       thresholds: {
-        // Baseline thresholds — CI fails if coverage regresses below these.
-        // Raise to 80/70/80 once issues #41–#43 (context + utility tests) land.
-        lines:      55,
-        branches:   38,
-        functions:  40,
-        statements: 52,
+        // Raised after #43 (component tests) lands. Target 80/70/80 after #44+.
+        lines:      67,
+        branches:   48,
+        functions:  48,
+        statements: 63,
       },
     },
   },
