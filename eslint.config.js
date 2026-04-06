@@ -3,6 +3,7 @@ import tsParser from "@typescript-eslint/parser";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import reactRefreshPlugin from "eslint-plugin-react-refresh";
+import reactPlugin from "eslint-plugin-react";
 
 export default [
   // Global ignores
@@ -58,6 +59,7 @@ export default [
       "@typescript-eslint": tsPlugin,
       "react-hooks": reactHooksPlugin,
       "react-refresh": reactRefreshPlugin,
+      "react": reactPlugin,
     },
     rules: {
       // TypeScript recommended
@@ -87,6 +89,8 @@ export default [
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-unused-vars": "off", // handled by @typescript-eslint/no-unused-vars
       "no-undef": "off", // TypeScript handles this better
+      // Warn on any future dangerouslySetInnerHTML usage without DOMPurify
+      "react/no-danger": "warn",
     },
   },
 
@@ -119,6 +123,16 @@ export default [
       "@typescript-eslint/no-non-null-assertion": "warn",
       "no-undef": "off",
       "no-unused-vars": "off",
+    },
+  },
+
+  // dangerouslySetInnerHTML guard for shadcn/ui generated files (ui/** is
+  // excluded from the main block above, so this override targets it directly).
+  {
+    files: ["src/app/components/ui/**/*.{ts,tsx}"],
+    plugins: { react: reactPlugin },
+    rules: {
+      "react/no-danger": "warn",
     },
   },
 

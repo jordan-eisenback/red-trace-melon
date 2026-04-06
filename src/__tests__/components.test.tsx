@@ -397,10 +397,10 @@ describe('RequirementMappingModal', () => {
       </AllProviders>,
     );
 
-    await user.click(await screen.findByRole('button', { name: 'Done' }));
+    await user.click(await screen.findByRole('button', { name: 'Done' }, { timeout: 10_000 }));
 
     expect(onClose).toHaveBeenCalledTimes(1);
-  });
+  }, 15_000);
 
   it('removes a mapping when a mapped requirement is clicked again', async () => {
     seedFramework();

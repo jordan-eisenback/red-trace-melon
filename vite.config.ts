@@ -205,11 +205,11 @@ export default defineConfig({
         'src/__tests__/**',
       ],
       thresholds: {
-        // Raised after #43 (component tests) lands. Target 80/70/80 after #44+.
-        lines:      67,
-        branches:   48,
-        functions:  48,
-        statements: 63,
+        // Raised after #48 (AJV validation + importValidator.ts coverage). Target 80/70/80 after #46+.
+        lines:      68,
+        branches:   52,
+        functions:  50,
+        statements: 65,
       },
     },
   },

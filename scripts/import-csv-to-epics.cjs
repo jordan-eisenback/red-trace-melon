@@ -18,7 +18,7 @@ function readCsv(p){
 
 function extractArray(text, varName){
   // match with optional TS type annotation between name and =
-  const re = new RegExp(`export const ${varName}(?:\s*:[^=]*)?\\s*=\\s*(\\[[\\s\\S]*?\\]);`, 'm');
+  const re = new RegExp(`export const ${varName}(?:\\s*:[^=]*)?\\s*=\\s*(\\[[\\s\\S]*?\\]);`, 'm');
   const m = text.match(re);
   if(!m) return null;
   let arrText = m[1];
