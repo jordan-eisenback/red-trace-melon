@@ -207,10 +207,10 @@ export default defineConfig({
       thresholds: {
         // Baseline thresholds — CI fails if coverage regresses below these.
         // Raise to 80/70/80 once issues #41–#43 (context + utility tests) land.
-        lines:      55,
-        branches:   38,
-        functions:  40,
-        statements: 52,
+        lines:      65,
+        branches:   47,
+        functions:  47,
+        statements: 62,
       },
     },
   },
