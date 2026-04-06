@@ -89,6 +89,8 @@ export default [
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-unused-vars": "off", // handled by @typescript-eslint/no-unused-vars
       "no-undef": "off", // TypeScript handles this better
+      // Warn on any future dangerouslySetInnerHTML usage without DOMPurify
+      "react/no-danger": "warn",
     },
   },
 
@@ -121,8 +123,6 @@ export default [
       "@typescript-eslint/no-non-null-assertion": "warn",
       "no-undef": "off",
       "no-unused-vars": "off",
-      // Warn on any future dangerouslySetInnerHTML usage without DOMPurify
-      "react/no-danger": "warn",
     },
   },
 
