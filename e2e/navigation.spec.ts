@@ -6,24 +6,29 @@ test.describe("Navigation", () => {
     await expect(page.getByRole("heading", { name: /requirements/i })).toBeVisible();
   });
 
+  // This test navigates through 6 pages sequentially; give it extra time under
+  // parallel load (8 workers all hitting the same Vite dev server).
   test("nav links render and are clickable", async ({ page }) => {
-    await page.goto("/");
-
+    test.setTimeout(60_000);
     const navLinks = [
-      { label: "Dependencies",         path: "/dependencies" },
-      { label: "Story Mapping",        path: "/story-mapping" },
-      { label: "Frameworks & Controls",path: "/frameworks" },
-      { label: "Epics & Stories",      path: "/epics" },
-      { label: "Workstreams",          path: "/workstreams" },
-      { label: "Help",                 path: "/help" },
+      { label: "Dependencies",          path: "/dependencies" },
+      { label: "Story Mapping",         path: "/story-mapping" },
+      { label: "Frameworks & Controls", path: "/frameworks" },
+      { label: "Epics & Stories",       path: "/epics" },
+      { label: "Workstreams",           path: "/workstreams" },
+      { label: "Help",                  path: "/help" },
     ];
 
     for (const { label, path } of navLinks) {
       await page.goto("/");
+      await page.waitForLoadState("domcontentloaded");
       const link = page.getByRole("link", { name: label, exact: true }).first();
       await expect(link).toBeVisible();
-      await link.click();
-      await expect(page).toHaveURL(new RegExp(path));
+      // Use Promise.all to start waiting for navigation before clicking
+      await Promise.all([
+        page.waitForURL(new RegExp(path), { timeout: 10_000 }),
+        link.click(),
+      ]);
     }
   });
 

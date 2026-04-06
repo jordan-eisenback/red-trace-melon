@@ -64,7 +64,7 @@ export const initialWorkstreams: Workstream[] = [
     "order": 3,
     "title": "Identity & Population Modeling",
     "description": "Define identity populations in scope (employees, contractors, vendors, non-human); map workforce lifecycle events to access changes; align authoritative sources and identity attributes.",
-    "layer": "identity",
+    "layer": "foundational",
     "dependsOn": [
       "WS-02"
     ],
@@ -94,7 +94,7 @@ export const initialWorkstreams: Workstream[] = [
     "order": 4,
     "title": "HCM Roles & Workflow Alignment",
     "description": "Define standard HCM roles and role attributes; establish HCM-driven triggers for access changes; align HCM outputs to RBAC and downstream provisioning needs.",
-    "layer": "identity",
+    "layer": "foundational",
     "dependsOn": [
       "WS-02",
       "WS-03"
@@ -308,5 +308,29 @@ export const initialWorkstreams: Workstream[] = [
         "order": 3
       }
     ]
+  },
+  {
+    "id": "WS-11",
+    "order": 11,
+    "title": "E2E-WS-1775485356941",
+    "description": "",
+    "layer": "foundational",
+    "dependsOn": [],
+    "activities": [],
+    "status": "not-started",
+    "owner": "",
+    "notes": ""
+  },
+  {
+    "id": "WS-12",
+    "order": 12,
+    "title": "E2E-WS-1775486215914",
+    "description": "",
+    "layer": "foundational",
+    "dependsOn": [],
+    "activities": [],
+    "status": "not-started",
+    "owner": "",
+    "notes": ""
   }
 ];

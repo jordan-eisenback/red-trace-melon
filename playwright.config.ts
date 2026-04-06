@@ -1,11 +1,14 @@
 import { defineConfig, devices } from "@playwright/test";
+import os from "os";
 
 export default defineConfig({
   testDir: "./e2e",
-  fullyParallel: false,
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: 1,
+  retries: process.env.CI ? 2 : 1,
+  // CI: 2 workers (safe on a 2-core runner).
+  // Local: half the available CPU cores (Playwright 1.x default for parallel mode).
+  workers: process.env.CI ? 2 : Math.max(1, Math.floor(os.cpus().length / 2)),
   reporter: [["html", { outputFolder: "playwright-report", open: "never" }], ["list"]],
 
   use: {

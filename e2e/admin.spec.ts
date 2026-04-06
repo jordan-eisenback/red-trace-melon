@@ -300,29 +300,38 @@ test.describe("Reset all dialog", () => {
 
 test.describe("localStorage persistence", () => {
   test("hiding an item persists after page reload", async ({ page }) => {
-    // Navigate first, then write a clean slate via evaluate (not addInitScript,
-    // which would fire again on reload and overwrite the toggled state)
-    await page.goto("/admin");
-    await page.evaluate(() => {
+    // Use addInitScript (not evaluate) so the key survives the fixture's
+    // localStorage.clear() + re-seed that runs on every page load/reload.
+    // The fixture seeds rtm-has-visited first; this script runs second and
+    // adds the clean admin-visibility state on top of it.
+    await page.addInitScript(() => {
       localStorage.setItem("rtm-admin-visibility", JSON.stringify({}));
     });
-    await page.reload();
+    await page.goto("/admin");
 
-    // Hide Workstreams
+    // Hide Workstreams via the toggle switch
     await page.getByRole("switch", { name: /toggle visibility of workstreams/i }).click();
     await expect(page.getByRole("link", { name: /^workstreams$/i })).not.toBeVisible();
 
-    // Hard reload — addInitScript only re-seeds rtm-has-visited, not admin-visibility
+    // Capture the current admin-visibility value so we can re-seed it on reload
+    const savedState = await page.evaluate(() =>
+      localStorage.getItem("rtm-admin-visibility")
+    );
+
+    // Inject the saved state so it survives the clear() on reload
+    await page.addInitScript((state) => {
+      localStorage.setItem("rtm-admin-visibility", state!);
+    }, savedState);
+
     await page.reload();
     await expect(page.getByRole("link", { name: /^workstreams$/i })).not.toBeVisible();
   });
 
   test("rtm-admin-visibility key is written to localStorage", async ({ page }) => {
-    await page.goto("/admin");
-    await page.evaluate(() => {
+    await page.addInitScript(() => {
       localStorage.setItem("rtm-admin-visibility", JSON.stringify({}));
     });
-    await page.reload();
+    await page.goto("/admin");
 
     await page.getByRole("switch", { name: /toggle visibility of help center/i }).click();
 
