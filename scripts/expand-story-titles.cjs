@@ -29,7 +29,7 @@ let out = src.replace(objRe, (match, inner) => {
       const lastSpace = newTitle.lastIndexOf(' ');
       if (lastSpace > 50) newTitle = newTitle.slice(0, lastSpace);
     }
-    newTitle = newTitle.replace(/"/g, '\\"');
+    newTitle = newTitle.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
     // Use replaceAll to ensure all occurrences of the matched title string are replaced
     const newInner = inner.replaceAll(titleMatch[0], `"title": "${newTitle}",`);
     changed++;

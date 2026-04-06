@@ -175,6 +175,35 @@ export default defineConfig({
     },
   },
 
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Core React runtime — changes rarely, maximises long-term cache hit
+          'vendor-react':  ['react', 'react-dom', 'react-router'],
+          // Heavy visualisation libs — only loaded when user visits those pages
+          'vendor-flow':   ['reactflow'],
+          'vendor-charts': ['recharts'],
+          'vendor-excel':  ['exceljs'],
+          // Radix UI primitives — shared across many components
+          'vendor-radix':  [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-tooltip',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+          ],
+        },
+      },
+    },
+    // Raise the warning threshold — chunks above 500 kB are flagged.
+    // The CI gate enforces the hard limit on the main entry chunk.
+    chunkSizeWarningLimit: 500,
+  },
+
   server: {
     watch: {
       // The save-data-middleware writes initial-*.ts files on every context
