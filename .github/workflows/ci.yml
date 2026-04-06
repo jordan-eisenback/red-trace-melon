@@ -35,6 +35,24 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Bundle size gate (main entry chunk < 500 KB gzipped)
+        run: |
+          # Find the main JS entry chunk (largest index-*.js file in dist/assets)
+          CHUNK=$(ls dist/assets/index-*.js 2>/dev/null | head -1)
+          if [ -z "$CHUNK" ]; then
+            echo "No index chunk found in dist/assets — build may have failed"
+            exit 1
+          fi
+          GZIP_SIZE=$(gzip -c "$CHUNK" | wc -c)
+          LIMIT=$((500 * 1024))
+          echo "Main entry chunk: $CHUNK"
+          echo "Gzipped size: $GZIP_SIZE bytes (limit: $LIMIT bytes)"
+          if [ "$GZIP_SIZE" -gt "$LIMIT" ]; then
+            echo "FAIL: main entry chunk exceeds 500 KB gzipped ($GZIP_SIZE > $LIMIT)"
+            exit 1
+          fi
+          echo "PASS: main entry chunk is within limit"
+
       - name: Unit tests with coverage
         run: npm run test:coverage
 
