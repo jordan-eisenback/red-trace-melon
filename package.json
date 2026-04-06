@@ -67,12 +67,14 @@
     "lucide-react": "0.487.0",
     "motion": "12.23.24",
     "next-themes": "0.4.6",
+    "react": "18.3.1",
     "react-day-picker": "8.10.1",
     "react-dnd": "16.0.1",
     "react-dnd-html5-backend": "16.0.1",
     "react-hook-form": "7.55.0",
     "react-resizable-panels": "2.1.7",
     "react-router": "7.13.0",
+    "react-dom": "18.3.1",
     "reactflow": "^11.11.4",
     "recharts": "2.15.2",
     "sonner": "2.0.3",
@@ -83,6 +85,7 @@
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "4.1.12",
+    "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -106,7 +109,7 @@
     "lint-staged": "^16.4.0",
     "tailwindcss": "4.1.12",
     "typescript": "^6.0.2",
-    "vite": "^8.0.5",
+    "vite": "6.4.2",
     "vitest": "^4.1.2"
   },
   "peerDependencies": {
@@ -121,9 +124,12 @@
       "optional": true
     }
   },
+  "overrides": {
+    "vite": "6.4.2"
+  },
   "pnpm": {
     "overrides": {
-      "vite": "6.3.5"
+      "vite": "6.4.2"
     }
   }
 }
