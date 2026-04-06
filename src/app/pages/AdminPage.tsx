@@ -23,12 +23,14 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import JSZip from "jszip";
+import { toast } from "sonner";
 import { useAdmin, VisibilityKey } from "../contexts/AdminContext";
 import { useRequirements } from "../contexts/RequirementsContext";
 import { useEpics } from "../contexts/EpicContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
 import { useVendor } from "../contexts/VendorContext";
 import { exportToExcel } from "../utils/excelExport";
+import { validateRestorePayload } from "../utils/importValidator";
 import { Button } from "../components/ui/button";
 import { Switch } from "../components/ui/switch";
 import { Badge } from "../components/ui/badge";
@@ -70,6 +72,7 @@ function DataManagementSection() {
   const [restoreStatus, setRestoreStatus] = useState<'idle' | 'validating' | 'confirm' | 'restoring' | 'done' | 'error'>('idle');
   const [restorePayload, setRestorePayload] = useState<RestorePayload | null>(null);
   const [restoreError, setRestoreError] = useState<string>('');
+  const [restoreWarnings, setRestoreWarnings] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ── Export ──────────────────────────────────────────────────────────────
@@ -128,6 +131,7 @@ function DataManagementSection() {
     const file = e.target.files?.[0];
     if (!file) return;
     setRestoreError('');
+    setRestoreWarnings([]);
     setRestoreStatus('validating');
 
     try {
@@ -144,14 +148,42 @@ function DataManagementSection() {
         throw new Error('File does not appear to be a valid RTM backup (missing or incompatible manifest).');
       }
 
+      const rawRequirements = await readJson('requirements.json');
+      const rawFrameworks   = await readJson('frameworks.json');
+      const rawEpics        = await readJson('epics.json');
+      const rawUserStories  = await readJson('user-stories.json');
+
+      // ── AJV schema validation ─────────────────────────────────────────
+      const validation = validateRestorePayload({
+        requirements: rawRequirements,
+        frameworks:   rawFrameworks,
+        epics:        rawEpics,
+        userStories:  rawUserStories,
+      });
+
+      if (validation.errors.length > 0) {
+        // Surface per-item errors as individual toasts (max 5 to avoid flooding)
+        const preview = validation.errors.slice(0, 5);
+        preview.forEach((msg) => toast.warning(msg, { duration: 6000 }));
+        if (validation.errors.length > 5) {
+          toast.warning(
+            `…and ${validation.errors.length - 5} more validation issue(s). Invalid items will be skipped.`,
+            { duration: 6000 },
+          );
+        }
+        setRestoreWarnings(validation.errors);
+      }
+
       const payload: RestorePayload = {
-        requirements:  await readJson('requirements.json'),
-        frameworks:    await readJson('frameworks.json'),
-        epics:         await readJson('epics.json'),
-        userStories:   await readJson('user-stories.json'),
-        storyMap:      await readJson('story-map.json'),
-        storyJam:      await readJson('story-jam.json'),
-        vendorData:    await readJson('vendor-data.json'),
+        // Use validated (cleaned) arrays for the core data types
+        requirements: validation.requirements,
+        frameworks:   validation.frameworks,
+        epics:        validation.epics,
+        userStories:  validation.userStories,
+        // Pass-through for types without dedicated schemas
+        storyMap:   await readJson('story-map.json'),
+        storyJam:   await readJson('story-jam.json'),
+        vendorData: await readJson('vendor-data.json'),
       };
 
       setRestorePayload(payload);
@@ -258,6 +290,11 @@ function DataManagementSection() {
             )}
             {restoreStatus === 'done' && (
               <p className="text-xs text-green-600 mt-1">Restored successfully — reloading…</p>
+            )}
+            {restoreWarnings.length > 0 && restoreStatus === 'confirm' && (
+              <p className="text-xs text-amber-700 mt-1">
+                ⚠ {restoreWarnings.length} item(s) failed schema validation and will be skipped.
+              </p>
             )}
           </div>
           <div className="shrink-0">

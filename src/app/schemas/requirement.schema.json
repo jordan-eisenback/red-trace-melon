@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "requirement",
+  "title": "Requirement",
+  "type": "object",
+  "required": ["id", "req", "type", "owner", "parent", "outcome", "notes"],
+  "additionalProperties": true,
+  "properties": {
+    "id":     { "type": "string", "minLength": 1 },
+    "req":    { "type": "string", "minLength": 1 },
+    "type":   {
+      "type": "string",
+      "enum": [
+        "Enterprise", "Capability", "Capability Category",
+        "IGA Functional", "Interface", "NFR", "Non-Functional",
+        "Interface / Functional", "Interface / Data",
+        "Transition", "Transition / Enablement", "Constraint",
+        "Capability (Optional)", "Other"
+      ]
+    },
+    "owner":  { "type": "string", "minLength": 1 },
+    "parent": { "type": ["string", "null"] },
+    "outcome": { "type": "string" },
+    "notes":   { "type": "string" },
+    "status":  { "type": "string", "enum": ["Validated", "Not Validated"] },
+    "priority": { "type": "string", "enum": ["Must", "Should", "Could", "Would"] },
+    "testCaseId":        { "type": "string" },
+    "acceptanceCriteria": { "type": "string" },
+    "version":           { "type": "string" },
+    "lastModified":      { "type": "string" },
+    "dependencies":      { "type": "string" },
+    "integrationPoint":  { "type": "string" },
+    "identityTypes":     { "type": "string" },
+    "moveTypes":         { "type": "string" }
+  }
+}
