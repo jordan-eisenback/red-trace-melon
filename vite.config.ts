@@ -234,11 +234,11 @@ export default defineConfig({
         'src/__tests__/**',
       ],
       thresholds: {
-        // Raised after #48 (AJV validation + importValidator.ts coverage). Target 80/70/80 after #46+.
-        lines:      68,
-        branches:   52,
-        functions:  50,
-        statements: 65,
+        // Raised after #49 (EpicContext + VendorContext full coverage pass). Target 90+ after E2E expansion.
+        lines:      86,
+        branches:   73,
+        functions:  83,
+        statements: 84,
       },
     },
   },
