@@ -6,15 +6,15 @@
  */
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import React from 'react';
 import { AdminProvider, useAdmin } from '../app/contexts/AdminContext';
 import type { VisibilityKey } from '../app/contexts/AdminContext';
+import { withProviders } from './test-utils';
 
 // ── setup ─────────────────────────────────────────────────────────────────────
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = withProviders(({ children }) => (
   <AdminProvider>{children}</AdminProvider>
-);
+));
 
 beforeEach(() => {
   localStorage.clear();
@@ -105,10 +105,11 @@ describe('AdminContext', () => {
     expect(result.current.isVisible('page:help')).toBe(true);
   });
 
-  it('visibility map is persisted in localStorage', () => {
+  it('visibility map is persisted in localStorage under the namespaced key', () => {
     const { result } = renderHook(() => useAdmin(), { wrapper });
     act(() => { result.current.set('page:help', false); });
-    const stored = JSON.parse(localStorage.getItem('rtm-admin-visibility') || '{}');
+    // Key is namespaced with the default project id (proj_rbac)
+    const stored = JSON.parse(localStorage.getItem('rtm-admin-visibility-proj_rbac') || '{}');
     expect(stored['page:help']).toBe(false);
   });
 });

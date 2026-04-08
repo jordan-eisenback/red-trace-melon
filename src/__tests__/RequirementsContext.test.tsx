@@ -7,9 +7,9 @@
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import React from 'react';
 import { RequirementsProvider, useRequirements } from '../app/contexts/RequirementsContext';
 import type { Requirement } from '../app/types/requirement';
+import { withProviders } from './test-utils';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -26,9 +26,9 @@ function makeReq(overrides: Partial<Requirement> = {}): Requirement {
   };
 }
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = withProviders(({ children }) => (
   <RequirementsProvider>{children}</RequirementsProvider>
-);
+));
 
 // ── setup ─────────────────────────────────────────────────────────────────────
 

@@ -7,8 +7,8 @@
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import React from 'react';
 import { VendorProvider, useVendor } from '../app/contexts/VendorContext';
+import { withProviders } from './test-utils';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -35,9 +35,9 @@ function makeScore(
 
 // ── setup ─────────────────────────────────────────────────────────────────────
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = withProviders(({ children }) => (
   <VendorProvider>{children}</VendorProvider>
-);
+));
 
 beforeEach(() => {
   localStorage.clear();

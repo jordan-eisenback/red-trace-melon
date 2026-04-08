@@ -304,8 +304,9 @@ test.describe("localStorage persistence", () => {
     // localStorage.clear() + re-seed that runs on every page load/reload.
     // The fixture seeds rtm-has-visited first; this script runs second and
     // adds the clean admin-visibility state on top of it.
+    // Key is namespaced with the default project id (proj_rbac).
     await page.addInitScript(() => {
-      localStorage.setItem("rtm-admin-visibility", JSON.stringify({}));
+      localStorage.setItem("rtm-admin-visibility-proj_rbac", JSON.stringify({}));
     });
     await page.goto("/admin");
 
@@ -315,12 +316,12 @@ test.describe("localStorage persistence", () => {
 
     // Capture the current admin-visibility value so we can re-seed it on reload
     const savedState = await page.evaluate(() =>
-      localStorage.getItem("rtm-admin-visibility")
+      localStorage.getItem("rtm-admin-visibility-proj_rbac")
     );
 
     // Inject the saved state so it survives the clear() on reload
     await page.addInitScript((state) => {
-      localStorage.setItem("rtm-admin-visibility", state!);
+      localStorage.setItem("rtm-admin-visibility-proj_rbac", state!);
     }, savedState);
 
     await page.reload();
@@ -329,14 +330,14 @@ test.describe("localStorage persistence", () => {
 
   test("rtm-admin-visibility key is written to localStorage", async ({ page }) => {
     await page.addInitScript(() => {
-      localStorage.setItem("rtm-admin-visibility", JSON.stringify({}));
+      localStorage.setItem("rtm-admin-visibility-proj_rbac", JSON.stringify({}));
     });
     await page.goto("/admin");
 
     await page.getByRole("switch", { name: /toggle visibility of help center/i }).click();
 
     const raw = await page.evaluate(() =>
-      localStorage.getItem("rtm-admin-visibility")
+      localStorage.getItem("rtm-admin-visibility-proj_rbac")
     );
     expect(raw).not.toBeNull();
     const stored = JSON.parse(raw!);

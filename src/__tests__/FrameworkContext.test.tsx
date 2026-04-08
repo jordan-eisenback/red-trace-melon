@@ -3,9 +3,9 @@
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import React from 'react';
 import { FrameworkProvider, useFrameworks } from '../app/contexts/FrameworkContext';
 import type { Framework, Control } from '../app/types/framework';
+import { withProviders } from './test-utils';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -34,9 +34,9 @@ function makeControl(overrides: Partial<Control> = {}): Control {
   };
 }
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = withProviders(({ children }) => (
   <FrameworkProvider>{children}</FrameworkProvider>
-);
+));
 
 beforeEach(() => {
   localStorage.clear();

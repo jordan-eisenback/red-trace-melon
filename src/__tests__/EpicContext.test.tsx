@@ -3,9 +3,9 @@
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import React from 'react';
 import { EpicProvider, useEpics } from '../app/contexts/EpicContext';
 import type { Epic, UserStory } from '../app/types/epic';
+import { withProviders } from './test-utils';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -36,9 +36,9 @@ function makeStory(overrides: Partial<UserStory> = {}): UserStory {
   };
 }
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = withProviders(({ children }) => (
   <EpicProvider>{children}</EpicProvider>
-);
+));
 
 beforeEach(() => {
   localStorage.clear();

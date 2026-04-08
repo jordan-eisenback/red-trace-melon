@@ -12,6 +12,7 @@ import {
 } from "../types/vendor";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { usePersistToDisk } from "../hooks/usePersistToDisk";
+import { useProject } from "./ProjectContext";
 import { logger } from "../utils/logger";
 import {
   parseCriteriaFromCSV,
@@ -131,7 +132,8 @@ interface VendorContextType {
 const VendorContext = createContext<VendorContextType | undefined>(undefined);
 
 export function VendorProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useLocalStorage<VendorAppData>("rtm-vendor-data", getInitialVendorData());
+  const { activeProjectId } = useProject();
+  const [data, setData] = useLocalStorage<VendorAppData>(`rtm-vendor-data-${activeProjectId}`, getInitialVendorData());
   const persist = usePersistToDisk();
 
   useEffect(() => {
