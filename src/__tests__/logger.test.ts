@@ -1,11 +1,14 @@
 /**
- * Unit tests for logger.ts (closes part of #42)
+ * Unit tests for logger.ts (closes #65)
  *
  * The logger is driven by import.meta.env.VITE_LOG_LEVEL and import.meta.env.PROD.
  * We use vi.stubEnv to exercise each code path without touching real console output
  * (console methods are spied on and silenced per test).
+ *
+ * Also covers the sink abstraction: consoleSink, memorySink, and setSinks().
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { consoleSink, memorySink } from '../app/utils/logger';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -14,6 +17,13 @@ async function freshLogger() {
   vi.resetModules();
   const mod = await import('../app/utils/logger');
   return mod.logger;
+}
+
+async function freshLoggerWith(sinks: import('../app/utils/logger').LogSink[]) {
+  vi.resetModules();
+  const mod = await import('../app/utils/logger');
+  const log = mod.createLogger({ sinks });
+  return log;
 }
 
 // ── setup ─────────────────────────────────────────────────────────────────────
@@ -133,5 +143,104 @@ describe('logger — extra args forwarded', () => {
     const err = new Error('oops');
     log.error('S', 'failed', err);
     expect(spy.mock.calls[0]).toContain(err);
+  });
+});
+
+// ── sink abstraction ──────────────────────────────────────────────────────────
+
+describe('memorySink', () => {
+  it('collects entries written to it', async () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'debug');
+    const sink = memorySink();
+    const log = await freshLoggerWith([sink]);
+    log.info('TestScope', 'hello', 42);
+    const entries = sink.entries();
+    expect(entries).toHaveLength(1);
+    expect(entries[0].level).toBe('info');
+    expect(entries[0].scope).toBe('TestScope');
+    expect(entries[0].args).toEqual(['hello', 42]);
+  });
+
+  it('entries() returns a copy — mutations do not affect internal state', async () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'debug');
+    const sink = memorySink();
+    const log = await freshLoggerWith([sink]);
+    log.warn('S', 'msg');
+    const entries = sink.entries();
+    entries.pop();
+    expect(sink.entries()).toHaveLength(1);
+  });
+
+  it('clear() empties the entry buffer', async () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'debug');
+    const sink = memorySink();
+    const log = await freshLoggerWith([sink]);
+    log.debug('S', 'a');
+    log.debug('S', 'b');
+    sink.clear();
+    expect(sink.entries()).toHaveLength(0);
+  });
+
+  it('captures error entries regardless of level', async () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'error');
+    const sink = memorySink();
+    const log = await freshLoggerWith([sink]);
+    log.error('S', 'critical');
+    expect(sink.entries()[0].level).toBe('error');
+  });
+
+  it('does not call console when only memorySink is active', async () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'debug');
+    const sink = memorySink();
+    const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const log = await freshLoggerWith([sink]);
+    log.info('S', 'silent');
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('entry timestamp is a valid ISO string', async () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'debug');
+    const sink = memorySink();
+    const log = await freshLoggerWith([sink]);
+    log.debug('S', 'ts');
+    expect(new Date(sink.entries()[0].timestamp).getFullYear()).toBeGreaterThanOrEqual(2024);
+  });
+});
+
+describe('consoleSink', () => {
+  it('writes debug to console.debug', () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'debug');
+    const spy = vi.spyOn(console, 'debug').mockImplementation(() => {});
+    consoleSink.write({ level: 'debug', scope: 'S', args: ['hi'], timestamp: new Date().toISOString() });
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('writes error to console.error', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    consoleSink.write({ level: 'error', scope: 'S', args: ['boom'], timestamp: new Date().toISOString() });
+    expect(spy).toHaveBeenCalled();
+  });
+});
+
+describe('logger.setSinks()', () => {
+  it('replaces sinks at runtime — new sink receives subsequent calls', async () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'debug');
+    const log = await freshLogger();
+    const sink = memorySink();
+    log.setSinks([sink]);
+    log.info('S', 'after switch');
+    expect(sink.entries()).toHaveLength(1);
+    expect(sink.entries()[0].args).toContain('after switch');
+  });
+
+  it('old sink no longer receives calls after setSinks()', async () => {
+    vi.stubEnv('VITE_LOG_LEVEL', 'debug');
+    const oldSink = memorySink();
+    const log = await freshLoggerWith([oldSink]);
+    const newSink = memorySink();
+    log.setSinks([newSink]);
+    log.info('S', 'new');
+    expect(oldSink.entries()).toHaveLength(0);
+    expect(newSink.entries()).toHaveLength(1);
   });
 });
