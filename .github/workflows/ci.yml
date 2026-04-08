@@ -206,20 +206,20 @@ jobs:
           const high   = findings.filter(f => f.severity === 'high');
           const medium = findings.filter(f => f.severity === 'medium');
           const low    = findings.filter(f => f.severity === 'low');
-          const badge  = high.length ? '🔴' : medium.length ? '🟡' : findings.length ? '�' : '�🟢';
+          const badge = high.length ? '[HIGH]' : (medium.length || findings.length) ? '[MED]' : '[PASS]';
           let body = `## ${badge} Agent Code Review\n\n`;
           body += `**Summary:** ${o.summary ?? '(no summary)'}\n\n`;
           if (findings.length === 0) {
             body += '_No issues found in this diff._\n';
           } else {
             body += `**Findings:** ${findings.length} total`;
-            if (high.length)   body += ` · ${high.length} 🔴 high`;
-            if (medium.length) body += ` · ${medium.length} 🟡 medium`;
-            if (low.length)    body += ` · ${low.length} 🔵 low`;
+            if (high.length)   body += ` · ${high.length} [HIGH]`;
+            if (medium.length) body += ` · ${medium.length} [MED]`;
+            if (low.length)    body += ` · ${low.length} [LOW]`;
             body += '\n\n';
             body += '| Severity | Type | File | Message |\n|---|---|---|---|\n';
             for (const f of findings) {
-              const sev = f.severity === 'high' ? '🔴 high' : f.severity === 'medium' ? '🟡 medium' : '🔵 low';
+              const sev = f.severity === 'high' ? '[HIGH]' : f.severity === 'medium' ? '[MED]' : '[LOW]';
               const loc = f.file ? `\`${f.file}\`` : '—';
               body += `| ${sev} | ${f.type} | ${loc} | ${f.message.replace(/\|/g, '\\|')} |\n`;
             }

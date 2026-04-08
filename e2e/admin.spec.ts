@@ -419,8 +419,12 @@ test.describe("Export All Data", () => {
   test("clicking Export All changes the button state (leaves idle)", async ({ page }) => {
     const exportBtn = page.getByRole("button", { name: /export all/i });
     await exportBtn.click();
-    // Button must leave the "Export All" idle label — it enters Exporting…, Exported, or error
-    await expect(exportBtn).not.toBeVisible({ timeout: 5000 });
+    // In the headless browser the export completes (or errors) synchronously fast.
+    // Assert the button leaves the "Export All" idle label — it becomes either
+    // "Exporting…" (in-progress), "Exported" (success), or "Export failed — retry" (error).
+    await expect(
+      page.getByRole("button", { name: /exporting|exported|export failed/i })
+    ).toBeVisible({ timeout: 5000 });
   });
 });
 
@@ -538,12 +542,12 @@ test.describe("Restore from Backup — schema-invalid JSON", () => {
     });
     try {
       await page.locator('input[type="file"][accept=".zip"]').setInputFiles(zipPath);
-      // Sonner toast warning should appear
-      await expect(page.getByText(/validation|schema|skipped/i).first()).toBeVisible({ timeout: 5000 });
-      // Confirm panel still appears (invalid items are skipped, valid ones proceed)
+      // The warning panel text is injected by AdminPage once restoreWarnings is non-empty
+      await expect(
+        page.getByText(/item\(s\) failed schema validation and will be skipped/i)
+      ).toBeVisible({ timeout: 5000 });
+      // Confirm panel still appears — invalid items are skipped, valid ones proceed
       await expect(page.getByText(/replace all current data\?/i)).toBeVisible({ timeout: 5000 });
-      // Warning note in the panel
-      await expect(page.getByText(/failed schema validation and will be skipped/i)).toBeVisible();
     } finally {
       fs.unlinkSync(zipPath);
     }
