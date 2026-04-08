@@ -25,6 +25,7 @@ Thumbs.db
 coverage/
 
 # M365 Agents Toolkit — secrets (never commit)
+env/.env.local.user
 .env/.env.local.user
 
 # Toolkit build output

@@ -13,12 +13,12 @@ version: v1.11
 
 projectId: red-trace-melon-agents
 
-environmentFolderPath: ./.env
+environmentFolderPath: ./env
 
 provision:
   # Create the AAD application registration.
   # writeToEnvironmentFile tells the action which env var names to use
-  # when it writes the generated values into .env/.env.local (and .user).
+  # when it writes the generated values into env/.env.local (and .user).
   - uses: aadApp/create
     with:
       name: red-trace-melon-agent-runner
@@ -41,7 +41,7 @@ provision:
   # Write friendly alias names that the adapter reads.
   - uses: file/createOrUpdateEnvironmentFile
     with:
-      target: ./.env/.env.local
+      target: ./env/.env.local
       envs:
         MicrosoftAppId: ${{MICROSOFT_APP_ID}}
         MicrosoftAppTenantId: ${{MICROSOFT_APP_TENANT_ID}}

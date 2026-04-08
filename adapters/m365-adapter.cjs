@@ -33,6 +33,9 @@ function loadEnvFile(filePath) {
 }
 
 const ROOT = path.resolve(__dirname, '..');
+// Try both locations: 'env/' (Toolkit standard) and '.env/' (legacy)
+loadEnvFile(path.join(ROOT, 'env', '.env.local'));
+loadEnvFile(path.join(ROOT, 'env', '.env.local.user'));
 loadEnvFile(path.join(ROOT, '.env', '.env.local'));
 loadEnvFile(path.join(ROOT, '.env', '.env.local.user'));
 
