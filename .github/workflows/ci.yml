@@ -117,20 +117,20 @@ jobs:
         id: opt_in
         run: |
           # Require ENABLE_AGENT_REVIEW *and* a token that has the models permission.
-          # The built-in GITHUB_TOKEN does NOT have the `models` scope, so callers
-          # must add a PAT (with models permission) as GITHUB_MODELS_TOKEN.
+          # The built-in GITHUB_TOKEN does NOT have models access, so callers
+          # must add a classic PAT as MODELS_TOKEN (can't prefix with GITHUB_).
           if [ -z "$ENABLE_AGENT_REVIEW" ]; then
             echo "ENABLE_AGENT_REVIEW secret not set — skipping agent review"
             echo "enabled=false" >> "$GITHUB_OUTPUT"
-          elif [ -z "$GITHUB_MODELS_TOKEN" ]; then
-            echo "GITHUB_MODELS_TOKEN secret not set — skipping agent review (a PAT with 'models' permission is required)"
+          elif [ -z "$MODELS_TOKEN" ]; then
+            echo "MODELS_TOKEN secret not set — skipping agent review (a classic PAT is required)"
             echo "enabled=false" >> "$GITHUB_OUTPUT"
           else
             echo "enabled=true" >> "$GITHUB_OUTPUT"
           fi
         env:
           ENABLE_AGENT_REVIEW: ${{ secrets.ENABLE_AGENT_REVIEW }}
-          GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN }}
+          MODELS_TOKEN: ${{ secrets.MODELS_TOKEN }}
 
       - name: Checkout
         if: steps.opt_in.outputs.enabled == 'true'
@@ -164,9 +164,9 @@ jobs:
         if: steps.opt_in.outputs.enabled == 'true'
         id: review
         env:
-          # Use the PAT with models permission — the built-in GITHUB_TOKEN lacks it.
-          # The github-models-adapter reads GITHUB_TOKEN first, so we shadow it here.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN }}
+          # Shadow GITHUB_TOKEN so the adapter uses the classic PAT instead of
+          # the Actions installation token (which lacks GitHub Models access).
+          GITHUB_TOKEN: ${{ secrets.MODELS_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           GOAL="Review the following changed files for this PR and report findings: ${{ steps.changed.outputs.files }}"
