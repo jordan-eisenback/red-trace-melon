@@ -20,6 +20,7 @@ import { RequirementFormDialog } from '../app/components/RequirementFormDialog';
 import { RequirementMappingModal } from '../app/components/RequirementMappingModal';
 import type { Requirement } from '../app/types/requirement';
 import type { Framework } from '../app/types/framework';
+import { AllProviders as ProjectAllProviders } from './test-utils';
 
 // ── mocks ──────────────────────────────────────────────────────────────────
 
@@ -40,9 +41,11 @@ vi.mock('sonner', () => ({
  * so they start empty (no seed data) and are fully independent across tests.
  */
 const AllProviders = ({ children }: { children: React.ReactNode }) => (
-  <RequirementsProvider>
-    <FrameworkProvider>{children}</FrameworkProvider>
-  </RequirementsProvider>
+  <ProjectAllProviders>
+    <RequirementsProvider>
+      <FrameworkProvider>{children}</FrameworkProvider>
+    </RequirementsProvider>
+  </ProjectAllProviders>
 );
 
 // ── helpers ───────────────────────────────────────────────────────────────
