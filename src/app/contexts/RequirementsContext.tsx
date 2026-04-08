@@ -3,6 +3,7 @@ import { Requirement } from "../types/requirement";
 import { initialRequirements } from "../data/initial-requirements";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { usePersistToDisk } from "../hooks/usePersistToDisk";
+import { useProject } from "./ProjectContext";
 import { logger } from "../utils/logger";
 
 interface RequirementsContextType {
@@ -18,7 +19,8 @@ interface RequirementsContextType {
 const RequirementsContext = createContext<RequirementsContextType | undefined>(undefined);
 
 export function RequirementsProvider({ children }: { children: React.ReactNode }) {
-  const [requirements, setRequirements] = useLocalStorage<Requirement[]>("rtm-requirements", initialRequirements);
+  const { activeProjectId } = useProject();
+  const [requirements, setRequirements] = useLocalStorage<Requirement[]>(`rtm-requirements-${activeProjectId}`, initialRequirements);
   const persist = usePersistToDisk();
 
   // Flush to disk whenever requirements change

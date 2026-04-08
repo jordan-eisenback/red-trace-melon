@@ -1,5 +1,6 @@
 import { createContext, useContext, ReactNode } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useProject } from "./ProjectContext";
 import { logger } from "../utils/logger";
 
 // ---------------------------------------------------------------------------
@@ -82,8 +83,9 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 // ---------------------------------------------------------------------------
 
 export function AdminProvider({ children }: { children: ReactNode }) {
+  const { activeProjectId } = useProject();
   const [visibility, setVisibility] = useLocalStorage<VisibilityMap>(
-    "rtm-admin-visibility",
+    `rtm-admin-visibility-${activeProjectId}`,
     DEFAULT_VISIBILITY
   );
 

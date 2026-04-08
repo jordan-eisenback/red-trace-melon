@@ -3,6 +3,7 @@ import { Framework, Control } from "../types/framework";
 import { initialFrameworks } from "../data/initial-frameworks";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { usePersistToDisk } from "../hooks/usePersistToDisk";
+import { useProject } from "./ProjectContext";
 import { logger } from "../utils/logger";
 
 interface FrameworkContextType {
@@ -21,7 +22,8 @@ interface FrameworkContextType {
 const FrameworkContext = createContext<FrameworkContextType | undefined>(undefined);
 
 export const FrameworkProvider = ({ children }: { children: ReactNode }) => {
-  const [frameworks, setFrameworks] = useLocalStorage<Framework[]>("rtm-frameworks", initialFrameworks);
+  const { activeProjectId } = useProject();
+  const [frameworks, setFrameworks] = useLocalStorage<Framework[]>(`rtm-frameworks-${activeProjectId}`, initialFrameworks);
   const persist = usePersistToDisk();
 
   useEffect(() => {

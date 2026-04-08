@@ -7,6 +7,7 @@ import { StoryJam, StoryJamNode, StoryJamEdge } from "../types/storyjam";
 import { initialStoryJam } from "../data/initial-storyjam";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { usePersistToDisk } from "../hooks/usePersistToDisk";
+import { useProject } from "./ProjectContext";
 import { logger } from "../utils/logger";
 
 /** Build the seeded UserStory list with linkedStepIds populated from the initial story map. */
@@ -66,10 +67,11 @@ interface EpicContextType {
 const EpicContext = createContext<EpicContextType | undefined>(undefined);
 
 export const EpicProvider = ({ children }: { children: ReactNode }) => {
-  const [epics, setEpics] = useLocalStorage<Epic[]>("rtm-epics", (initialEpics as unknown) as Epic[]);
-  const [userStories, setUserStories] = useLocalStorage<UserStory[]>("rtm-user-stories", buildInitialUserStories());
-  const [storyMap, setStoryMap] = useLocalStorage<StoryMap>("rtm-story-map", initialStoryMap);
-  const [storyJam, setStoryJam] = useLocalStorage<StoryJam>("rtm-story-jam", initialStoryJam);
+  const { activeProjectId } = useProject();
+  const [epics, setEpics] = useLocalStorage<Epic[]>(`rtm-epics-${activeProjectId}`, (initialEpics as unknown) as Epic[]);
+  const [userStories, setUserStories] = useLocalStorage<UserStory[]>(`rtm-user-stories-${activeProjectId}`, buildInitialUserStories());
+  const [storyMap, setStoryMap] = useLocalStorage<StoryMap>(`rtm-story-map-${activeProjectId}`, initialStoryMap);
+  const [storyJam, setStoryJam] = useLocalStorage<StoryJam>(`rtm-story-jam-${activeProjectId}`, initialStoryJam);
   const persist = usePersistToDisk();
 
   // Flush epics, user stories, story map, and story jam to disk on every change
