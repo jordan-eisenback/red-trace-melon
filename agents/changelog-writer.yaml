@@ -1,0 +1,127 @@
+id: changelog-writer-v1
+name: "Changelog Writer"
+version: "1.0.0"
+description: |
+  Reads git history since the last tag or a specified commit range, groups commits
+  by type (feat, fix, perf, security, style, refactor, chore), filters out
+  non-user-facing commits, and writes a human-readable CHANGELOG.md entry in
+  Keep a Changelog format. Local-only. No telemetry.
+role: technical_writer
+capabilities:
+  - read_git_history
+  - classify_commits
+  - group_by_changelog_section
+  - write_changelog_entry
+  - prepend_to_changelog_file
+
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read and write CHANGELOG.md; read package.json for version."
+    config:
+      allow_write: true
+      write_paths:
+        - "CHANGELOG.md"
+
+  - name: terminal
+    type: shell
+    description: "Read git log, tags, and diffs to collect commit data."
+    config:
+      allowed_commands:
+        - "git log"
+        - "git tag"
+        - "git diff"
+        - "git rev-parse"
+        - "cat CHANGELOG.md"
+        - "cat package.json"
+
+prompt:
+  system: |
+    You are a technical writer who turns git history into clear, user-facing release
+    notes. You write for the user of the software, not the developer who wrote the commit.
+
+    Rules:
+    - Group by: Added, Changed, Fixed, Removed, Security, Performance.
+    - Security fixes always go first in the entry.
+    - Use present tense, active voice. "Add CSV export" not "Added CSV export".
+    - Never include chore/ci/test/build commits in user-facing notes.
+    - Summarise PRs by user benefit, not implementation detail.
+    - Produce only valid JSON conforming to output_schema.
+
+  user: |
+    From: {{from_ref}}
+    To: {{to_ref}}
+    Version: {{version}}
+    Release date: {{release_date}}
+
+    Task:
+    1. Run git log between from_ref and to_ref (use last tag if from_ref is empty).
+    2. Classify each commit by conventional-commit type.
+    3. Filter out chore, ci, test, docs, build commits.
+    4. Group user-facing commits into changelog sections (Added/Changed/Fixed/Removed/Security/Performance).
+    5. Write human-readable entries focused on user benefit, not implementation.
+    6. Return JSON matching output_schema. The changelog_entry field should be
+       the complete markdown block ready to prepend to CHANGELOG.md.
+
+variables:
+  from_ref:
+    type: string
+    default: ""
+    description: "Start commit or tag. Empty = auto-detect last git tag."
+  to_ref:
+    type: string
+    default: "HEAD"
+    description: "End commit or branch. Default = HEAD."
+  version:
+    type: string
+    default: ""
+    description: "Version string for the new entry. Empty = read from package.json."
+  release_date:
+    type: string
+    default: ""
+    description: "ISO date string (YYYY-MM-DD). Empty = today."
+
+default_model: "local-http"
+temperature: 0.2   # Slight creativity allowed for natural prose in changelog entries.
+memory:
+  enabled: false
+
+run_policy:
+  allow_file_write: true
+  allow_git_commit: false
+  require_confirmation: true
+
+output_format: json
+output_schema:
+  type: object
+  required: ["version", "release_date", "sections", "changelog_entry", "commits_included", "commits_excluded", "status"]
+  properties:
+
+    version:      { type: string }
+    release_date: { type: string }
+
+    sections:
+      type: object
+      description: "User-facing entries grouped by changelog section."
+      properties:
+        added:       { type: array, items: { type: string } }
+        changed:     { type: array, items: { type: string } }
+        fixed:       { type: array, items: { type: string } }
+        removed:     { type: array, items: { type: string } }
+        security:    { type: array, items: { type: string } }
+        performance: { type: array, items: { type: string } }
+
+    changelog_entry:
+      type: string
+      description: "Full markdown block ready to prepend to CHANGELOG.md."
+
+    commits_included: { type: integer }
+    commits_excluded: { type: integer }
+
+    status:
+      type: string
+      enum: ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"]
+
+safety:
+  allow_external: false
+  telemetry: false

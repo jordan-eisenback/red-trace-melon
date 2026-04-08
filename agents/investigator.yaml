@@ -1,0 +1,164 @@
+id: investigator-v1
+name: "Investigator"
+version: "1.0.0"
+description: |
+  Bug hunter and root-cause analyst. Given an error message, a failing test, or a
+  broken behaviour description, traces the failure from symptom to root cause,
+  proposes a minimal fix, and writes a regression test. Local-only. No telemetry.
+  Use when you hit a bug, see a console error, or a test goes red.
+role: debugger
+capabilities:
+  - reproduce_failure
+  - trace_call_stack
+  - inspect_state
+  - identify_root_cause
+  - propose_minimal_fix
+  - write_regression_test
+  - verify_fix
+
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read source files to trace the call stack to root cause."
+    config:
+      allow_write: true
+      write_paths:
+        - "src/**/__tests__/**"
+        - "e2e/**"
+
+  - name: terminal
+    type: shell
+    description: "Run test suite and type checker to reproduce and verify the failure."
+    config:
+      allowed_commands:
+        - "npm test"
+        - "npm run typecheck"
+        - "npm run lint"
+        - "npx playwright test"
+        - "git diff"
+        - "git log"
+
+  - name: browser
+    type: browser_local
+    description: "Navigate to broken route and capture console errors."
+    config:
+      base_url: "http://localhost:5173"
+      headless: true
+
+prompt:
+  system: |
+    You are a senior engineer doing root-cause analysis. You follow the scientific
+    method: form a hypothesis, gather evidence, test it, revise.
+
+    Rules:
+    - Start from the symptom. Never jump to a fix before reproducing the failure.
+    - Read the call stack before reading source files.
+    - Prefer minimal fixes. Never refactor surrounding code while fixing a bug.
+    - Always write a regression test that would have caught this bug.
+    - If you cannot reproduce the failure after 3 attempts, escalate with BLOCKED status.
+    - Produce only valid JSON conforming to output_schema.
+
+  user: |
+    Bug report: {{bug_description}}
+    Failing test (if any): {{failing_test}}
+    Error message / stack trace (if any): {{stack_trace}}
+    Branch: {{branch}}
+
+    Task:
+    1. Reproduce the failure (run the test or navigate to the broken route).
+    2. Trace the call stack to the root cause. Note every file:line on the path.
+    3. Form a hypothesis. State it explicitly.
+    4. Verify the hypothesis with a targeted code read or console expression.
+    5. Propose the minimal fix in unified diff format.
+    6. Write a regression test that would have caught this bug.
+    7. Return JSON matching output_schema.
+
+variables:
+  bug_description:
+    type: string
+    description: "Plain-English description of the broken behaviour."
+  failing_test:
+    type: string
+    default: ""
+    description: "Test file path and test name, if known."
+  stack_trace:
+    type: string
+    default: ""
+    description: "Full error message and stack trace, if available."
+  branch:
+    type: string
+    default: ""
+    description: "Current git branch."
+
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: true
+  store: "storage/agents/memory/investigator.json"
+
+run_policy:
+  allow_file_write: true
+  allow_git_commit: false
+  require_confirmation: true
+  max_attempts: 3
+
+output_format: json
+output_schema:
+  type: object
+  required: ["summary", "reproduction_steps", "root_cause", "hypothesis", "fix", "regression_test", "status"]
+  properties:
+
+    summary:
+      type: string
+      description: "One sentence: what broke, why, and what the fix is."
+
+    reproduction_steps:
+      type: array
+      items: { type: string }
+      description: "Exact steps to reproduce the failure."
+
+    root_cause:
+      type: object
+      required: ["file", "line", "description"]
+      properties:
+        file:        { type: string }
+        line:        { type: integer }
+        description: { type: string }
+
+    hypothesis:
+      type: string
+      description: "The hypothesis formed before reading source, and whether it was confirmed."
+
+    call_stack:
+      type: array
+      items:
+        type: object
+        required: ["file", "line", "fn"]
+        properties:
+          file: { type: string }
+          line: { type: integer }
+          fn:   { type: string }
+
+    fix:
+      type: object
+      required: ["file", "diff", "proposed_commit_message"]
+      properties:
+        file:                    { type: string }
+        diff:                    { type: string, description: "Unified diff format." }
+        proposed_commit_message: { type: string }
+
+    regression_test:
+      type: object
+      required: ["file", "test_name", "code"]
+      properties:
+        file:      { type: string }
+        test_name: { type: string }
+        code:      { type: string }
+
+    status:
+      type: string
+      enum: ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"]
+
+safety:
+  allow_external: false
+  telemetry: false

@@ -1,0 +1,152 @@
+id: dependency-auditor-v1
+name: "Dependency Auditor"
+version: "1.0.0"
+description: |
+  Dependency health audit: checks for vulnerabilities, outdated packages, unused
+  dependencies, duplicate packages in the lockfile, and licence risks in production
+  dependencies. Produces a prioritised upgrade plan with exact version pins and
+  migration notes. Local-only. No telemetry.
+role: dependency_manager
+capabilities:
+  - audit_vulnerabilities
+  - audit_outdated_packages
+  - detect_unused_dependencies
+  - detect_duplicate_packages
+  - audit_licences
+  - produce_upgrade_plan
+
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read package.json and package-lock.json."
+    config:
+      allow_write: false
+
+  - name: terminal
+    type: shell
+    description: "Run npm audit, npm outdated, depcheck, and npm ls."
+    config:
+      allowed_commands:
+        - "npm audit --json"
+        - "npm outdated --json"
+        - "npx depcheck --json"
+        - "npm ls --json"
+        - "cat package.json"
+        - "cat package-lock.json"
+
+prompt:
+  system: |
+    You are a dependency management specialist. You balance security, stability,
+    and bundle impact. You do not upgrade for the sake of upgrading — every
+    recommendation has a clear reason.
+
+    Rules:
+    - Security vulnerabilities are always P1 regardless of CVSS score.
+    - Never recommend a major version upgrade without migration notes.
+    - Unused dependencies should be removed, not updated.
+    - Duplicate packages in the lockfile are a bundle risk — always flag.
+    - GPL/AGPL/SSPL licences in production dependencies are a legal risk — always flag.
+    - Produce only valid JSON conforming to output_schema.
+
+  user: |
+    Task:
+    1. Run npm audit and collect all vulnerability data including CVE IDs.
+    2. Run npm outdated and identify packages more than one major version behind.
+    3. Run depcheck to find unused and missing dependencies.
+    4. Scan package-lock.json for duplicate packages (same name, multiple versions).
+    5. Check production dependency licences for GPL/AGPL/SSPL.
+    6. Produce a prioritised upgrade plan ordered P1 (security) → P4 (remove unused).
+    7. Return JSON matching output_schema.
+
+variables: {}
+
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: true
+  store: "storage/agents/memory/dependency-auditor.json"
+
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: false
+
+output_format: json
+output_schema:
+  type: object
+  required: ["summary", "vulnerabilities", "outdated", "unused", "duplicates", "licence_risks", "upgrade_plan", "status"]
+  properties:
+
+    summary:
+      type: string
+      description: "Overall verdict: vulnerability count, packages to update/remove."
+
+    vulnerabilities:
+      type: array
+      items:
+        type: object
+        required: ["package", "severity", "fix_version", "breaking"]
+        properties:
+          package:     { type: string }
+          severity:    { type: string, enum: ["critical", "high", "moderate", "low"] }
+          cve:         { type: ["string", "null"] }
+          fix_version: { type: string }
+          breaking:    { type: boolean }
+
+    outdated:
+      type: array
+      items:
+        type: object
+        required: ["package", "current", "wanted", "latest", "major_behind"]
+        properties:
+          package:      { type: string }
+          current:      { type: string }
+          wanted:       { type: string }
+          latest:       { type: string }
+          major_behind: { type: integer }
+
+    unused:
+      type: array
+      items: { type: string }
+      description: "Package names identified by depcheck as unused."
+
+    duplicates:
+      type: array
+      items:
+        type: object
+        required: ["package", "versions"]
+        properties:
+          package:  { type: string }
+          versions: { type: array, items: { type: string } }
+
+    licence_risks:
+      type: array
+      items:
+        type: object
+        required: ["package", "licence", "risk"]
+        properties:
+          package: { type: string }
+          licence: { type: string }
+          risk:    { type: string, enum: ["high", "medium", "review"] }
+
+    upgrade_plan:
+      type: array
+      items:
+        type: object
+        required: ["package", "from", "to", "reason", "priority", "migration_notes", "proposed_commit_message"]
+        properties:
+          package:                 { type: string }
+          from:                    { type: string }
+          to:                      { type: string }
+          reason:                  { type: string }
+          priority:                { type: string, enum: ["P1-security", "P2-breaking", "P3-minor", "P4-remove"] }
+          migration_notes:         { type: string }
+          proposed_commit_message: { type: string }
+
+    status:
+      type: string
+      enum: ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"]
+
+safety:
+  allow_external: false
+  telemetry: false

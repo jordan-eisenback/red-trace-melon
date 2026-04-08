@@ -1,0 +1,153 @@
+id: accessibility-auditor-v1
+name: "Accessibility Auditor"
+version: "1.0.0"
+description: |
+  WCAG 2.2 AA accessibility audit against the running local app. Checks keyboard
+  navigation, ARIA landmarks, contrast ratios, focus management, touch target sizes,
+  form labels, and alt text. Automated axe-core scan plus manual keyboard walkthrough.
+  Produces a prioritised findings list with exact file:line fixes. Local-only. No telemetry.
+role: accessibility_engineer
+capabilities:
+  - run_axe_core_scan
+  - audit_keyboard_navigation
+  - audit_aria_landmarks
+  - audit_contrast_ratios
+  - audit_focus_management
+  - audit_touch_targets
+  - audit_semantic_html
+  - audit_form_accessibility
+  - audit_image_alt_text
+  - produce_wcag_report
+
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read component files to locate the source of an accessibility violation."
+    config:
+      allow_write: false
+
+  - name: browser
+    type: browser_local
+    description: "Run axe-core, extract accessibility tree, simulate keyboard navigation."
+    config:
+      base_url: "http://localhost:5173"
+      headless: true
+      enable_accessibility_tree: true
+
+  - name: terminal
+    type: shell
+    description: "Run axe-core CLI and Playwright accessibility assertions."
+    config:
+      allowed_commands:
+        - "npx playwright test"
+        - "npx axe"
+
+prompt:
+  system: |
+    You are a WCAG 2.2 AA accessibility specialist. You test with keyboard and
+    accessibility tree inspection, not just automated tools. Automated tools catch
+    roughly 30% of issues. Manual keyboard walkthroughs catch the rest.
+
+    Rules:
+    - Tab through every interactive element on every page in scope.
+    - Every finding must include the exact WCAG success criterion it violates.
+    - Contrast ratios must be exact computed numbers, not "looks low".
+    - Skip links, landmark regions, and logical focus order are never optional.
+    - Never mark a finding as low severity if it would block a keyboard-only user.
+    - Produce only valid JSON conforming to output_schema.
+
+  user: |
+    Scope: {{scope}}
+    WCAG level: {{wcag_level}}
+
+    Task:
+    1. Run axe-core on each page in scope. Collect all violations with element selectors.
+    2. Manually tab through each page. Record focus order issues and any focus traps.
+    3. Check all images for meaningful alt text (not empty string on informational images).
+    4. Check all forms: labels associated to inputs, error messages adjacent to fields,
+       autocomplete attributes present.
+    5. Measure contrast ratios for all text/background combinations.
+    6. Verify all interactive elements have >= 44px touch targets.
+    7. Verify ARIA landmark structure (main, nav, banner, contentinfo present).
+    8. Return JSON matching output_schema.
+
+variables:
+  scope:
+    type: string
+    default: "full"
+    description: "full | critical-path (main user flows only)"
+  wcag_level:
+    type: string
+    default: "AA"
+    description: "A | AA | AAA"
+
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: true
+  store: "storage/agents/memory/accessibility-auditor.json"
+
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: false
+
+output_format: json
+output_schema:
+  type: object
+  required: ["summary", "wcag_level", "findings", "keyboard_navigation", "fix_plan", "status"]
+  properties:
+
+    summary:
+      type: string
+      description: "Overall accessibility verdict, violation count by severity."
+
+    wcag_level:
+      type: string
+      enum: ["A", "AA", "AAA"]
+
+    findings:
+      type: array
+      items:
+        type: object
+        required: ["id", "wcag_criterion", "severity", "title", "element", "page", "description", "fix"]
+        properties:
+          id:             { type: string, description: "A11Y-NNN" }
+          wcag_criterion: { type: string, description: "e.g. 1.4.3 Contrast (Minimum)" }
+          severity:       { type: string, enum: ["critical", "serious", "moderate", "minor"] }
+          title:          { type: string }
+          element:        { type: string, description: "CSS selector or element description." }
+          page:           { type: string }
+          description:    { type: string }
+          fix:            { type: string }
+          contrast_ratio: { type: ["number", "null"] }
+          axe_rule_id:    { type: ["string", "null"] }
+
+    keyboard_navigation:
+      type: object
+      required: ["has_skip_link", "focus_order_logical", "all_interactive_reachable"]
+      properties:
+        has_skip_link:             { type: boolean }
+        focus_order_logical:       { type: boolean }
+        all_interactive_reachable: { type: boolean }
+        focus_traps_found:         { type: array, items: { type: string } }
+
+    fix_plan:
+      type: array
+      items:
+        type: object
+        required: ["finding_id", "file", "change", "proposed_commit_message"]
+        properties:
+          finding_id:              { type: string }
+          file:                    { type: string }
+          change:                  { type: string }
+          proposed_commit_message: { type: string }
+          estimated_effort:        { type: string, enum: ["<5min", "<15min", "<30min", "30min+"] }
+
+    status:
+      type: string
+      enum: ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"]
+
+safety:
+  allow_external: false
+  telemetry: false
