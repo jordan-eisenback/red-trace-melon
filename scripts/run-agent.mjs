@@ -16,14 +16,13 @@
  *   --to          <ref>           Template variable: {{to_ref}}
  *   --version     <semver>        Template variable: {{version}}
  *   --target-url  <url>           Template variable: {{target_url}}
- *   --adapter     <name>          Adapter to use (default: m365-adapter)
+ *   --adapter     <name>          Adapter to use (default: github-models-adapter)
  *   --confirm                     Satisfy require_confirmation
  *   --dry-run                     Print rendered prompt, skip model call
  *   --no-validate                 Skip AJV output_schema validation
  *
- * Adapters live in adapters/. Defaults to m365-adapter.cjs which uses the
- * M365 Agents SDK with credentials provisioned via `atk provision`.
- * Falls back to stub response if credentials are missing.
+ * Adapters live in adapters/. Defaults to github-models-adapter.cjs which
+ * uses your existing `gh` CLI auth token — no separate API key needed.
  */
 
 import fs from 'fs';
@@ -281,7 +280,7 @@ async function main() {
   }
 
   // ── Load adapter ────────────────────────────────────────────────────────
-  const adapterName = args['adapter'] ?? 'm365-adapter';
+  const adapterName = args['adapter'] ?? 'github-models-adapter';
   let adapter;
   try {
     adapter = loadAdapter(adapterName);

@@ -16,16 +16,16 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
     "agent": "node scripts/run-agent.mjs",
-    "agent:architect": "node scripts/run-agent.mjs architect-v1 --adapter m365-adapter --confirm",
-    "agent:code-reviewer": "node scripts/run-agent.mjs code-reviewer-v1 --adapter m365-adapter --confirm",
-    "agent:design-reviewer": "node scripts/run-agent.mjs design-reviewer-v1 --adapter m365-adapter --confirm",
-    "agent:investigator": "node scripts/run-agent.mjs investigator-v1 --adapter m365-adapter --confirm",
-    "agent:qa": "node scripts/run-agent.mjs qa-v1 --adapter m365-adapter --confirm",
-    "agent:performance-profiler": "node scripts/run-agent.mjs performance-profiler-v1 --adapter m365-adapter --confirm",
-    "agent:accessibility": "node scripts/run-agent.mjs accessibility-auditor-v1 --adapter m365-adapter --confirm",
-    "agent:dependency-auditor": "node scripts/run-agent.mjs dependency-auditor-v1 --adapter m365-adapter --confirm",
-    "agent:changelog-writer": "node scripts/run-agent.mjs changelog-writer-v1 --adapter m365-adapter --confirm",
-    "agent:docs-auditor": "node scripts/run-agent.mjs docs-auditor-v1 --adapter m365-adapter --confirm"
+    "agent:architect": "node scripts/run-agent.mjs architect-v1 --adapter github-models-adapter --confirm",
+    "agent:code-reviewer": "node scripts/run-agent.mjs code-reviewer-v1 --adapter github-models-adapter --confirm",
+    "agent:design-reviewer": "node scripts/run-agent.mjs design-reviewer-v1 --adapter github-models-adapter --confirm",
+    "agent:investigator": "node scripts/run-agent.mjs investigator-v1 --adapter github-models-adapter --confirm",
+    "agent:qa": "node scripts/run-agent.mjs qa-v1 --adapter github-models-adapter --confirm",
+    "agent:performance-profiler": "node scripts/run-agent.mjs performance-profiler-v1 --adapter github-models-adapter --confirm",
+    "agent:accessibility": "node scripts/run-agent.mjs accessibility-auditor-v1 --adapter github-models-adapter --confirm",
+    "agent:dependency-auditor": "node scripts/run-agent.mjs dependency-auditor-v1 --adapter github-models-adapter --confirm",
+    "agent:changelog-writer": "node scripts/run-agent.mjs changelog-writer-v1 --adapter github-models-adapter --confirm",
+    "agent:docs-auditor": "node scripts/run-agent.mjs docs-auditor-v1 --adapter github-models-adapter --confirm"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
