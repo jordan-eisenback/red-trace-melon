@@ -14,6 +14,7 @@ import { useProject, Project } from "../contexts/ProjectContext";
 import { useRequirements } from "../contexts/RequirementsContext";
 import { useEpics } from "../contexts/EpicContext";
 import { useFrameworks } from "../contexts/FrameworkContext";
+import { ProjectDataPanel } from "../components/ProjectDataPanel";
 
 // ── Color palette (mirrors ProjectContext / ProjectSwitcher) ───────────────
 const COLORS = [
@@ -331,6 +332,8 @@ function ProjectCard({ project }: { project: Project }) {
                 <> · updated {formatDate(project.updatedAt)}</>
               )}
             </div>
+
+            <ProjectDataPanel project={project} />
           </>
         )}
 
