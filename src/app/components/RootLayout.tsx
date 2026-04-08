@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, GitBranch, Star, Target, Settings, SlidersHorizontal, Save, CloudOff } from "lucide-react";
+import { List, Network, FolderTree, Plus, Map, Layers, Shield, HelpCircle, GitBranch, Star, Target, Settings, SlidersHorizontal, Save, CloudOff, FolderOpen } from "lucide-react";
 import { useState, useEffect } from "react";
 import { RequirementFormDialog } from "./RequirementFormDialog";
 import { ToastProvider } from "./Toast";
@@ -216,6 +216,32 @@ export function RootLayout() {
                     </Tooltip.Portal>
                   </Tooltip.Root>
                 )}
+
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <Link
+                      to="/projects"
+                      className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        location.pathname === "/projects"
+                          ? "bg-blue-50 text-blue-700"
+                          : "text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                      }`}
+                      aria-label="Manage projects"
+                    >
+                      <FolderOpen className="w-4 h-4" />
+                      <span className="hidden lg:inline">Projects</span>
+                    </Link>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      className="bg-gray-900 text-white px-3 py-2 rounded-lg text-sm shadow-lg"
+                      sideOffset={5}
+                    >
+                      Manage projects
+                      <Tooltip.Arrow className="fill-gray-900" />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
 
                 <Tooltip.Root>
                   <Tooltip.Trigger asChild>

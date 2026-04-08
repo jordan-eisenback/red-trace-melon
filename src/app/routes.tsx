@@ -10,6 +10,7 @@ import WorkstreamsPage from "./pages/Workstreams";
 import RequirementCoverage from "./pages/RequirementCoverage";
 import VendorSettings from "./pages/VendorSettings";
 import AdminPage from "./pages/AdminPage";
+import ProjectsPage from "./pages/ProjectsPage";
 import { RootLayout } from "./components/RootLayout";
 import { RouteErrorBoundary } from "./components/RouteErrorBoundary";
 import { LoadingSpinner } from "./components/LoadingSpinner";
@@ -55,6 +56,7 @@ export const router = createBrowserRouter([
       { path: "requirement-coverage", Component: RequirementCoverage, ErrorBoundary: RouteErrorBoundary },
       { path: "vendor-settings", Component: VendorSettings, ErrorBoundary: RouteErrorBoundary },
       { path: "admin", Component: AdminPage, ErrorBoundary: RouteErrorBoundary },
+      { path: "projects", Component: ProjectsPage, ErrorBoundary: RouteErrorBoundary },
       { path: "help", Component: HelpCenter, ErrorBoundary: RouteErrorBoundary },
       {
         path: "story-jam",
