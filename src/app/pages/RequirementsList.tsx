@@ -25,8 +25,9 @@ const PRIORITY_STYLES: Record<RequirementPriority, string> = {
 };
 
 const STATUS_STYLES: Record<RequirementStatus, string> = {
-  Validated:     "bg-green-100 text-green-700",
+  Validated:       "bg-green-100 text-green-700",
   "Not Validated": "bg-slate-100 text-slate-500",
+  duplicate:       "bg-orange-100 text-orange-600",
 };
 
 export function PriorityBadge({ priority }: { priority?: RequirementPriority }) {

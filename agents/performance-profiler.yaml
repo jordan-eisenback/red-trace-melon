@@ -1,0 +1,168 @@
+id: performance-profiler-v1
+name: "Performance Profiler"
+version: "1.0.0"
+description: |
+  Runtime performance audit: measures LCP, CLS, INP, bundle sizes, render counts,
+  and memory usage against the running local app. Identifies the slowest routes,
+  heaviest components, and unnecessary re-renders. Proposes targeted fixes with
+  before/after estimates. Local-only. No telemetry.
+role: performance_engineer
+capabilities:
+  - measure_core_web_vitals
+  - profile_bundle_sizes
+  - detect_unnecessary_rerenders
+  - identify_slow_routes
+  - audit_image_optimisation
+  - audit_font_loading
+  - propose_fixes
+
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read vite.config.ts, routes, and component files to identify optimisation opportunities."
+    config:
+      allow_write: false
+
+  - name: browser
+    type: browser_local
+    description: "Measure Core Web Vitals and React render counts via Performance API."
+    config:
+      base_url: "http://localhost:5173"
+      headless: true
+      enable_performance_api: true
+
+  - name: terminal
+    type: shell
+    description: "Run production build and measure gzipped chunk sizes."
+    config:
+      allowed_commands:
+        - "npm run build"
+        - "find dist -name '*.js' -o -name '*.css'"
+        - "du -sh dist"
+        - "gzip -c"
+        - "wc -c"
+
+prompt:
+  system: |
+    You are a performance engineer. You care about real numbers, not vibes.
+    Every claim must be backed by a measurement. Every suggestion must include
+    an expected before/after delta.
+
+    Rules:
+    - Measure first, optimise second. Never guess.
+    - Report actual numbers: LCP in ms, chunks in KB gzipped, render count.
+    - Prioritise by user-visible impact, not engineering elegance.
+    - Propose only changes with measurable payoff.
+    - Produce only valid JSON conforming to output_schema.
+
+  user: |
+    Scope: {{scope}}
+    Bundle size budget (gzipped main chunk): {{bundle_budget_kb}} KB
+    LCP budget: {{lcp_budget_ms}} ms
+
+    Task:
+    1. Run a production build and measure all chunk sizes (raw and gzipped).
+    2. For each route in scope, measure LCP, CLS, and INP.
+    3. Profile React render counts on the 3 heaviest pages using React DevTools profiler API.
+    4. Audit all images for lazy loading, width/height attributes, and WebP/AVIF format.
+    5. Audit font loading: font-display, preconnect, FOUT.
+    6. Produce a prioritised findings list with before/after metric estimates.
+    7. Return JSON matching output_schema.
+
+variables:
+  scope:
+    type: string
+    default: "full"
+    description: "full | critical-path (homepage + 2 heaviest routes)"
+  bundle_budget_kb:
+    type: integer
+    default: 500
+    description: "Gzipped main chunk budget in KB. Default matches current CI gate."
+  lcp_budget_ms:
+    type: integer
+    default: 2000
+    description: "LCP budget in milliseconds."
+
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: true
+  store: "storage/agents/memory/performance-profiler.json"
+
+run_policy:
+  allow_file_write: false
+  allow_git_commit: false
+  require_confirmation: false
+
+output_format: json
+output_schema:
+  type: object
+  required: ["summary", "bundle_report", "vitals", "findings", "fix_plan", "status"]
+  properties:
+
+    summary:
+      type: string
+      description: "Overall verdict: pass/fail against budgets, top 3 opportunities."
+
+    bundle_report:
+      type: object
+      required: ["total_kb_gzipped", "chunks"]
+      properties:
+        total_kb_gzipped: { type: number }
+        chunks:
+          type: array
+          items:
+            type: object
+            required: ["name", "kb_raw", "kb_gzipped"]
+            properties:
+              name:            { type: string }
+              kb_raw:          { type: number }
+              kb_gzipped:      { type: number }
+              exceeds_budget:  { type: boolean }
+
+    vitals:
+      type: array
+      items:
+        type: object
+        required: ["route", "lcp_ms", "cls", "inp_ms", "pass"]
+        properties:
+          route:   { type: string }
+          lcp_ms:  { type: number }
+          cls:     { type: number }
+          inp_ms:  { type: number }
+          pass:    { type: boolean }
+
+    findings:
+      type: array
+      items:
+        type: object
+        required: ["id", "category", "impact", "title", "metric_before", "metric_after_estimate"]
+        properties:
+          id:                    { type: string, description: "PERF-NNN" }
+          category:              { type: string, enum: ["bundle", "lcp", "cls", "inp", "render", "image", "font"] }
+          impact:                { type: string, enum: ["critical", "high", "medium", "low"] }
+          title:                 { type: string }
+          metric_before:         { type: string }
+          metric_after_estimate: { type: string }
+          file:                  { type: ["string", "null"] }
+
+    fix_plan:
+      type: array
+      items:
+        type: object
+        required: ["finding_id", "description", "file", "change", "proposed_commit_message"]
+        properties:
+          finding_id:              { type: string }
+          description:             { type: string }
+          file:                    { type: string }
+          change:                  { type: string }
+          proposed_commit_message: { type: string }
+          estimated_effort:        { type: string, enum: ["<5min", "<15min", "<30min", "30min+"] }
+
+    status:
+      type: string
+      enum: ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"]
+
+safety:
+  allow_external: false
+  telemetry: false

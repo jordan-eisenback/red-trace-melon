@@ -1,0 +1,136 @@
+id: docs-auditor-v1
+name: "Docs Auditor"
+version: "1.0.0"
+description: |
+  Documentation health audit: checks README, ARCHITECTURE.md, TESTING.md,
+  agents/README.md, and inline JSDoc/TSDoc for completeness, accuracy, and
+  staleness. Cross-references every documented command, file path, and API against
+  the actual source. Flags docs that contradict the current codebase.
+  Local-only. No telemetry.
+role: technical_writer
+capabilities:
+  - audit_readme
+  - audit_architecture_doc
+  - audit_jsdoc_coverage
+  - detect_stale_docs
+  - detect_missing_docs
+  - verify_code_commands
+  - propose_doc_fixes
+
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read and write markdown docs and source files."
+    config:
+      allow_write: true
+      write_paths:
+        - "README.md"
+        - "ARCHITECTURE.md"
+        - "TESTING.md"
+        - "CHANGELOG.md"
+        - "agents/README.md"
+        - "src/**/*.ts"
+        - "src/**/*.tsx"
+
+  - name: terminal
+    type: shell
+    description: "Verify that documented commands actually execute without error."
+    config:
+      allowed_commands:
+        - "npm run"
+        - "npm test"
+        - "npm run build"
+        - "npm run lint"
+        - "npm run typecheck"
+        - "grep -rn"
+        - "find . -name '*.md'"
+        - "git log --follow"
+
+prompt:
+  system: |
+    You are a technical writer who cares deeply about documentation accuracy.
+    Stale docs are worse than no docs — they actively mislead contributors.
+
+    Rules:
+    - Cross-reference every claim in docs against the actual source code.
+    - Flag any documented API, command, file path, or component that no longer exists.
+    - Missing docs for public-facing functions and exported hooks are bugs.
+    - README must have working setup, run, test, and build commands — all verified.
+    - Do not suggest adding docs for internal/private helpers.
+    - Produce only valid JSON conforming to output_schema.
+
+  user: |
+    Task:
+    1. Find all markdown files (README.md, ARCHITECTURE.md, TESTING.md, agents/README.md).
+    2. For each doc: read it, then verify every code command it contains actually runs.
+    3. Cross-reference every file path, component name, and route mentioned in docs
+       against what actually exists in src/.
+    4. Scan all exported functions and hooks in src/ for JSDoc/TSDoc coverage.
+    5. Identify missing required sections (README: setup, run, test, build, architecture link).
+    6. Produce a findings list with specific fixes for stale, missing, and inaccurate entries.
+    7. Return JSON matching output_schema.
+
+variables: {}
+
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: false
+
+run_policy:
+  allow_file_write: true
+  allow_git_commit: false
+  require_confirmation: true
+
+output_format: json
+output_schema:
+  type: object
+  required: ["summary", "findings", "fix_plan", "coverage", "status"]
+  properties:
+
+    summary:
+      type: string
+      description: "Overall doc health: stale count, missing count, JSDoc coverage %."
+
+    findings:
+      type: array
+      items:
+        type: object
+        required: ["id", "type", "severity", "file", "description", "fix"]
+        properties:
+          id:          { type: string, description: "DOCS-NNN" }
+          type:        { type: string, enum: ["stale", "missing", "inaccurate", "incomplete"] }
+          severity:    { type: string, enum: ["high", "medium", "low"] }
+          file:        { type: string }
+          description: { type: string }
+          fix:         { type: string }
+
+    fix_plan:
+      type: array
+      items:
+        type: object
+        required: ["finding_id", "file", "change", "proposed_commit_message"]
+        properties:
+          finding_id:              { type: string }
+          file:                    { type: string }
+          change:                  { type: string }
+          proposed_commit_message: { type: string }
+          estimated_effort:        { type: string, enum: ["<5min", "<15min", "<30min", "30min+"] }
+
+    coverage:
+      type: object
+      required: ["exported_functions_total", "exported_functions_documented", "jsdoc_coverage_pct"]
+      properties:
+        exported_functions_total:      { type: integer }
+        exported_functions_documented: { type: integer }
+        jsdoc_coverage_pct:            { type: number }
+        readme_sections_present:       { type: array, items: { type: string } }
+        readme_sections_missing:       { type: array, items: { type: string } }
+
+    status:
+      type: string
+      enum: ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"]
+
+safety:
+  allow_external: false
+  telemetry: false

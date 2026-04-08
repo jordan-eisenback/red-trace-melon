@@ -1,0 +1,369 @@
+id: design-reviewer-v1
+name: "Design Reviewer"
+version: "1.0.0"
+description: |
+  Designer's-eye QA: inspects the rendered UI for visual inconsistency, spacing
+  problems, hierarchy issues, AI-slop patterns, and interaction gaps — then produces
+  a structured findings report and a prioritised fix plan. Local-only. No external
+  network calls, no telemetry. Use when you want to "audit the design", run "visual QA",
+  or do a "design polish pass" on the running app.
+role: designer
+capabilities:
+  - first_impression
+  - extract_design_system
+  - audit_visual_hierarchy
+  - audit_typography
+  - audit_color_and_contrast
+  - audit_spacing_and_layout
+  - audit_interaction_states
+  - audit_responsive
+  - audit_motion
+  - audit_content_and_microcopy
+  - detect_ai_slop
+  - audit_performance_feel
+  - generate_fix_plan
+  - export_design_report
+
+# ─── Tools ────────────────────────────────────────────────────────────────────
+tools:
+  - name: local_files
+    type: local_file
+    description: |
+      Read-only access to repository source files (components, CSS, Tailwind
+      config, tokens, routes). Used to locate the source of a finding and verify
+      a fix. Never write via this tool.
+    config:
+      allow_write: false
+
+  - name: browser
+    type: browser_local
+    description: |
+      Headless Playwright browser pointed at the locally running Vite dev server
+      (default: http://localhost:5173). Used to take screenshots, extract
+      computed styles, run JS expressions, and measure performance.
+    config:
+      base_url: "http://localhost:5173"
+      headless: true
+      viewport:
+        mobile:  { width: 375,  height: 812  }
+        tablet:  { width: 768,  height: 1024 }
+        desktop: { width: 1440, height: 900  }
+
+  - name: runner
+    type: runner
+    description: "Invoke local prompt runner for sub-steps (e.g. per-component analysis)."
+    config: {}
+
+# ─── Prompt ───────────────────────────────────────────────────────────────────
+prompt:
+  system: |
+    You are a senior product designer and front-end engineer conducting a local-only
+    design audit. You have strong opinions about typography, spacing, and visual
+    hierarchy, and zero tolerance for generic or AI-generated-looking interfaces.
+
+    You think like a designer, not a QA engineer. You care whether things FEEL right,
+    look intentional, and respect the user — not just whether they "work."
+
+    Rules:
+    - All analysis is against the RUNNING LOCAL APP, not source code alone.
+    - Screenshots are your evidence. Every finding must reference a screenshot or
+      a computed-style extraction.
+    - Be specific and actionable. "Change X to Y because Z" — not "spacing feels off."
+    - AI Slop detection is your core superpower. Be direct.
+    - Never call external services. Never emit telemetry. All output stays local.
+    - Produce only valid JSON conforming to output_schema.
+
+  user: |
+    Target URL: {{target_url}}
+    Scope: {{scope}}
+    DESIGN.md path (if present): {{design_md_path}}
+    Depth: {{depth}}
+
+    Task:
+    1. Capture a first-impression screenshot of {{target_url}}.
+    2. Extract the inferred design system (fonts, colors, heading scale, spacing).
+    3. Audit each page in scope using all 10 categories in the checklist.
+    4. Detect AI-slop patterns.
+    5. Score each category A–F. Compute weighted Design Score and standalone AI Slop Score.
+    6. Produce a prioritised findings list (high / medium / polish).
+    7. For each high and medium finding, propose a minimal CSS-first fix with the
+       exact file path, selector, and changed properties.
+    8. Return JSON matching output_schema.
+
+# ─── Template variables ───────────────────────────────────────────────────────
+variables:
+  target_url:
+    type: string
+    default: "http://localhost:5173"
+    description: "The running app URL to audit."
+  scope:
+    type: string
+    default: "full"
+    description: "full | quick (homepage + 2 pages) | deep (10–15 pages) | diff-aware"
+  depth:
+    type: string
+    default: "standard"
+    description: "standard (5–8 pages) | quick | deep"
+  design_md_path:
+    type: string
+    default: ""
+    description: "Path to DESIGN.md if it exists; empty string if absent."
+
+# ─── Model + execution ────────────────────────────────────────────────────────
+default_model: "local-http"
+temperature: 0.0        # Design evaluation is deterministic — no sampling noise.
+memory:
+  enabled: true
+  store: "storage/agents/memory/design-reviewer.json"
+  # Persists: last design score baseline, AI slop patterns found per run,
+  # per-route screenshot hashes so regression mode can diff scores.
+
+run_policy:
+  allow_file_write: false   # Agent NEVER edits source. Fix suggestions are proposals only.
+  allow_git_commit: false   # Human applies fixes and commits. Agent proposes commit messages.
+  require_confirmation: true
+
+# ─── Checklist ────────────────────────────────────────────────────────────────
+checklist:
+  categories:
+    - id: visual_hierarchy
+      weight: 0.15
+      items:
+        - Clear focal point; one primary CTA per view
+        - Eye flows naturally top-left to bottom-right
+        - No competing elements fighting for attention
+        - Information density appropriate for content type
+        - Above-the-fold content communicates purpose in 3 seconds
+        - White space intentional, not leftover
+
+    - id: typography
+      weight: 0.15
+      items:
+        - Font count <= 3
+        - Scale follows a ratio (1.25 major third or 1.333 perfect fourth)
+        - Line-height: 1.5x body, 1.15–1.25x headings
+        - Measure: 45–75 chars per line
+        - Heading hierarchy: no skipped levels
+        - Body text >= 16px; captions >= 12px
+        - No blacklisted fonts (Papyrus, Comic Sans, Lobster, Impact)
+        - Flag if primary font is Inter / Roboto / Open Sans / Poppins (generic)
+        - No letter-spacing on lowercase text
+
+    - id: color_and_contrast
+      weight: 0.10
+      items:
+        - Palette coherent (<= 12 unique non-gray colors)
+        - WCAG AA: body 4.5:1, large text 3:1, UI components 3:1
+        - Semantic colors consistent (success=green, error=red, warning=amber)
+        - No color-only encoding
+        - Neutral palette consistently warm or cool (not mixed)
+
+    - id: spacing_and_layout
+      weight: 0.15
+      items:
+        - Grid consistent at all breakpoints
+        - Spacing uses 4px or 8px base scale, not arbitrary values
+        - Alignment consistent — nothing floats outside the grid
+        - Border-radius hierarchy (not uniform bubbly radius everywhere)
+        - No horizontal scroll on mobile
+        - Max content width set (no full-bleed body text)
+
+    - id: interaction_states
+      weight: 0.10
+      items:
+        - Hover state on all interactive elements
+        - focus-visible ring present (never outline:none without replacement)
+        - Active/pressed state with depth or color shift
+        - Disabled state: reduced opacity + cursor:not-allowed
+        - Loading: skeleton shapes match real content layout
+        - Empty states: warm message + primary action + visual
+        - Touch targets >= 44px
+        - cursor:pointer on all clickable elements
+
+    - id: responsive
+      weight: 0.10
+      items:
+        - Mobile layout makes design sense (not just stacked desktop columns)
+        - No horizontal scroll on any viewport
+        - Text readable without zooming on mobile (>= 16px body)
+        - Navigation collapses appropriately
+        - No user-scalable=no in viewport meta
+
+    - id: motion
+      weight: 0.05
+      items:
+        - Easing appropriate (ease-out entering, ease-in exiting)
+        - Duration 50–700ms; nothing slower without purpose
+        - prefers-reduced-motion respected
+        - Only transform and opacity animated (not layout properties)
+
+    - id: content_and_microcopy
+      weight: 0.10
+      items:
+        - Empty states designed with warmth (message + action + icon)
+        - Error messages specific (what + why + what to do next)
+        - Button labels specific ("Save API Key" not "Submit")
+        - No placeholder/lorem ipsum in production
+        - Active voice throughout
+
+    - id: ai_slop
+      weight: 0.05
+      items:
+        - No purple/violet/indigo gradient backgrounds
+        - No 3-column feature grid (icon-in-circle + bold title + 2-line description × 3)
+        - No icons in colored circles as section decoration
+        - No centered-everything layout (text-align:center on all headings + cards)
+        - No uniform bubbly border-radius on every element
+        - No decorative blobs, floating circles, wavy SVG dividers
+        - No emoji as design elements in headings or bullets
+        - No colored left-border cards (border-left:3px solid accent)
+        - No generic hero copy ("Unlock the power of...")
+        - No cookie-cutter section rhythm (hero→3features→testimonials→pricing→CTA)
+
+    - id: performance_feel
+      weight: 0.05
+      items:
+        - LCP < 2.0s
+        - CLS < 0.1
+        - Skeleton quality matches real content layout
+        - No visible font swap flash (FOUT)
+
+# ─── Grading ──────────────────────────────────────────────────────────────────
+grading:
+  grades: ["A", "B", "C", "D", "F"]
+  rules:
+    start: "A"
+    high_impact_finding: -1     # drops one letter grade
+    medium_impact_finding: -0.5
+    polish_finding: 0           # noted, no grade impact
+  dual_headline:
+    - name: "Design Score"
+      description: "Weighted average across all 10 categories."
+    - name: "AI Slop Score"
+      description: "Standalone grade for the ai_slop category only."
+
+# ─── Output schema ────────────────────────────────────────────────────────────
+output_format: json
+output_schema:
+  type: object
+  required: ["summary", "design_score", "ai_slop_score", "inferred_design_system", "findings", "fix_plan"]
+  properties:
+
+    summary:
+      type: string
+      description: "2–3 sentence first-impression verdict."
+
+    design_score:
+      type: object
+      required: ["grade", "category_grades"]
+      properties:
+        grade:
+          type: string
+          enum: ["A", "B", "C", "D", "F"]
+        category_grades:
+          type: object
+          description: "One letter grade per checklist category id."
+          additionalProperties:
+            type: string
+            enum: ["A", "B", "C", "D", "F"]
+
+    ai_slop_score:
+      type: object
+      required: ["grade", "patterns_found"]
+      properties:
+        grade:
+          type: string
+          enum: ["A", "B", "C", "D", "F"]
+        patterns_found:
+          type: array
+          items:
+            type: string
+          description: "List of detected AI-slop anti-patterns by name."
+
+    inferred_design_system:
+      type: object
+      required: ["fonts", "colors", "heading_scale", "spacing_values"]
+      properties:
+        fonts:
+          type: array
+          items: { type: string }
+        colors:
+          type: array
+          items: { type: string }
+          description: "Unique non-gray colors extracted from computed styles."
+        heading_scale:
+          type: array
+          items:
+            type: object
+            required: ["tag", "font_size", "font_weight"]
+            properties:
+              tag:         { type: string }
+              font_size:   { type: string }
+              font_weight: { type: string }
+        spacing_values:
+          type: array
+          items: { type: string }
+          description: "Distinct spacing values found (padding/margin/gap)."
+
+    findings:
+      type: array
+      items:
+        type: object
+        required: ["id", "category", "impact", "title", "observation", "suggestion", "screenshot_ref"]
+        properties:
+          id:
+            type: string
+            description: "DESIGN-NNN"
+          category:
+            type: string
+            description: "One of the checklist category ids."
+          impact:
+            type: string
+            enum: ["high", "medium", "polish"]
+          title:
+            type: string
+            description: "One-line description of the problem."
+          observation:
+            type: string
+            description: "What was observed. Use 'I notice...' / 'I wonder...' framing."
+          suggestion:
+            type: string
+            description: "Specific fix. 'Change X to Y because Z.'"
+          screenshot_ref:
+            type: ["string", "null"]
+            description: "Filename of the screenshot that evidences this finding."
+          page:
+            type: ["string", "null"]
+            description: "Route path where the finding was observed."
+
+    fix_plan:
+      type: array
+      description: "Ordered list of proposed code-level fixes (high and medium findings only)."
+      items:
+        type: object
+        required: ["finding_id", "file", "selector_or_token", "change", "proposed_commit_message"]
+        properties:
+          finding_id:
+            type: string
+          file:
+            type: string
+            description: "Relative path to the CSS / Tailwind / component file to change."
+          selector_or_token:
+            type: string
+            description: "CSS selector, Tailwind class, or design token to modify."
+          change:
+            type: string
+            description: "Exact property + value before → after. e.g. 'font-size: 14px → 16px'"
+          proposed_commit_message:
+            type: string
+            description: "style(design): DESIGN-NNN — short description"
+          estimated_effort:
+            type: string
+            enum: ["<5min", "<15min", "<30min", "30min+"]
+
+# ─── Safety ───────────────────────────────────────────────────────────────────
+safety:
+  allow_external: false
+  telemetry: false
+  allow_screenshots_outside_storage: false
+  screenshot_storage: "storage/agents/output/design-reviews/"

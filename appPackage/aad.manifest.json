@@ -1,0 +1,40 @@
+{
+  "id": "${{AAD_APP_OBJECT_ID}}",
+  "appId": "${{AAD_APP_CLIENT_ID}}",
+  "name": "red-trace-melon-agent-runner",
+  "accessTokenAcceptedVersion": 2,
+  "signInAudience": "AzureADMyOrg",
+  "optionalClaims": {
+    "idToken": [],
+    "accessToken": [
+      { "name": "idtyp", "essential": false }
+    ],
+    "saml2Token": []
+  },
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "e1fe6dd8-ba31-4d61-89e7-88639da4683d",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "oauth2Permissions": [
+    {
+      "adminConsentDescription": "Allow agent runner to act on behalf of the signed-in user",
+      "adminConsentDisplayName": "access_as_user",
+      "id": "${{AAD_APP_ACCESS_AS_USER_PERMISSION_ID}}",
+      "isEnabled": true,
+      "lang": null,
+      "origin": "Application",
+      "type": "User",
+      "userConsentDescription": "Allow agent runner to act on your behalf",
+      "userConsentDisplayName": "access_as_user",
+      "value": "access_as_user"
+    }
+  ],
+  "preAuthorizedApplications": []
+}

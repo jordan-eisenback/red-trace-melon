@@ -1,0 +1,160 @@
+id: qa-v1
+name: "QA Agent"
+version: "1.0.0"
+description: |
+  Functional QA: walks every user-visible route, exercises happy paths and edge
+  cases, detects regressions, broken interactions, and console errors. Writes
+  Playwright tests for uncovered flows. Local-only. No telemetry.
+  Use when you want to "test the app", "find bugs", or "QA before shipping".
+role: qa_engineer
+capabilities:
+  - smoke_test_all_routes
+  - exercise_happy_paths
+  - exercise_edge_cases
+  - detect_console_errors
+  - detect_broken_interactions
+  - measure_performance
+  - write_playwright_tests
+  - produce_qa_report
+
+tools:
+  - name: local_files
+    type: local_file
+    description: "Read routes.tsx to enumerate all pages; write new Playwright test files."
+    config:
+      allow_write: true
+      write_paths:
+        - "e2e/**"
+
+  - name: browser
+    type: browser_local
+    description: "Navigate to every route, take screenshots, capture console errors."
+    config:
+      base_url: "http://localhost:5173"
+      headless: true
+      viewport:
+        mobile:  { width: 375,  height: 812  }
+        desktop: { width: 1440, height: 900  }
+
+  - name: terminal
+    type: shell
+    description: "Run Playwright and Vitest to validate new tests."
+    config:
+      allowed_commands:
+        - "npx playwright test"
+        - "npm test"
+        - "npm run build"
+
+prompt:
+  system: |
+    You are a senior QA engineer. You find bugs that developers miss because you
+    think like a user, not like the person who wrote the code.
+
+    Rules:
+    - Visit every route in the app. No route is too obscure.
+    - Always test the unhappy path: empty state, invalid input, network error.
+    - Console errors are bugs. Zero tolerance.
+    - Every uncovered flow gets a Playwright test.
+    - Be specific: route, screenshot ref, reproduction steps.
+    - Produce only valid JSON conforming to output_schema.
+
+  user: |
+    Scope: {{scope}}
+    Focus area (if any): {{focus}}
+    Previous QA report (if any): {{previous_report_path}}
+
+    Task:
+    1. Enumerate all routes by reading src/app/routes.tsx.
+    2. Visit each route. Take a screenshot. Note any console errors.
+    3. Exercise the primary interaction on each page.
+    4. Test at least 2 edge cases per page (empty state, invalid input, boundary values).
+    5. For any flow with no existing Playwright test, write one.
+    6. Return JSON matching output_schema.
+
+variables:
+  scope:
+    type: string
+    default: "full"
+    description: "full | smoke (routes only, no interaction) | focused"
+  focus:
+    type: string
+    default: ""
+    description: "Specific page or feature to focus on. Empty = all routes."
+  previous_report_path:
+    type: string
+    default: ""
+    description: "Path to a previous QA report JSON for regression comparison."
+
+default_model: "local-http"
+temperature: 0.0
+memory:
+  enabled: true
+  store: "storage/agents/memory/qa.json"
+
+run_policy:
+  allow_file_write: true
+  allow_git_commit: false
+  require_confirmation: true
+
+output_format: json
+output_schema:
+  type: object
+  required: ["summary", "routes_tested", "bugs", "new_tests", "status"]
+  properties:
+
+    summary:
+      type: string
+      description: "2-3 sentence verdict: overall quality, bug count, coverage gaps."
+
+    routes_tested:
+      type: array
+      items:
+        type: object
+        required: ["path", "status", "console_errors", "screenshot_ref"]
+        properties:
+          path:           { type: string }
+          status:         { type: string, enum: ["pass", "fail", "warn"] }
+          console_errors: { type: array, items: { type: string } }
+          screenshot_ref: { type: ["string", "null"] }
+          notes:          { type: string }
+
+    bugs:
+      type: array
+      items:
+        type: object
+        required: ["id", "severity", "title", "route", "reproduction_steps", "screenshot_ref"]
+        properties:
+          id:                 { type: string, description: "QA-NNN" }
+          severity:           { type: string, enum: ["critical", "high", "medium", "low"] }
+          title:              { type: string }
+          route:              { type: string }
+          reproduction_steps: { type: array, items: { type: string } }
+          screenshot_ref:     { type: ["string", "null"] }
+          proposed_fix:       { type: string }
+
+    new_tests:
+      type: array
+      items:
+        type: object
+        required: ["file", "test_name", "covers_route", "code"]
+        properties:
+          file:         { type: string }
+          test_name:    { type: string }
+          covers_route: { type: string }
+          code:         { type: string }
+
+    regression_delta:
+      type: object
+      description: "Only present when previous_report_path was provided."
+      properties:
+        new_bugs:      { type: array, items: { type: string } }
+        resolved_bugs: { type: array, items: { type: string } }
+
+    status:
+      type: string
+      enum: ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"]
+
+safety:
+  allow_external: false
+  telemetry: false
+  screenshot_storage: "storage/agents/output/qa/"

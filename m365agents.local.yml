@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://aka.ms/teams-toolkit/v1.11/yaml.schema.json
+#
+# Local environment override for m365agents.yml
+# The Toolkit requires this file to exist alongside m365agents.yml
+# for the 'local' environment to be selectable in the sidebar.
+#
+version: v1.11
+
+environmentFolderPath: ./env
+
+provision:
+  # Create the AAD application registration for local dev.
+  - uses: aadApp/create
+    with:
+      name: red-trace-melon-agent-runner-local
+      generateClientSecret: true
+      signInAudience: AzureADMyOrg
+    writeToEnvironmentFile:
+      clientId: MICROSOFT_APP_ID
+      objectId: MICROSOFT_APP_OBJECT_ID
+      tenantId: MICROSOFT_APP_TENANT_ID
+      clientSecret: SECRET_AAD_APP_CLIENT_SECRET
+      authority: AAD_APP_OAUTH_AUTHORITY
+      authorityHost: AAD_APP_OAUTH_AUTHORITY_HOST
+
+  # Write friendly alias names the adapter reads.
+  - uses: file/createOrUpdateEnvironmentFile
+    with:
+      target: ./env/.env.local
+      envs:
+        MicrosoftAppId: ${{MICROSOFT_APP_ID}}
+        MicrosoftAppTenantId: ${{MICROSOFT_APP_TENANT_ID}}
