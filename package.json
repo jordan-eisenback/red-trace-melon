@@ -16,7 +16,7 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
     "agent": "node scripts/run-agent.mjs",
-    "agent:architect": "node scripts/run-agent.mjs architect-v1 --adapter github-models-adapter --confirm",
+    "agent:architect": "node scripts/run-architect-with-context.mjs",
     "agent:code-reviewer": "node scripts/run-agent.mjs code-reviewer-v1 --adapter github-models-adapter --confirm",
     "agent:design-reviewer": "node scripts/run-agent.mjs design-reviewer-v1 --adapter github-models-adapter --confirm",
     "agent:investigator": "node scripts/run-agent.mjs investigator-v1 --adapter github-models-adapter --confirm",
