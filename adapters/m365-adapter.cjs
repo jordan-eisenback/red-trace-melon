@@ -36,9 +36,9 @@ const ROOT = path.resolve(__dirname, '..');
 loadEnvFile(path.join(ROOT, '.env', '.env.local'));
 loadEnvFile(path.join(ROOT, '.env', '.env.local.user'));
 
-const APP_ID     = process.env.MicrosoftAppId               || '';
+const APP_ID     = process.env.MicrosoftAppId               || process.env.MICROSOFT_APP_ID               || '';
 const APP_SECRET = process.env.SECRET_AAD_APP_CLIENT_SECRET || '';
-const TENANT_ID  = process.env.MicrosoftAppTenantId         || '';
+const TENANT_ID  = process.env.MicrosoftAppTenantId         || process.env.MICROSOFT_APP_TENANT_ID         || '';
 
 // ── Token acquisition via client credentials flow ─────────────────────────
 async function getToken() {
