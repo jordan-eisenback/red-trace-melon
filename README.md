@@ -41,3 +41,9 @@
   ```
   VITE_LOG_LEVEL=info   # debug | info | warn | error
   ```
+
+  ## AI Agents
+
+  This project includes a suite of AI agents for architecture planning, code review, QA, and more.
+
+  See **[agents/README.md](./agents/README.md)** for setup instructions, model configuration (GitHub Models or local Ollama), and a full command reference.
