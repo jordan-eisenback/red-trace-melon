@@ -16,9 +16,9 @@ projectId: red-trace-melon-agents
 environmentFolderPath: ./env
 
 provision:
-  # Create the AAD application registration.
-  # writeToEnvironmentFile tells the action which env var names to use
-  # when it writes the generated values into env/.env.local (and .user).
+  # Step 1: Create the AAD application registration.
+  # On first run this creates the app and writes all output vars to env/.env.local
+  # (public vars) and env/.env.local.user (SECRET_* vars, gitignored).
   - uses: aadApp/create
     with:
       name: red-trace-melon-agent-runner
@@ -32,13 +32,7 @@ provision:
       authority: AAD_APP_OAUTH_AUTHORITY
       authorityHost: AAD_APP_OAUTH_AUTHORITY_HOST
 
-  # Apply the AAD manifest (API scopes, permissions).
-  - uses: aadApp/update
-    with:
-      manifestPath: ./appPackage/aad.manifest.json
-      outputFilePath: ./build/aad.manifest.json
-
-  # Write friendly alias names that the adapter reads.
+  # Step 2: Write friendly alias names the adapter also reads.
   - uses: file/createOrUpdateEnvironmentFile
     with:
       target: ./env/.env.local
