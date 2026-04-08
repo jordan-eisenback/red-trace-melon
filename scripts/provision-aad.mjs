@@ -3,7 +3,11 @@
  * provision-aad.mjs
  * 
  * Creates an AAD app registration and writes credentials to env/.env.local
- * and env/.env.local.user — exactly what `atk provision` would do, but
+ * and env/.env.local.user — exac  const filterQuery = new URLSearchParams({
+    '$filter': `displayName eq '${APP_NAME}'`,
+    '$select': 'id,appId',
+  }).toString();
+  const existing = await graphGet(token, `/v1.0/applications?${filterQuery}`);ly what `atk provision` would do, but
  * without needing the Toolkit UI or Azure CLI.
  *
  * Usage:
@@ -37,9 +41,10 @@ function post(hostname, path, headers, body) {
   });
 }
 
-function get(hostname, path, headers) {
+function get(hostname, urlPath, headers) {
   return new Promise((resolve, reject) => {
-    const req = https.request({ hostname, path, method: 'GET', headers }, res => {
+    const url = new URL(`https://${hostname}${urlPath}`);
+    const req = https.request({ hostname: url.hostname, path: url.pathname + url.search, method: 'GET', headers }, res => {
       let d = '';
       res.on('data', c => d += c);
       res.on('end', () => { try { resolve(JSON.parse(d)); } catch (e) { resolve(d); } });
