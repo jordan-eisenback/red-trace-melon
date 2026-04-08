@@ -6,19 +6,19 @@ export const initialVendorData: VendorAppData = {
       "id": "vendor-1",
       "name": "Current Vendor (Cayosoft)",
       "type": "existing",
-      "createdAt": "2026-03-26T20:43:11.911Z"
+      "createdAt": "2026-03-27T14:38:52.765Z"
     },
     {
       "id": "vendor-2",
       "name": "Replacement Option 1 (Netwrix)",
       "type": "replacement",
-      "createdAt": "2026-03-26T20:43:11.911Z"
+      "createdAt": "2026-03-27T14:38:52.765Z"
     },
     {
       "id": "vendor-3",
       "name": "Replacement Option 2",
       "type": "replacement",
-      "createdAt": "2026-03-26T20:43:11.911Z"
+      "createdAt": "2026-03-27T14:38:52.765Z"
     }
   ],
   "evaluators": [
@@ -26,7 +26,7 @@ export const initialVendorData: VendorAppData = {
       "id": "eval-1",
       "name": "Default Evaluator",
       "email": "evaluator@example.com",
-      "createdAt": "2026-03-26T20:43:11.911Z"
+      "createdAt": "2026-03-27T14:38:52.765Z"
     }
   ],
   "criteriaProfiles": [
@@ -36,23 +36,23 @@ export const initialVendorData: VendorAppData = {
       "description": "Standard identity governance evaluation criteria",
       "criteria": [
         {
-          "id": "cat-pmn7xw3hi-core-identity-governance",
+          "id": "cat-pmn90bfj0-core-identity-governance",
           "category": "Core Identity Governance",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-core-identity-governance-user-lifecycle-automation-jml-",
+              "id": "sub-pmn90bfj0-core-identity-governance-user-lifecycle-automation-jml-",
               "name": "User Lifecycle Automation (JML)",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-core-identity-governance-access-request-approval-workflows",
+              "id": "sub-pmn90bfj0-core-identity-governance-access-request-approval-workflows",
               "name": "Access Request & Approval Workflows",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-core-identity-governance-certification-bulk-capabilities",
+              "id": "sub-pmn90bfj0-core-identity-governance-certification-bulk-capabilities",
               "name": "Certification & Bulk Capabilities",
               "description": "",
               "linkedRequirementIds": []
@@ -60,17 +60,17 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-hybrid-architecture",
+          "id": "cat-pmn90bfj0-hybrid-architecture",
           "category": "Hybrid Architecture",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-hybrid-architecture-architecture-model",
+              "id": "sub-pmn90bfj0-hybrid-architecture-architecture-model",
               "name": "Architecture Model",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-hybrid-architecture-hybrid-coexistence-support",
+              "id": "sub-pmn90bfj0-hybrid-architecture-hybrid-coexistence-support",
               "name": "Hybrid Coexistence Support",
               "description": "",
               "linkedRequirementIds": []
@@ -78,29 +78,29 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-integration-connectivity",
+          "id": "cat-pmn90bfj0-integration-connectivity",
           "category": "Integration & Connectivity",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-integration-connectivity-application-connectivity-model",
+              "id": "sub-pmn90bfj0-integration-connectivity-application-connectivity-model",
               "name": "Application Connectivity Model",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-integration-connectivity-workflow-integration-and-automation",
+              "id": "sub-pmn90bfj0-integration-connectivity-workflow-integration-and-automation",
               "name": "Workflow Integration and Automation",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-integration-connectivity-itsm-workflow-integration",
+              "id": "sub-pmn90bfj0-integration-connectivity-itsm-workflow-integration",
               "name": "ITSM & Workflow Integration",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-integration-connectivity-integration-flexibility",
+              "id": "sub-pmn90bfj0-integration-connectivity-integration-flexibility",
               "name": "Integration Flexibility",
               "description": "",
               "linkedRequirementIds": []
@@ -108,23 +108,23 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-access-model-roles",
+          "id": "cat-pmn90bfj0-access-model-roles",
           "category": "Access Model & Roles",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-access-model-roles-decision-making-depth",
+              "id": "sub-pmn90bfj0-access-model-roles-decision-making-depth",
               "name": "Decision Making Depth",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-access-model-roles-role-design-composition",
+              "id": "sub-pmn90bfj0-access-model-roles-role-design-composition",
               "name": "Role Design & Composition",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-access-model-roles-policy-model-enforcement",
+              "id": "sub-pmn90bfj0-access-model-roles-policy-model-enforcement",
               "name": "Policy Model & Enforcement",
               "description": "",
               "linkedRequirementIds": []
@@ -132,29 +132,29 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-security-audit-compliance",
+          "id": "cat-pmn90bfj0-security-audit-compliance",
           "category": "Security, Audit & Compliance",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-security-audit-compliance-audit-depth-traceability",
+              "id": "sub-pmn90bfj0-security-audit-compliance-audit-depth-traceability",
               "name": "Audit Depth & Traceability",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-security-audit-compliance-change-detection-correction",
+              "id": "sub-pmn90bfj0-security-audit-compliance-change-detection-correction",
               "name": "Change Detection & Correction",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-security-audit-compliance-privileged-access-controls",
+              "id": "sub-pmn90bfj0-security-audit-compliance-privileged-access-controls",
               "name": "Privileged Access Controls",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-security-audit-compliance-compliance-framework-support",
+              "id": "sub-pmn90bfj0-security-audit-compliance-compliance-framework-support",
               "name": "Compliance Framework Support",
               "description": "",
               "linkedRequirementIds": []
@@ -162,29 +162,29 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-customization-extensibility",
+          "id": "cat-pmn90bfj0-customization-extensibility",
           "category": "Customization & Extensibility",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-customization-extensibility-workflow-customization",
+              "id": "sub-pmn90bfj0-customization-extensibility-workflow-customization",
               "name": "Workflow Customization",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-customization-extensibility-platform-automation-apis",
+              "id": "sub-pmn90bfj0-customization-extensibility-platform-automation-apis",
               "name": "Platform Automation & APIs",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-customization-extensibility-ui-branding-extensibility",
+              "id": "sub-pmn90bfj0-customization-extensibility-ui-branding-extensibility",
               "name": "UI & Branding Extensibility",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-customization-extensibility-scripting-low-code-tools",
+              "id": "sub-pmn90bfj0-customization-extensibility-scripting-low-code-tools",
               "name": "Scripting & Low-Code Tools",
               "description": "",
               "linkedRequirementIds": []
@@ -192,29 +192,29 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-deployment-migration",
+          "id": "cat-pmn90bfj0-deployment-migration",
           "category": "Deployment & Migration",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-deployment-migration-planned-deployment-support",
+              "id": "sub-pmn90bfj0-deployment-migration-planned-deployment-support",
               "name": "Planned Deployment Support",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-deployment-migration-deployment-model-flexibility",
+              "id": "sub-pmn90bfj0-deployment-migration-deployment-model-flexibility",
               "name": "Deployment Model Flexibility",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-deployment-migration-migration-planning-tooling",
+              "id": "sub-pmn90bfj0-deployment-migration-migration-planning-tooling",
               "name": "Migration Planning & Tooling",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-deployment-migration-migration-cutover-readiness",
+              "id": "sub-pmn90bfj0-deployment-migration-migration-cutover-readiness",
               "name": "Migration & Cutover Readiness",
               "description": "",
               "linkedRequirementIds": []
@@ -222,23 +222,23 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-analytics-reporting",
+          "id": "cat-pmn90bfj0-analytics-reporting",
           "category": "Analytics & Reporting",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-analytics-reporting-operational-reporting",
+              "id": "sub-pmn90bfj0-analytics-reporting-operational-reporting",
               "name": "Operational Reporting",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-analytics-reporting-compliance-audit-reporting",
+              "id": "sub-pmn90bfj0-analytics-reporting-compliance-audit-reporting",
               "name": "Compliance & Audit Reporting",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-analytics-reporting-dashboard-visualization",
+              "id": "sub-pmn90bfj0-analytics-reporting-dashboard-visualization",
               "name": "Dashboard & Visualization",
               "description": "",
               "linkedRequirementIds": []
@@ -246,23 +246,23 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-support-model-slas",
+          "id": "cat-pmn90bfj0-support-model-slas",
           "category": "Support Model & SLAs",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-support-model-slas-support-coverage",
+              "id": "sub-pmn90bfj0-support-model-slas-support-coverage",
               "name": "Support Coverage",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-support-model-slas-portal-resources",
+              "id": "sub-pmn90bfj0-support-model-slas-portal-resources",
               "name": "Portal & Resources",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-support-model-slas-premium-tiers-slas",
+              "id": "sub-pmn90bfj0-support-model-slas-premium-tiers-slas",
               "name": "Premium Tiers & SLAs",
               "description": "",
               "linkedRequirementIds": []
@@ -270,23 +270,23 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-vendor-stability-roadmap",
+          "id": "cat-pmn90bfj0-vendor-stability-roadmap",
           "category": "Vendor Stability & Roadmap",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-vendor-stability-roadmap-vendor-viability",
+              "id": "sub-pmn90bfj0-vendor-stability-roadmap-vendor-viability",
               "name": "Vendor Viability",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-vendor-stability-roadmap-roadmap-transparency",
+              "id": "sub-pmn90bfj0-vendor-stability-roadmap-roadmap-transparency",
               "name": "Roadmap Transparency",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-vendor-stability-roadmap-partner-management",
+              "id": "sub-pmn90bfj0-vendor-stability-roadmap-partner-management",
               "name": "Partner Management",
               "description": "",
               "linkedRequirementIds": []
@@ -294,29 +294,29 @@ export const initialVendorData: VendorAppData = {
           ]
         },
         {
-          "id": "cat-pmn7xw3hi-cost-commercial",
+          "id": "cat-pmn90bfj0-cost-commercial",
           "category": "Cost & Commercial",
           "subCriteria": [
             {
-              "id": "sub-pmn7xw3hi-cost-commercial-licensing-complexity",
+              "id": "sub-pmn90bfj0-cost-commercial-licensing-complexity",
               "name": "Licensing Complexity",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-cost-commercial-cost-predictability",
+              "id": "sub-pmn90bfj0-cost-commercial-cost-predictability",
               "name": "Cost Predictability",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-cost-commercial-total-cost-of-ownership",
+              "id": "sub-pmn90bfj0-cost-commercial-total-cost-of-ownership",
               "name": "Total Cost of Ownership",
               "description": "",
               "linkedRequirementIds": []
             },
             {
-              "id": "sub-pmn7xw3hi-cost-commercial-renewal-cost",
+              "id": "sub-pmn90bfj0-cost-commercial-renewal-cost",
               "name": "Renewal Cost",
               "description": "",
               "linkedRequirementIds": []
@@ -324,8 +324,8 @@ export const initialVendorData: VendorAppData = {
           ]
         }
       ],
-      "createdAt": "2026-03-26T20:43:11.911Z",
-      "updatedAt": "2026-03-26T20:43:11.911Z"
+      "createdAt": "2026-03-27T14:38:52.765Z",
+      "updatedAt": "2026-03-27T14:38:52.765Z"
     }
   ],
   "activeCriteriaProfileId": "criteria-profile-default",
@@ -340,193 +340,193 @@ export const initialVendorData: VendorAppData = {
       "scoringMode": "sub-criteria",
       "weights": [
         {
-          "criterionId": "cat-pmn7xw3hi-core-identity-governance",
-          "subCriterionId": "sub-pmn7xw3hi-core-identity-governance-user-lifecycle-automation-jml-",
+          "criterionId": "cat-pmn90bfj0-core-identity-governance",
+          "subCriterionId": "sub-pmn90bfj0-core-identity-governance-user-lifecycle-automation-jml-",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-core-identity-governance",
-          "subCriterionId": "sub-pmn7xw3hi-core-identity-governance-access-request-approval-workflows",
+          "criterionId": "cat-pmn90bfj0-core-identity-governance",
+          "subCriterionId": "sub-pmn90bfj0-core-identity-governance-access-request-approval-workflows",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-core-identity-governance",
-          "subCriterionId": "sub-pmn7xw3hi-core-identity-governance-certification-bulk-capabilities",
+          "criterionId": "cat-pmn90bfj0-core-identity-governance",
+          "subCriterionId": "sub-pmn90bfj0-core-identity-governance-certification-bulk-capabilities",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-hybrid-architecture",
-          "subCriterionId": "sub-pmn7xw3hi-hybrid-architecture-architecture-model",
+          "criterionId": "cat-pmn90bfj0-hybrid-architecture",
+          "subCriterionId": "sub-pmn90bfj0-hybrid-architecture-architecture-model",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-hybrid-architecture",
-          "subCriterionId": "sub-pmn7xw3hi-hybrid-architecture-hybrid-coexistence-support",
+          "criterionId": "cat-pmn90bfj0-hybrid-architecture",
+          "subCriterionId": "sub-pmn90bfj0-hybrid-architecture-hybrid-coexistence-support",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-integration-connectivity",
-          "subCriterionId": "sub-pmn7xw3hi-integration-connectivity-application-connectivity-model",
+          "criterionId": "cat-pmn90bfj0-integration-connectivity",
+          "subCriterionId": "sub-pmn90bfj0-integration-connectivity-application-connectivity-model",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-integration-connectivity",
-          "subCriterionId": "sub-pmn7xw3hi-integration-connectivity-workflow-integration-and-automation",
+          "criterionId": "cat-pmn90bfj0-integration-connectivity",
+          "subCriterionId": "sub-pmn90bfj0-integration-connectivity-workflow-integration-and-automation",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-integration-connectivity",
-          "subCriterionId": "sub-pmn7xw3hi-integration-connectivity-itsm-workflow-integration",
+          "criterionId": "cat-pmn90bfj0-integration-connectivity",
+          "subCriterionId": "sub-pmn90bfj0-integration-connectivity-itsm-workflow-integration",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-integration-connectivity",
-          "subCriterionId": "sub-pmn7xw3hi-integration-connectivity-integration-flexibility",
+          "criterionId": "cat-pmn90bfj0-integration-connectivity",
+          "subCriterionId": "sub-pmn90bfj0-integration-connectivity-integration-flexibility",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-access-model-roles",
-          "subCriterionId": "sub-pmn7xw3hi-access-model-roles-decision-making-depth",
+          "criterionId": "cat-pmn90bfj0-access-model-roles",
+          "subCriterionId": "sub-pmn90bfj0-access-model-roles-decision-making-depth",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-access-model-roles",
-          "subCriterionId": "sub-pmn7xw3hi-access-model-roles-role-design-composition",
+          "criterionId": "cat-pmn90bfj0-access-model-roles",
+          "subCriterionId": "sub-pmn90bfj0-access-model-roles-role-design-composition",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-access-model-roles",
-          "subCriterionId": "sub-pmn7xw3hi-access-model-roles-policy-model-enforcement",
+          "criterionId": "cat-pmn90bfj0-access-model-roles",
+          "subCriterionId": "sub-pmn90bfj0-access-model-roles-policy-model-enforcement",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-security-audit-compliance",
-          "subCriterionId": "sub-pmn7xw3hi-security-audit-compliance-audit-depth-traceability",
+          "criterionId": "cat-pmn90bfj0-security-audit-compliance",
+          "subCriterionId": "sub-pmn90bfj0-security-audit-compliance-audit-depth-traceability",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-security-audit-compliance",
-          "subCriterionId": "sub-pmn7xw3hi-security-audit-compliance-change-detection-correction",
+          "criterionId": "cat-pmn90bfj0-security-audit-compliance",
+          "subCriterionId": "sub-pmn90bfj0-security-audit-compliance-change-detection-correction",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-security-audit-compliance",
-          "subCriterionId": "sub-pmn7xw3hi-security-audit-compliance-privileged-access-controls",
+          "criterionId": "cat-pmn90bfj0-security-audit-compliance",
+          "subCriterionId": "sub-pmn90bfj0-security-audit-compliance-privileged-access-controls",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-security-audit-compliance",
-          "subCriterionId": "sub-pmn7xw3hi-security-audit-compliance-compliance-framework-support",
+          "criterionId": "cat-pmn90bfj0-security-audit-compliance",
+          "subCriterionId": "sub-pmn90bfj0-security-audit-compliance-compliance-framework-support",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-customization-extensibility",
-          "subCriterionId": "sub-pmn7xw3hi-customization-extensibility-workflow-customization",
+          "criterionId": "cat-pmn90bfj0-customization-extensibility",
+          "subCriterionId": "sub-pmn90bfj0-customization-extensibility-workflow-customization",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-customization-extensibility",
-          "subCriterionId": "sub-pmn7xw3hi-customization-extensibility-platform-automation-apis",
+          "criterionId": "cat-pmn90bfj0-customization-extensibility",
+          "subCriterionId": "sub-pmn90bfj0-customization-extensibility-platform-automation-apis",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-customization-extensibility",
-          "subCriterionId": "sub-pmn7xw3hi-customization-extensibility-ui-branding-extensibility",
+          "criterionId": "cat-pmn90bfj0-customization-extensibility",
+          "subCriterionId": "sub-pmn90bfj0-customization-extensibility-ui-branding-extensibility",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-customization-extensibility",
-          "subCriterionId": "sub-pmn7xw3hi-customization-extensibility-scripting-low-code-tools",
+          "criterionId": "cat-pmn90bfj0-customization-extensibility",
+          "subCriterionId": "sub-pmn90bfj0-customization-extensibility-scripting-low-code-tools",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-deployment-migration",
-          "subCriterionId": "sub-pmn7xw3hi-deployment-migration-planned-deployment-support",
+          "criterionId": "cat-pmn90bfj0-deployment-migration",
+          "subCriterionId": "sub-pmn90bfj0-deployment-migration-planned-deployment-support",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-deployment-migration",
-          "subCriterionId": "sub-pmn7xw3hi-deployment-migration-deployment-model-flexibility",
+          "criterionId": "cat-pmn90bfj0-deployment-migration",
+          "subCriterionId": "sub-pmn90bfj0-deployment-migration-deployment-model-flexibility",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-deployment-migration",
-          "subCriterionId": "sub-pmn7xw3hi-deployment-migration-migration-planning-tooling",
+          "criterionId": "cat-pmn90bfj0-deployment-migration",
+          "subCriterionId": "sub-pmn90bfj0-deployment-migration-migration-planning-tooling",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-deployment-migration",
-          "subCriterionId": "sub-pmn7xw3hi-deployment-migration-migration-cutover-readiness",
+          "criterionId": "cat-pmn90bfj0-deployment-migration",
+          "subCriterionId": "sub-pmn90bfj0-deployment-migration-migration-cutover-readiness",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-analytics-reporting",
-          "subCriterionId": "sub-pmn7xw3hi-analytics-reporting-operational-reporting",
+          "criterionId": "cat-pmn90bfj0-analytics-reporting",
+          "subCriterionId": "sub-pmn90bfj0-analytics-reporting-operational-reporting",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-analytics-reporting",
-          "subCriterionId": "sub-pmn7xw3hi-analytics-reporting-compliance-audit-reporting",
+          "criterionId": "cat-pmn90bfj0-analytics-reporting",
+          "subCriterionId": "sub-pmn90bfj0-analytics-reporting-compliance-audit-reporting",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-analytics-reporting",
-          "subCriterionId": "sub-pmn7xw3hi-analytics-reporting-dashboard-visualization",
+          "criterionId": "cat-pmn90bfj0-analytics-reporting",
+          "subCriterionId": "sub-pmn90bfj0-analytics-reporting-dashboard-visualization",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-support-model-slas",
-          "subCriterionId": "sub-pmn7xw3hi-support-model-slas-support-coverage",
+          "criterionId": "cat-pmn90bfj0-support-model-slas",
+          "subCriterionId": "sub-pmn90bfj0-support-model-slas-support-coverage",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-support-model-slas",
-          "subCriterionId": "sub-pmn7xw3hi-support-model-slas-portal-resources",
+          "criterionId": "cat-pmn90bfj0-support-model-slas",
+          "subCriterionId": "sub-pmn90bfj0-support-model-slas-portal-resources",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-support-model-slas",
-          "subCriterionId": "sub-pmn7xw3hi-support-model-slas-premium-tiers-slas",
+          "criterionId": "cat-pmn90bfj0-support-model-slas",
+          "subCriterionId": "sub-pmn90bfj0-support-model-slas-premium-tiers-slas",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-vendor-stability-roadmap",
-          "subCriterionId": "sub-pmn7xw3hi-vendor-stability-roadmap-vendor-viability",
+          "criterionId": "cat-pmn90bfj0-vendor-stability-roadmap",
+          "subCriterionId": "sub-pmn90bfj0-vendor-stability-roadmap-vendor-viability",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-vendor-stability-roadmap",
-          "subCriterionId": "sub-pmn7xw3hi-vendor-stability-roadmap-roadmap-transparency",
+          "criterionId": "cat-pmn90bfj0-vendor-stability-roadmap",
+          "subCriterionId": "sub-pmn90bfj0-vendor-stability-roadmap-roadmap-transparency",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-vendor-stability-roadmap",
-          "subCriterionId": "sub-pmn7xw3hi-vendor-stability-roadmap-partner-management",
+          "criterionId": "cat-pmn90bfj0-vendor-stability-roadmap",
+          "subCriterionId": "sub-pmn90bfj0-vendor-stability-roadmap-partner-management",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-cost-commercial",
-          "subCriterionId": "sub-pmn7xw3hi-cost-commercial-licensing-complexity",
+          "criterionId": "cat-pmn90bfj0-cost-commercial",
+          "subCriterionId": "sub-pmn90bfj0-cost-commercial-licensing-complexity",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-cost-commercial",
-          "subCriterionId": "sub-pmn7xw3hi-cost-commercial-cost-predictability",
+          "criterionId": "cat-pmn90bfj0-cost-commercial",
+          "subCriterionId": "sub-pmn90bfj0-cost-commercial-cost-predictability",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-cost-commercial",
-          "subCriterionId": "sub-pmn7xw3hi-cost-commercial-total-cost-of-ownership",
+          "criterionId": "cat-pmn90bfj0-cost-commercial",
+          "subCriterionId": "sub-pmn90bfj0-cost-commercial-total-cost-of-ownership",
           "weight": 1
         },
         {
-          "criterionId": "cat-pmn7xw3hi-cost-commercial",
-          "subCriterionId": "sub-pmn7xw3hi-cost-commercial-renewal-cost",
+          "criterionId": "cat-pmn90bfj0-cost-commercial",
+          "subCriterionId": "sub-pmn90bfj0-cost-commercial-renewal-cost",
           "weight": 1
         }
       ],
-      "createdAt": "2026-03-26T20:43:11.911Z",
-      "updatedAt": "2026-03-26T20:43:11.911Z"
+      "createdAt": "2026-03-27T14:38:52.765Z",
+      "updatedAt": "2026-03-27T14:38:52.765Z"
     }
   ],
   "activeProfileId": "weighting-profile-default",

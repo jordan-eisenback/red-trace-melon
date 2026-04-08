@@ -14,7 +14,7 @@ export type RequirementType =
   | "Capability (Optional)"
   | "Other";
 
-export type RequirementStatus = "Validated" | "Not Validated";
+export type RequirementStatus = "Validated" | "Not Validated" | "duplicate";
 
 export type RequirementPriority = "Must" | "Should" | "Could" | "Would";
 

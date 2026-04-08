@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://aka.ms/teams-toolkit/v1.8/yaml.schema.json
+#
+# Microsoft 365 Agents Toolkit — project configuration
+# Former name: teamsapp.yml (Teams Toolkit)
+#
+# Usage:
+#   Provision: open M365 Agents Toolkit panel → Accounts (sign in with M365 account)
+#              → Lifecycle → Provision
+#   This creates the AAD app, writes credentials to .env/.env.local and
+#   .env/.env.local.user so the agent runner can authenticate.
+#
+version: v1.8
+
+projectId: red-trace-melon-agents
+
+provision:
+  # Create the AAD application registration
+  - uses: aadApp/create
+    with:
+      name: red-trace-melon-agent-runner
+      generateClientSecret: true
+      signInAudience: AzureADMyOrg
+
+  # Apply the AAD manifest (scopes, permissions)
+  - uses: aadApp/update
+    with:
+      manifestPath: ./appPackage/aad.manifest.json
+      outputFilePath: ./build/aad.manifest.json
+
+  # Write provisioned values into .env/.env.local
+  - uses: file/createOrUpdateEnvironmentFile
+    with:
+      target: ./.env/.env.local
+      envs:
+        MicrosoftAppId:       ${{AAD_APP_CLIENT_ID}}
+        MicrosoftAppTenantId: ${{AAD_APP_TENANT_ID}}
+
+  # Write the client secret into .env/.env.local.user (gitignored)
+  - uses: file/createOrUpdateEnvironmentFile
+    with:
+      target: ./.env/.env.local.user
+      envs:
+        SECRET_AAD_APP_CLIENT_SECRET: ${{SECRET_AAD_APP_CLIENT_SECRET}}
+
+environmentFolderPath: ./.env

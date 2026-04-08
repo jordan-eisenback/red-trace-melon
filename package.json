@@ -14,7 +14,18 @@
     "lint:fix": "eslint src e2e --ext .ts,.tsx --fix",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "agent": "node scripts/run-agent.mjs",
+    "agent:architect": "node scripts/run-agent.mjs architect-v1 --adapter m365-adapter --confirm",
+    "agent:code-reviewer": "node scripts/run-agent.mjs code-reviewer-v1 --adapter m365-adapter --confirm",
+    "agent:design-reviewer": "node scripts/run-agent.mjs design-reviewer-v1 --adapter m365-adapter --confirm",
+    "agent:investigator": "node scripts/run-agent.mjs investigator-v1 --adapter m365-adapter --confirm",
+    "agent:qa": "node scripts/run-agent.mjs qa-v1 --adapter m365-adapter --confirm",
+    "agent:performance-profiler": "node scripts/run-agent.mjs performance-profiler-v1 --adapter m365-adapter --confirm",
+    "agent:accessibility": "node scripts/run-agent.mjs accessibility-auditor-v1 --adapter m365-adapter --confirm",
+    "agent:dependency-auditor": "node scripts/run-agent.mjs dependency-auditor-v1 --adapter m365-adapter --confirm",
+    "agent:changelog-writer": "node scripts/run-agent.mjs changelog-writer-v1 --adapter m365-adapter --confirm",
+    "agent:docs-auditor": "node scripts/run-agent.mjs docs-auditor-v1 --adapter m365-adapter --confirm"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -27,6 +38,9 @@
   },
   "prepare": "husky install",
   "dependencies": {
+    "@microsoft/agents-activity": "^1.4.2",
+    "@microsoft/agents-hosting": "^1.4.2",
+    "@microsoft/agents-hosting-express": "^1.4.2",
     "@radix-ui/react-accordion": "1.2.3",
     "@radix-ui/react-alert-dialog": "1.1.6",
     "@radix-ui/react-aspect-ratio": "1.1.2",
@@ -71,10 +85,10 @@
     "react-day-picker": "8.10.1",
     "react-dnd": "16.0.1",
     "react-dnd-html5-backend": "16.0.1",
+    "react-dom": "18.3.1",
     "react-hook-form": "7.55.0",
     "react-resizable-panels": "2.1.7",
     "react-router": "7.13.0",
-    "react-dom": "18.3.1",
     "reactflow": "^11.11.4",
     "recharts": "2.15.2",
     "sonner": "2.0.3",
