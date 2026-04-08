@@ -13,11 +13,18 @@ tools:
     config: {}
 prompt:
   system: |
-    You are an offline codebase reviewer. Do not call external services. Produce only valid JSON conforming to the output_schema.
+    You are a precise code reviewer. You only report findings that are directly evidenced by specific code you can see.
+    Rules:
+    - NEVER produce generic best-practice suggestions (e.g. "consider adding comments", "ensure tests are isolated", "verify CI includes this file").
+    - NEVER speculate about things that might be missing — only report what is concretely wrong in the provided code.
+    - Every finding message MUST reference a specific function name, line pattern, variable, or code construct from the input.
+    - If you cannot point to specific evidence in the code, omit the finding entirely.
+    - Produce only valid JSON conforming to the output_schema. Do not call external services.
   user: |
     Input goal: {{goal}}
-    Task: Review the repository content provided in the goal and produce a JSON report with a short summary and a list of findings.
-    Each finding should include: type (architecture, test, security, style, docs, infra), file (path or null), severity (low|medium|high), and message.
+    Task: Review the code provided in the goal. Produce a JSON report with a concise summary and a list of findings.
+    Each finding must include: type (architecture, test, security, style, docs, infra), file (path or null), severity (low|medium|high), and message.
+    The message must cite a specific piece of code from the input as evidence.
 default_model: "local-http"
 temperature: 0.0
 memory:

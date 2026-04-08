@@ -154,11 +154,15 @@ jobs:
         id: changed
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | head -40 | tr '\n' ' ')
+            BASE="origin/${{ github.base_ref }}"
           else
-            FILES=$(git diff --name-only HEAD~1 HEAD | head -40 | tr '\n' ' ')
+            BASE="HEAD~1"
           fi
-          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+          # Collect unified diff (capped at 400 lines to stay within token budget)
+          DIFF=$(git diff "$BASE"...HEAD -- '*.ts' '*.tsx' '*.js' '*.mjs' '*.cjs' '*.yaml' '*.yml' '*.json' 2>/dev/null | head -400)
+          # Write to a temp file so the run step can read it without shell quoting issues
+          echo "$DIFF" > /tmp/pr-diff.txt
+          echo "diff_file=/tmp/pr-diff.txt" >> "$GITHUB_OUTPUT"
 
       - name: Run agent:review on changed files
         if: steps.opt_in.outputs.enabled == 'true'
@@ -169,7 +173,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MODELS_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          GOAL="Review the following changed files for this PR and report findings: ${{ steps.changed.outputs.files }}"
+          # Build the goal string in a temp file to avoid shell quoting / YAML issues
+          DIFF_CONTENT=$(cat /tmp/pr-diff.txt)
+          node -e "
+            const fs = require('fs');
+            const diff = fs.readFileSync('/tmp/pr-diff.txt', 'utf8');
+            const goal = 'You are reviewing a pull request. Below is the unified diff of all changed files.\n' +
+              'Report only concrete, specific issues you can see in the diff — do not report generic best-practice suggestions or speculative concerns.\n' +
+              'Each finding message must reference a specific line, function, or pattern from the diff.\n' +
+              'If there are no real issues, return an empty findings array.\n\n' +
+              '## PR diff\n\n' + diff;
+            fs.writeFileSync('/tmp/agent-goal.txt', goal);
+          "
+          GOAL=$(cat /tmp/agent-goal.txt)
           npm run agent:review -- --goal "$GOAL" --no-git
           OUTPUT_FILE=$(ls -t storage/agents/output/code-reviewer-v1/*.json 2>/dev/null | head -1)
           echo "output_file=$OUTPUT_FILE" >> "$GITHUB_OUTPUT"
