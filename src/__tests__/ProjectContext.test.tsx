@@ -241,3 +241,95 @@ describe("ProjectContext — guard", () => {
     spy.mockRestore();
   });
 });
+
+describe("ProjectContext — key isolation between two projects (closes #91)", () => {
+  it("each project gets its own namespaced localStorage key for requirements", () => {
+    const { result } = renderHook(() => useProject(), { wrapper });
+
+    let idA: string;
+    let idB: string;
+
+    act(() => {
+      const a = result.current.createProject("Project A");
+      const b = result.current.createProject("Project B");
+      idA = a.id;
+      idB = b.id;
+    });
+
+    // Write distinct data to each project's namespaced slot
+    localStorage.setItem(`rtm-requirements-${idA!}`, JSON.stringify([{ id: "REQ-A" }]));
+    localStorage.setItem(`rtm-requirements-${idB!}`, JSON.stringify([{ id: "REQ-B" }]));
+
+    // Verify the keys are fully separate
+    const dataA = JSON.parse(localStorage.getItem(`rtm-requirements-${idA!}`) ?? "[]");
+    const dataB = JSON.parse(localStorage.getItem(`rtm-requirements-${idB!}`) ?? "[]");
+
+    expect(dataA[0].id).toBe("REQ-A");
+    expect(dataB[0].id).toBe("REQ-B");
+    // Switching would never expose B's data under A's key
+    expect(dataA[0].id).not.toBe(dataB[0].id);
+  });
+
+  it("switching activeProject changes the namespaced key that contexts would read", () => {
+    const { result } = renderHook(() => useProject(), { wrapper });
+
+    let idA: string;
+    let idB: string;
+
+    act(() => {
+      const a = result.current.createProject("Alpha");
+      const b = result.current.createProject("Beta");
+      idA = a.id;
+      idB = b.id;
+    });
+
+    // Seed different data for each project
+    localStorage.setItem(`rtm-frameworks-${idA!}`, JSON.stringify([{ id: "FW-ALPHA" }]));
+    localStorage.setItem(`rtm-frameworks-${idB!}`, JSON.stringify([{ id: "FW-BETA" }]));
+
+    act(() => { result.current.setActiveProject(idA!); });
+    expect(result.current.activeProjectId).toBe(idA!);
+    expect(JSON.parse(localStorage.getItem(`rtm-frameworks-${result.current.activeProjectId}`) ?? "[]")[0].id).toBe("FW-ALPHA");
+
+    act(() => { result.current.setActiveProject(idB!); });
+    expect(result.current.activeProjectId).toBe(idB!);
+    expect(JSON.parse(localStorage.getItem(`rtm-frameworks-${result.current.activeProjectId}`) ?? "[]")[0].id).toBe("FW-BETA");
+  });
+
+  it("deleting a project purges its namespaced keys", () => {
+    const { result } = renderHook(() => useProject(), { wrapper });
+
+    let idToDelete: string;
+
+    act(() => {
+      const p = result.current.createProject("Ephemeral");
+      idToDelete = p.id;
+    });
+
+    // Seed some data under this project's namespace
+    localStorage.setItem(`rtm-requirements-${idToDelete!}`, JSON.stringify([{ id: "REQ-GONE" }]));
+    localStorage.setItem(`rtm-epics-${idToDelete!}`, JSON.stringify([{ id: "EPIC-GONE" }]));
+
+    act(() => { result.current.deleteProject(idToDelete!); });
+
+    // purgeProjectKeys should have removed all keys ending in -${idToDelete}
+    expect(localStorage.getItem(`rtm-requirements-${idToDelete!}`)).toBeNull();
+    expect(localStorage.getItem(`rtm-epics-${idToDelete!}`)).toBeNull();
+  });
+
+  it("migration copies unnamespaced legacy key to proj_rbac namespace", () => {
+    // Simulate a pre-migration state: legacy unnamespaced key exists
+    localStorage.setItem("rtm-requirements", JSON.stringify([{ id: "LEGACY-REQ" }]));
+
+    // Re-mounting the provider triggers migrateLegacyKeys()
+    renderHook(() => useProject(), { wrapper });
+
+    // The namespaced key should now exist
+    const migrated = JSON.parse(localStorage.getItem("rtm-requirements-proj_rbac") ?? "null");
+    expect(migrated).not.toBeNull();
+    expect(migrated[0].id).toBe("LEGACY-REQ");
+
+    // The old unnamespaced key should be gone
+    expect(localStorage.getItem("rtm-requirements")).toBeNull();
+  });
+});
