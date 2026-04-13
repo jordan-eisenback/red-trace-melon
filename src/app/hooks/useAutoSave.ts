@@ -5,6 +5,12 @@ export type AutoSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 interface UseAutoSaveOptions {
   /** How often to auto-save in milliseconds. Default: 5 minutes. */
   intervalMs?: number;
+  /**
+   * Delay before the very first auto-save fires after mount, in milliseconds.
+   * Prevents a race between an in-flight POST and immediate page unload.
+   * Default: 2 000 ms.
+   */
+  mountDelayMs?: number;
   /** Called immediately on mount and then every intervalMs. Must return the full payload to POST. */
   getPayload: () => Record<string, unknown>;
 }
@@ -15,7 +21,7 @@ interface UseAutoSaveOptions {
  *
  * No-op in production builds.
  */
-export function useAutoSave({ intervalMs = 5 * 60 * 1000, getPayload }: UseAutoSaveOptions) {
+export function useAutoSave({ intervalMs = 5 * 60 * 1000, mountDelayMs = 2_000, getPayload }: UseAutoSaveOptions) {
   const [status, setStatus] = useState<AutoSaveStatus>('idle');
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   const getPayloadRef = useRef(getPayload);
@@ -39,13 +45,20 @@ export function useAutoSave({ intervalMs = 5 * 60 * 1000, getPayload }: UseAutoS
     }
   }, []);
 
-  // Run on mount, then on the interval
+  // Delay the first save by mountDelayMs to avoid racing with page unload,
+  // then repeat every intervalMs.
   useEffect(() => {
     if (import.meta.env.PROD) return;
-    save();
-    const id = setInterval(save, intervalMs);
-    return () => clearInterval(id);
-  }, [save, intervalMs]);
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    const mountTimer = setTimeout(() => {
+      save();
+      intervalId = setInterval(save, intervalMs);
+    }, mountDelayMs);
+    return () => {
+      clearTimeout(mountTimer);
+      if (intervalId !== undefined) clearInterval(intervalId);
+    };
+  }, [save, intervalMs, mountDelayMs]);
 
   return { status, lastSavedAt, saveNow: save };
 }
