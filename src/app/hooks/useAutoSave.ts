@@ -19,7 +19,26 @@ interface UseAutoSaveOptions {
  * Periodically POSTs all context state to `/api/save-all` so data is flushed
  * to disk even when the user hasn't made any recent changes.
  *
- * No-op in production builds.
+ * No-op in production builds (`import.meta.env.PROD === true`).
+ *
+ * @param options.intervalMs   - Repeat interval between saves (ms). Default: 5 min.
+ * @param options.mountDelayMs - Delay before the *first* save fires after mount (ms).
+ *   Prevents a race between an in-flight POST and an immediate page unload / HMR
+ *   reload. Default: 2 000 ms.
+ * @param options.getPayload   - Called on each save tick; must return the full JSON
+ *   payload to POST.  The reference is captured via a ref so a stale closure never
+ *   causes a missed update.
+ *
+ * @returns `{ status, lastSavedAt, saveNow }` where `saveNow` triggers an
+ *   immediate save regardless of the mount delay or interval timing.
+ *
+ * @example
+ * ```ts
+ * const { status, lastSavedAt } = useAutoSave({
+ *   getPayload: () => ({ requirements, epics }),
+ *   mountDelayMs: 3_000,
+ * });
+ * ```
  */
 export function useAutoSave({ intervalMs = 5 * 60 * 1000, mountDelayMs = 2_000, getPayload }: UseAutoSaveOptions) {
   const [status, setStatus] = useState<AutoSaveStatus>('idle');
