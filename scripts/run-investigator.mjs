@@ -327,5 +327,6 @@ ${C.bold}Examples:${C.reset}
 
 main().catch(e => {
   console.error(`\x1b[31m✗\x1b[0m  Fatal: ${e.message}`);
+  if (e.stack) console.error(`\x1b[2m${e.stack}\x1b[0m`);
   process.exit(2);
 });
