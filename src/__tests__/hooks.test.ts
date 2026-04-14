@@ -72,24 +72,76 @@ describe('usePersistToDisk', () => {
 // ── useAutoSave ───────────────────────────────────────────────────────────────
 
 describe('useAutoSave', () => {
-  it('transitions to "saving" or "saved" immediately on mount in dev mode', async () => {
+  it('status remains "idle" immediately on mount (save is delayed by mountDelayMs)', async () => {
     vi.stubEnv('PROD', false);
+    vi.useFakeTimers();
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal('fetch', mockFetch);
+    vi.resetModules();
     const { useAutoSave } = await import('../app/hooks/useAutoSave');
     const { result } = renderHook(() =>
-      useAutoSave({ getPayload: () => ({ data: 1 }) })
+      useAutoSave({ mountDelayMs: 2000, getPayload: () => ({ data: 1 }) })
     );
-    await waitFor(() =>
-      expect(['saving', 'saved']).toContain(result.current.status)
-    );
+    // No save should have fired yet
+    await act(async () => { await Promise.resolve(); });
+    expect(result.current.status).toBe('idle');
+    expect(mockFetch).not.toHaveBeenCalled();
+    vi.useRealTimers();
   });
 
-  it('transitions status to "saved" after a successful fetch', async () => {
+  it('transitions status to "saved" after a successful fetch (after mount delay)', async () => {
     vi.stubEnv('PROD', false);
+    vi.useFakeTimers();
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal('fetch', mockFetch);
+    vi.resetModules();
     const { useAutoSave } = await import('../app/hooks/useAutoSave');
     const { result } = renderHook(() =>
-      useAutoSave({ getPayload: () => ({ data: 1 }) })
+      useAutoSave({ mountDelayMs: 2000, getPayload: () => ({ data: 1 }) })
     );
-    await waitFor(() => expect(result.current.status).toBe('saved'));
+    // Advance past mount delay
+    await act(async () => {
+      vi.advanceTimersByTime(2100);
+      await Promise.resolve();
+    });
+    vi.useRealTimers();
+    expect(result.current.status).toBe('saved');
+  });
+
+  it('no save is triggered within 1 900 ms of mount', async () => {
+    vi.stubEnv('PROD', false);
+    vi.useFakeTimers();
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal('fetch', mockFetch);
+    vi.resetModules();
+    const { useAutoSave } = await import('../app/hooks/useAutoSave');
+    renderHook(() =>
+      useAutoSave({ mountDelayMs: 2000, getPayload: () => ({}) })
+    );
+    await act(async () => {
+      vi.advanceTimersByTime(1900);
+      await Promise.resolve();
+    });
+    vi.useRealTimers();
+    expect(mockFetch).not.toHaveBeenCalled();
+  });
+
+  it('a save IS triggered after 2 100 ms of mount', async () => {
+    vi.stubEnv('PROD', false);
+    vi.useFakeTimers();
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal('fetch', mockFetch);
+    vi.resetModules();
+    const { useAutoSave } = await import('../app/hooks/useAutoSave');
+    renderHook(() =>
+      useAutoSave({ mountDelayMs: 2000, getPayload: () => ({}) })
+    );
+    await act(async () => {
+      vi.advanceTimersByTime(2100);
+      await Promise.resolve();
+    });
+    vi.useRealTimers();
+    expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 
   it('transitions status to "error" when fetch returns a non-ok response', async () => {
@@ -98,7 +150,7 @@ describe('useAutoSave', () => {
     vi.resetModules();
     const { useAutoSave } = await import('../app/hooks/useAutoSave');
     const { result } = renderHook(() =>
-      useAutoSave({ getPayload: () => ({}) })
+      useAutoSave({ mountDelayMs: 0, getPayload: () => ({}) })
     );
     await waitFor(() => expect(result.current.status).toBe('error'));
   });
@@ -107,7 +159,7 @@ describe('useAutoSave', () => {
     vi.stubEnv('PROD', false);
     const { useAutoSave } = await import('../app/hooks/useAutoSave');
     const { result } = renderHook(() =>
-      useAutoSave({ getPayload: () => ({}) })
+      useAutoSave({ mountDelayMs: 0, getPayload: () => ({}) })
     );
     await waitFor(() => expect(result.current.lastSavedAt).toBeInstanceOf(Date));
   });
@@ -120,12 +172,15 @@ describe('useAutoSave', () => {
     vi.resetModules();
     const { useAutoSave } = await import('../app/hooks/useAutoSave');
     renderHook(() =>
-      useAutoSave({ intervalMs: 1000, getPayload: () => ({}) })
+      useAutoSave({ mountDelayMs: 2000, intervalMs: 1000, getPayload: () => ({}) })
     );
-    // Let the mount-save settle
-    await act(async () => { await Promise.resolve(); });
+    // Advance past mount delay — first save fires
+    await act(async () => {
+      vi.advanceTimersByTime(2100);
+      await Promise.resolve();
+    });
     const callsAfterMount = mockFetch.mock.calls.length;
-    // Advance one interval and flush promises
+    // Advance one full interval — second save fires
     await act(async () => {
       vi.advanceTimersByTime(1000);
       await Promise.resolve();
@@ -147,19 +202,20 @@ describe('useAutoSave', () => {
     expect(mockFetch).not.toHaveBeenCalled();
   });
 
-  it('saveNow() triggers an immediate save', async () => {
+  it('saveNow() triggers an immediate save regardless of mount delay', async () => {
     vi.stubEnv('PROD', false);
     const mockFetch = vi.fn().mockResolvedValue({ ok: true });
     vi.stubGlobal('fetch', mockFetch);
     vi.resetModules();
     const { useAutoSave } = await import('../app/hooks/useAutoSave');
     const { result } = renderHook(() =>
-      useAutoSave({ intervalMs: 99999, getPayload: () => ({}) })
+      useAutoSave({ mountDelayMs: 99999, intervalMs: 99999, getPayload: () => ({}) })
     );
-    // Let the mount-save settle
-    await waitFor(() => expect(mockFetch.mock.calls.length).toBeGreaterThan(0));
-    const before = mockFetch.mock.calls.length;
+    // Mount delay hasn't fired — no auto-save yet
+    await act(async () => { await Promise.resolve(); });
+    expect(mockFetch).not.toHaveBeenCalled();
+    // saveNow() bypasses the delay
     await act(async () => { await result.current.saveNow(); });
-    expect(mockFetch.mock.calls.length).toBeGreaterThan(before);
+    expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 });
