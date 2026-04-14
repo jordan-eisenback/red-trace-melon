@@ -154,11 +154,15 @@ jobs:
         id: changed
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | head -40 | tr '\n' ' ')
+            BASE="origin/${{ github.base_ref }}"
           else
-            FILES=$(git diff --name-only HEAD~1 HEAD | head -40 | tr '\n' ' ')
+            BASE="HEAD~1"
           fi
-          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+          # Collect unified diff (capped at 400 lines to stay within token budget)
+          DIFF=$(git diff "$BASE"...HEAD -- '*.ts' '*.tsx' '*.js' '*.mjs' '*.cjs' '*.yaml' '*.yml' '*.json' 2>/dev/null | head -400)
+          # Write to a temp file so the run step can read it without shell quoting issues
+          echo "$DIFF" > /tmp/pr-diff.txt
+          echo "diff_file=/tmp/pr-diff.txt" >> "$GITHUB_OUTPUT"
 
       - name: Run agent:review on changed files
         if: steps.opt_in.outputs.enabled == 'true'
@@ -169,8 +173,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MODELS_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          GOAL="Review the following changed files for this PR and report findings: ${{ steps.changed.outputs.files }}"
-          npm run agent:review -- --goal "$GOAL" --no-git
+          # Build the goal file via Node to avoid shell quoting / YAML issues
+          node -e "
+            const fs = require('fs');
+            const diff = fs.readFileSync('/tmp/pr-diff.txt', 'utf8');
+            const goal = 'You are reviewing a pull request. Below is the unified diff of all changed files.\n' +
+              'Report only concrete, specific issues you can see in the diff — do not report generic best-practice suggestions or speculative concerns.\n' +
+              'Each finding message MUST reference a specific function name, line pattern, variable, or code construct visible in the diff below.\n' +
+              'If there are no real issues, return an empty findings array.\n\n## PR diff\n\n' + diff;
+            fs.writeFileSync('/tmp/agent-goal.txt', goal);
+          "
+          GOAL=$(cat /tmp/agent-goal.txt)
+          # Call run-agent.mjs directly — bypasses the repo-snapshot wrapper
+          # so only the diff is sent to the model, not the full file tree.
+          node scripts/run-agent.mjs code-reviewer-v1 --adapter github-models-adapter --confirm --goal "$GOAL"
           OUTPUT_FILE=$(ls -t storage/agents/output/code-reviewer-v1/*.json 2>/dev/null | head -1)
           echo "output_file=$OUTPUT_FILE" >> "$GITHUB_OUTPUT"
 
@@ -185,24 +201,26 @@ jobs:
           const file = process.env.OUTPUT_FILE;
           if (!file || !fs.existsSync(file)) { console.log('No output file — skipping comment'); process.exit(0); }
           const d = JSON.parse(fs.readFileSync(file, 'utf8'));
-          const o = d.output;
+          const o = d.output ?? d; // handle both {output:{...}} and flat schema
           const findings = o.findings ?? [];
           const high   = findings.filter(f => f.severity === 'high');
           const medium = findings.filter(f => f.severity === 'medium');
           const low    = findings.filter(f => f.severity === 'low');
-          const badge  = high.length ? '🔴' : medium.length ? '🟡' : '🟢';
+          const badge = high.length ? '[HIGH]' : (medium.length || findings.length) ? '[MED]' : '[PASS]';
           let body = `## ${badge} Agent Code Review\n\n`;
-          body += `**Summary:** ${o.summary}\n\n`;
-          body += `**Findings:** ${findings.length} total`;
-          if (high.length)   body += ` · ${high.length} 🔴 high`;
-          if (medium.length) body += ` · ${medium.length} 🟡 medium`;
-          if (low.length)    body += ` · ${low.length} 🔵 low`;
-          body += '\n\n';
-          if (findings.length) {
+          body += `**Summary:** ${o.summary ?? '(no summary)'}\n\n`;
+          if (findings.length === 0) {
+            body += '_No issues found in this diff._\n';
+          } else {
+            body += `**Findings:** ${findings.length} total`;
+            if (high.length)   body += ` · ${high.length} [HIGH]`;
+            if (medium.length) body += ` · ${medium.length} [MED]`;
+            if (low.length)    body += ` · ${low.length} [LOW]`;
+            body += '\n\n';
             body += '| Severity | Type | File | Message |\n|---|---|---|---|\n';
             for (const f of findings) {
-              const sev  = f.severity === 'high' ? '🔴 high' : f.severity === 'medium' ? '🟡 medium' : '🔵 low';
-              const loc  = f.file ? `\`${f.file}\`` : '—';
+              const sev = f.severity === 'high' ? '[HIGH]' : f.severity === 'medium' ? '[MED]' : '[LOW]';
+              const loc = f.file ? `\`${f.file}\`` : '—';
               body += `| ${sev} | ${f.type} | ${loc} | ${f.message.replace(/\|/g, '\\|')} |\n`;
             }
           }
